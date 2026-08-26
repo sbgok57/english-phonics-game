@@ -49,7 +49,7 @@
       touch-action: none;
     }
 
-    /* TOP HUD - RESPONSIVE & CONTAINED */
+    /* TOP HUD - RESPONSIVE & OVERFLOW PROTECTED */
     #ui-overlay {
       position: absolute;
       top: 0;
@@ -524,7 +524,7 @@
           🐯
         </div>
         <div id="companion-speech" class="companion-speech-bubble">
-          Click any letter or picture card to hear its clear 2-second sound! ⭐
+          Click the letter and the word to unlock the Treasure Map! ⭐
         </div>
       </div>
     </div>
@@ -533,35 +533,35 @@
     <div id="welcome-modal" class="modal-backdrop">
       <div class="modal-window">
         <h1 class="modal-title">⭐ Phonics Galaxy & Treasure Island ⭐</h1>
-        <p class="modal-subtitle">1st-Grade Phonics Suite • Click-to-Play • Exactly 2-Second Clear Sounds</p>
+        <p class="modal-subtitle">1st-Grade Phonics Suite • Click to Hear • Dynamic Pacing</p>
 
         <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; text-align: left;">
           <div style="background:rgba(255,255,255,0.08); border:2px solid rgba(0,229,255,0.3); border-radius:14px; padding:8px 12px; display:flex; align-items:center; gap:8px;">
             <span style="font-size:1.6rem;">👆</span>
             <div>
-              <strong>Click-to-Play Only</strong>
-              <div style="font-size:0.75rem; color:#80DEEA;">No autoplay timers • Listen at your own pace</div>
+              <strong>Click-to-Hear Only</strong>
+              <div style="font-size:0.75rem; color:#80DEEA;">No progress bars • 1s sound per click</div>
             </div>
           </div>
           <div style="background:rgba(255,255,255,0.08); border:2px solid rgba(0,229,255,0.3); border-radius:14px; padding:8px 12px; display:flex; align-items:center; gap:8px;">
-            <span style="font-size:1.6rem;">⏱️</span>
+            <span style="font-size:1.6rem;">⚡</span>
             <div>
-              <strong>Exactly 2-Second Audio</strong>
-              <div style="font-size:0.75rem; color:#80DEEA;">Slow, clear phonetic articulation</div>
+              <strong>Auto-Transition Flow</strong>
+              <div style="font-size:0.75rem; color:#80DEEA;">Click letter & word to open Map</div>
             </div>
           </div>
           <div style="background:rgba(255,255,255,0.08); border:2px solid rgba(0,229,255,0.3); border-radius:14px; padding:8px 12px; display:flex; align-items:center; gap:8px;">
             <span style="font-size:1.6rem;">🔍</span>
             <div>
-              <strong>Step 1: Pre-Map Discovery</strong>
-              <div style="font-size:0.75rem; color:#80DEEA;">Learn letter & 1 visual example word</div>
+              <strong>Phase 1: Pre-Map Discovery</strong>
+              <div style="font-size:0.75rem; color:#80DEEA;">Letter & 1 clear example word (1s)</div>
             </div>
           </div>
           <div style="background:rgba(255,255,255,0.08); border:2px solid rgba(0,229,255,0.3); border-radius:14px; padding:8px 12px; display:flex; align-items:center; gap:8px;">
             <span style="font-size:1.6rem;">🗺️</span>
             <div>
-              <strong>Step 2 & 3: Map & Mini-games</strong>
-              <div style="font-size:0.75rem; color:#80DEEA;">Apply sounds in tracing, matching & blending</div>
+              <strong>Phase 2: Deep Articulation</strong>
+              <div style="font-size:0.75rem; color:#80DEEA;">Longer & slower sounds in mini-games</div>
             </div>
           </div>
         </div>
@@ -605,158 +605,158 @@
     const PHONICS_DATA = {
       letters: {
         's': {
-          letter: 's', nodeTitle: 'Snake Safari Park 🐍', phoneme: '/ssss/', soundDesc: 'ssss',
-          example: { word: 'Sun', emoji: '☀️', breakdown: 'Sun! ☀️' },
+          letter: 's', nodeTitle: 'Snake Safari Park 🐍', phoneme: '/sss/', soundDesc: 'ssss',
+          example: { word: 'Sun', emoji: '☀️', breakdown: 'Sssss... uuuu... nnnn... Sun! ☀️' },
           color: '#FFD600', glow: '#FFF59D', icon: '☀️',
           tracing: { strokes: [{ points: [{x:195,y:135},{x:150,y:110},{x:115,y:140},{x:150,y:175},{x:185,y:210},{x:150,y:245},{x:105,y:220}] }] }
         },
         'a': {
-          letter: 'a', nodeTitle: 'Apple Adventure Island 🍎', phoneme: '/aaaa/', soundDesc: 'aaaa',
-          example: { word: 'Apple', emoji: '🍎', breakdown: 'Apple! 🍎' },
+          letter: 'a', nodeTitle: 'Apple Adventure Island 🍎', phoneme: '/aaa/', soundDesc: 'aaaa',
+          example: { word: 'Apple', emoji: '🍎', breakdown: 'Aaaaah... puh... lll... Apple! 🍎' },
           color: '#FF5722', glow: '#FFA726', icon: '🍎',
           tracing: { strokes: [{ points: [{x:200,y:140},{x:150,y:110},{x:100,y:150},{x:100,y:200},{x:150,y:240},{x:200,y:210},{x:200,y:140}] }, { points: [{x:200,y:130},{x:200,y:190},{x:200,y:240},{x:215,y:245}] }] }
         },
         't': {
           letter: 't', nodeTitle: 'Turtle Treasure Cove 🐢', phoneme: '/t-tuh/', soundDesc: 'tuh',
-          example: { word: 'Turtle', emoji: '🐢', breakdown: 'Turtle! 🐢' },
+          example: { word: 'Turtle', emoji: '🐢', breakdown: 'Tttt... errr... tuh... lll... Turtle! 🐢' },
           color: '#26A69A', glow: '#80CBC4', icon: '🐢',
           tracing: { strokes: [{ points: [{x:150,y:70},{x:150,y:200},{x:155,y:235},{x:190,y:235}] }, { points: [{x:110,y:130},{x:190,y:130}] }] }
         },
         'p': {
           letter: 'p', nodeTitle: 'Pirate Piggy Port 🐷', phoneme: '/p-puh/', soundDesc: 'puh',
-          example: { word: 'Pig', emoji: '🐷', breakdown: 'Pig! 🐷' },
+          example: { word: 'Pig', emoji: '🐷', breakdown: 'Pppp... ihhh... guhh... Pig! 🐷' },
           color: '#F06292', glow: '#F8BBD0', icon: '🐷',
           tracing: { strokes: [{ points: [{x:115,y:125},{x:115,y:210},{x:115,y:275}] }, { points: [{x:115,y:135},{x:155,y:120},{x:195,y:160},{x:155,y:205},{x:115,y:205}] }] }
         },
         'i': {
-          letter: 'i', nodeTitle: 'Igloo Ice Cavern 🧊', phoneme: '/iiii/', soundDesc: 'ihhh',
-          example: { word: 'Igloo', emoji: '🧊', breakdown: 'Igloo! 🧊' },
+          letter: 'i', nodeTitle: 'Igloo Ice Cavern 🧊', phoneme: '/iii/', soundDesc: 'ihhh',
+          example: { word: 'Igloo', emoji: '🧊', breakdown: 'Ihhh... gluuu... Igloo! 🧊' },
           color: '#03A9F4', glow: '#81D4FA', icon: '🧊',
           tracing: { strokes: [{ points: [{x:150,y:130},{x:150,y:190},{x:150,y:245}] }, { points: [{x:150,y:80},{x:150,y:85}] }] }
         },
         'n': {
-          letter: 'n', nodeTitle: 'Nutty Monkey Jungle 🥜', phoneme: '/nnnn/', soundDesc: 'nnnn',
-          example: { word: 'Nut', emoji: '🥜', breakdown: 'Nut! 🥜' },
+          letter: 'n', nodeTitle: 'Nutty Monkey Jungle 🥜', phoneme: '/nnn/', soundDesc: 'nnnn',
+          example: { word: 'Nut', emoji: '🥜', breakdown: 'Nnnn... uhhh... tuh... Nut! 🥜' },
           color: '#795548', glow: '#BCAAA4', icon: '🥜',
           tracing: { strokes: [{ points: [{x:105,y:130},{x:105,y:245}] }, { points: [{x:105,y:150},{x:150,y:130},{x:190,y:160},{x:190,y:245}] }] }
         },
         'm': {
-          letter: 'm', nodeTitle: 'Moonlit Magic Mountain 🌙', phoneme: '/mmmm/', soundDesc: 'mmmm',
-          example: { word: 'Moon', emoji: '🌙', breakdown: 'Moon! 🌙' },
+          letter: 'm', nodeTitle: 'Moonlit Magic Mountain 🌙', phoneme: '/mmm/', soundDesc: 'mmmm',
+          example: { word: 'Moon', emoji: '🌙', breakdown: 'Mmmm... ooo... nnn... Moon! 🌙' },
           color: '#3F51B5', glow: '#9FA8DA', icon: '🌙',
           tracing: { strokes: [{ points: [{x:80,y:130},{x:80,y:245}] }, { points: [{x:80,y:150},{x:120,y:130},{x:145,y:155},{x:145,y:245}] }, { points: [{x:145,y:150},{x:185,y:130},{x:215,y:155},{x:215,y:245}] }] }
         },
         'd': {
           letter: 'd', nodeTitle: 'Dinosaur Dog Dunes 🐶', phoneme: '/d-duh/', soundDesc: 'duh',
-          example: { word: 'Dog', emoji: '🐶', breakdown: 'Dog! 🐶' },
+          example: { word: 'Dog', emoji: '🐶', breakdown: 'Dddd... off... guhh... Dog! 🐶' },
           color: '#00BCD4', glow: '#80DEEA', icon: '🐶',
           tracing: { strokes: [{ points: [{x:190,y:140},{x:145,y:115},{x:100,y:160},{x:100,y:200},{x:145,y:240},{x:190,y:210},{x:190,y:140}] }, { points: [{x:190,y:60},{x:190,y:150},{x:190,y:245}] }] }
         },
         'g': {
           letter: 'g', nodeTitle: 'Golden Gift Lagoon 🎁', phoneme: '/g-guh/', soundDesc: 'guh',
-          example: { word: 'Gift', emoji: '🎁', breakdown: 'Gift! 🎁' },
+          example: { word: 'Gift', emoji: '🎁', breakdown: 'Gggg... ihh... ftt... Gift! 🎁' },
           color: '#9C27B0', glow: '#CE93D8', icon: '🎁',
           tracing: { strokes: [{ points: [{x:190,y:130},{x:145,y:105},{x:100,y:150},{x:100,y:185},{x:145,y:215},{x:190,y:190},{x:190,y:130}] }, { points: [{x:190,y:130},{x:190,y:235},{x:170,y:270},{x:120,y:270}] }] }
         },
         'o': {
-          letter: 'o', nodeTitle: 'Orange Octopus Ocean 🍊', phoneme: '/oooo/', soundDesc: 'offf',
-          example: { word: 'Orange', emoji: '🍊', breakdown: 'Orange! 🍊' },
+          letter: 'o', nodeTitle: 'Orange Octopus Ocean 🍊', phoneme: '/ooo/', soundDesc: 'offf',
+          example: { word: 'Orange', emoji: '🍊', breakdown: 'Offf... rannnge... Orange! 🍊' },
           color: '#FF6F00', glow: '#FFB74D', icon: '🍊',
           tracing: { strokes: [{ points: [{x:150,y:110},{x:100,y:150},{x:100,y:200},{x:150,y:245},{x:200,y:200},{x:200,y:150},{x:150,y:110}] }] }
         },
         'c': {
           letter: 'c', nodeTitle: 'Cat Castle Quest 🐱', phoneme: '/k-kuh/', soundDesc: 'kuh',
-          example: { word: 'Cat', emoji: '🐱', breakdown: 'Cat! 🐱' },
+          example: { word: 'Cat', emoji: '🐱', breakdown: 'Kkkk... ahhh... tuhh... Cat! 🐱' },
           color: '#FF9800', glow: '#FFD54F', icon: '🐱',
           tracing: { strokes: [{ points: [{x:210,y:135},{x:160,y:110},{x:100,y:160},{x:100,y:200},{x:155,y:245},{x:210,y:220}] }] }
         },
         'k': {
           letter: 'k', nodeTitle: 'Flying Kite Kingdom 🪁', phoneme: '/k-kuh/', soundDesc: 'kuh',
-          example: { word: 'Kite', emoji: '🪁', breakdown: 'Kite! 🪁' },
+          example: { word: 'Kite', emoji: '🪁', breakdown: 'Kkkk... eye... tuh... Kite! 🪁' },
           color: '#7C4DFF', glow: '#B388FF', icon: '🪁',
           tracing: { strokes: [{ points: [{x:110,y:60},{x:110,y:245}] }, { points: [{x:185,y:135},{x:115,y:185},{x:190,y:245}] }] }
         },
         'e': {
-          letter: 'e', nodeTitle: 'Egg Explorer Valley 🥚', phoneme: '/eeee/', soundDesc: 'ehhh',
-          example: { word: 'Egg', emoji: '🥚', breakdown: 'Egg! 🥚' },
+          letter: 'e', nodeTitle: 'Egg Explorer Valley 🥚', phoneme: '/eee/', soundDesc: 'ehhh',
+          example: { word: 'Egg', emoji: '🥚', breakdown: 'Ehhh... guhh... Egg! 🥚' },
           color: '#E91E63', glow: '#F48FB1', icon: '🥚',
           tracing: { strokes: [{ points: [{x:100,y:180},{x:200,y:180},{x:180,y:125},{x:130,y:125},{x:95,y:175},{x:130,y:240},{x:195,y:230}] }] }
         },
         'u': {
-          letter: 'u', nodeTitle: 'Umbrella Unicorn Oasis ☂️', phoneme: '/uuuu/', soundDesc: 'uhhh',
-          example: { word: 'Umbrella', emoji: '☂️', breakdown: 'Umbrella! ☂️' },
+          letter: 'u', nodeTitle: 'Umbrella Unicorn Oasis ☂️', phoneme: '/uuu/', soundDesc: 'uhhh',
+          example: { word: 'Umbrella', emoji: '☂️', breakdown: 'Uhhh... m... brel... la... Umbrella! ☂️' },
           color: '#AB47BC', glow: '#CE93D8', icon: '☂️',
           tracing: { strokes: [{ points: [{x:105,y:130},{x:105,y:200},{x:150,y:240},{x:195,y:200},{x:195,y:130}] }, { points: [{x:195,y:130},{x:195,y:245}] }] }
         },
         'r': {
-          letter: 'r', nodeTitle: 'Rainbow Rocket Reef 🚀', phoneme: '/rrrr/', soundDesc: 'rrrr',
-          example: { word: 'Rocket', emoji: '🚀', breakdown: 'Rocket! 🚀' },
+          letter: 'r', nodeTitle: 'Rainbow Rocket Reef 🚀', phoneme: '/rrr/', soundDesc: 'rrrr',
+          example: { word: 'Rocket', emoji: '🚀', breakdown: 'Rrrr... ock... et... Rocket! 🚀' },
           color: '#E53935', glow: '#EF9A9A', icon: '🚀',
           tracing: { strokes: [{ points: [{x:120,y:130},{x:120,y:245}] }, { points: [{x:120,y:160},{x:155,y:130},{x:190,y:140}] }] }
         },
         'h': {
-          letter: 'h', nodeTitle: 'Happy Hat Hideout 🎩', phoneme: '/hhhh/', soundDesc: 'hhhh',
-          example: { word: 'Hat', emoji: '🎩', breakdown: 'Hat! 🎩' },
+          letter: 'h', nodeTitle: 'Happy Hat Hideout 🎩', phoneme: '/hhh/', soundDesc: 'hhhh',
+          example: { word: 'Hat', emoji: '🎩', breakdown: 'Hhhh... ahh... tuh... Hat! 🎩' },
           color: '#FFC107', glow: '#FFE082', icon: '🎩',
           tracing: { strokes: [{ points: [{x:110,y:60},{x:110,y:150},{x:110,y:245}] }, { points: [{x:110,y:160},{x:150,y:135},{x:190,y:165},{x:190,y:245}] }] }
         },
         'b': {
           letter: 'b', nodeTitle: 'Bear Beach Party 🚌', phoneme: '/b-buh/', soundDesc: 'buh',
-          example: { word: 'Bus', emoji: '🚌', breakdown: 'Bus! 🚌' },
+          example: { word: 'Bus', emoji: '🚌', breakdown: 'Bbbb... uhh... sss... Bus! 🚌' },
           color: '#4CAF50', glow: '#81C784', icon: '🚌',
           tracing: { strokes: [{ points: [{x:110,y:60},{x:110,y:150},{x:110,y:240}] }, { points: [{x:110,y:150},{x:155,y:135},{x:200,y:180},{x:155,y:235},{x:110,y:235}] }] }
         },
         'f': {
-          letter: 'f', nodeTitle: 'Friendly Fish Falls 🐠', phoneme: '/ffff/', soundDesc: 'ffff',
-          example: { word: 'Fish', emoji: '🐠', breakdown: 'Fish! 🐠' },
+          letter: 'f', nodeTitle: 'Friendly Fish Falls 🐠', phoneme: '/fff/', soundDesc: 'ffff',
+          example: { word: 'Fish', emoji: '🐠', breakdown: 'Ffff... ihh... shhh... Fish! 🐠' },
           color: '#00E676', glow: '#69F0AE', icon: '🐠',
           tracing: { strokes: [{ points: [{x:190,y:80},{x:150,y:60},{x:130,y:95},{x:130,y:245}] }, { points: [{x:100,y:145},{x:170,y:145}] }] }
         },
         'l': {
-          letter: 'l', nodeTitle: 'Lion Lagoon Lookout 🦁', phoneme: '/llll/', soundDesc: 'llll',
-          example: { word: 'Lion', emoji: '🦁', breakdown: 'Lion! 🦁' },
+          letter: 'l', nodeTitle: 'Lion Lagoon Lookout 🦁', phoneme: '/lll/', soundDesc: 'llll',
+          example: { word: 'Lion', emoji: '🦁', breakdown: 'Llll... eye... on... Lion! 🦁' },
           color: '#FFD600', glow: '#FFE57F', icon: '🦁',
           tracing: { strokes: [{ points: [{x:150,y:60},{x:150,y:245}] }] }
         },
         'j': {
           letter: 'j', nodeTitle: 'Jungle Jet Junction ✈️', phoneme: '/j-juh/', soundDesc: 'juh',
-          example: { word: 'Jet', emoji: '✈️', breakdown: 'Jet! ✈️' },
+          example: { word: 'Jet', emoji: '✈️', breakdown: 'Jjjj... ehh... tuh... Jet! ✈️' },
           color: '#FF4081', glow: '#FF80AB', icon: '✈️',
           tracing: { strokes: [{ points: [{x:170,y:130},{x:170,y:240},{x:140,y:270},{x:100,y:260}] }, { points: [{x:170,y:80},{x:170,y:85}] }] }
         },
         'v': {
-          letter: 'v', nodeTitle: 'Volcano Van Valley 🚐', phoneme: '/vvvv/', soundDesc: 'vvvv',
-          example: { word: 'Van', emoji: '🚐', breakdown: 'Van! 🚐' },
+          letter: 'v', nodeTitle: 'Volcano Van Valley 🚐', phoneme: '/vvv/', soundDesc: 'vvvv',
+          example: { word: 'Van', emoji: '🚐', breakdown: 'Vvvv... ahh... nnn... Van! 🚐' },
           color: '#00BFA5', glow: '#64FFDA', icon: '🚐',
           tracing: { strokes: [{ points: [{x:110,y:130},{x:150,y:245},{x:190,y:130}] }] }
         },
         'w': {
-          letter: 'w', nodeTitle: 'Wizard Wand Wonderland 🪄', phoneme: '/wwww/', soundDesc: 'wuh',
-          example: { word: 'Wand', emoji: '🪄', breakdown: 'Wand! 🪄' },
+          letter: 'w', nodeTitle: 'Wizard Wand Wonderland 🪄', phoneme: '/www/', soundDesc: 'wuh',
+          example: { word: 'Wand', emoji: '🪄', breakdown: 'Wwww... ahh... nnd... Wand! 🪄' },
           color: '#0091EA', glow: '#80D8FF', icon: '🪄',
           tracing: { strokes: [{ points: [{x:90,y:130},{x:120,y:245},{x:150,y:160},{x:180,y:245},{x:210,y:130}] }] }
         },
         'x': {
           letter: 'x', nodeTitle: 'Mystery Box Crossroads 📦', phoneme: '/ksss/', soundDesc: 'ksss',
-          example: { word: 'Fox', emoji: '🦊', breakdown: 'Fox! 🦊' },
+          example: { word: 'Fox', emoji: '🦊', breakdown: 'Fff... off... ksss... Fox! 🦊' },
           color: '#FF6D00', glow: '#FFD180', icon: '📦',
           tracing: { strokes: [{ points: [{x:110,y:130},{x:190,y:245}] }, { points: [{x:190,y:130},{x:110,y:245}] }] }
         },
         'y': {
-          letter: 'y', nodeTitle: 'Yellow Yo-Yo Yard 🪀', phoneme: '/yyyy/', soundDesc: 'yuh',
-          example: { word: 'Yo-yo', emoji: '🪀', breakdown: 'Yo-yo! 🪀' },
+          letter: 'y', nodeTitle: 'Yellow Yo-Yo Yard 🪀', phoneme: '/yyy/', soundDesc: 'yuh',
+          example: { word: 'Yo-yo', emoji: '🪀', breakdown: 'Yyyy... oh... yo... Yo-yo! 🪀' },
           color: '#FFD600', glow: '#FFFF8D', icon: '🪀',
           tracing: { strokes: [{ points: [{x:110,y:130},{x:150,y:195}] }, { points: [{x:190,y:130},{x:110,y:275}] }] }
         },
         'z': {
-          letter: 'z', nodeTitle: 'Zebra Zigzag Zoo 🦓', phoneme: '/zzzz/', soundDesc: 'zzzz',
-          example: { word: 'Zebra', emoji: '🦓', breakdown: 'Zebra! 🦓' },
+          letter: 'z', nodeTitle: 'Zebra Zigzag Zoo 🦓', phoneme: '/zzz/', soundDesc: 'zzzz',
+          example: { word: 'Zebra', emoji: '🦓', breakdown: 'Zzzz... e... bra... Zebra! 🦓' },
           color: '#64DD17', glow: '#CCFF90', icon: '🦓',
           tracing: { strokes: [{ points: [{x:110,y:130},{x:190,y:130},{x:110,y:245},{x:190,y:245}] }] }
         },
         'q': {
           letter: 'q', nodeTitle: "Queen's Crystal Palace 👑", phoneme: '/kw-kw/', soundDesc: 'kw',
-          example: { word: 'Queen', emoji: '👑', breakdown: 'Queen! 👑' },
+          example: { word: 'Queen', emoji: '👑', breakdown: 'Kwww... eeee... nnn... Queen! 👑' },
           color: '#AA00FF', glow: '#EA80FC', icon: '👑',
           tracing: { strokes: [{ points: [{x:185,y:140},{x:145,y:115},{x:105,y:155},{x:105,y:195},{x:145,y:235},{x:185,y:205},{x:185,y:140}] }, { points: [{x:185,y:130},{x:185,y:275},{x:210,y:260}] }] }
         }
@@ -834,7 +834,7 @@
     ];
 
     // ==========================================
-    // 3. EXACT 2-SECOND AUDIO SYNTHESIZER (CLICK-TO-PLAY ONLY)
+    // 3. AUDIO ENGINE (1s FOR INTRO, SLOW & LONG FOR MINI-GAMES)
     // ==========================================
     class PhonicsAudioEngine {
       constructor() {
@@ -914,32 +914,32 @@
         } catch (e) {}
       }
 
-      // EXACTLY 2.0 SECONDS SLOW PHONETIC SOUND SYNTHESIS
-      playLetterPhoneme(letterChar, duration = 2.0) {
+      // DYNAMIC DURATION PHONETIC SOUND SYNTHESIS (1.0s in Intro, 4.5s in Minigames)
+      playLetterPhoneme(letterChar, duration = 1.0) {
         this.initContext();
         if (this.isMuted || !this.ctx) return;
         const char = letterChar.toLowerCase();
 
         switch (char) {
           case 'a': this.synthVowel(800, 1650, duration, 145); break;
-          case 'b': this.synthStops(120, 300, duration, 2); break;
-          case 'c': case 'k': this.synthStops(1800, 400, duration, 2); break;
-          case 'd': this.synthStops(160, 450, duration, 2); break;
+          case 'b': this.synthStops(120, 300, duration, duration > 2 ? 4 : 2); break;
+          case 'c': case 'k': this.synthStops(1800, 400, duration, duration > 2 ? 4 : 2); break;
+          case 'd': this.synthStops(160, 450, duration, duration > 2 ? 4 : 2); break;
           case 'e': this.synthVowel(550, 1850, duration, 150); break;
           case 'f': this.synthSibilant(2600, duration, 0.45); break;
-          case 'g': this.synthStops(110, 220, duration, 2); break;
+          case 'g': this.synthStops(110, 220, duration, duration > 2 ? 4 : 2); break;
           case 'h': this.synthSibilant(1200, duration, 0.4); break;
           case 'i': this.synthVowel(400, 2000, duration, 160); break;
-          case 'j': this.synthStops(1400, 300, duration, 2); break;
+          case 'j': this.synthStops(1400, 300, duration, duration > 2 ? 4 : 2); break;
           case 'l': this.synthVowel(380, 1100, duration, 140); break;
           case 'm': this.synthVowel(220, 1000, duration, 130); break;
           case 'n': this.synthVowel(280, 1400, duration, 145); break;
           case 'o': this.synthVowel(580, 920, duration, 135); break;
-          case 'p': this.synthStops(700, 200, duration, 2); break;
-          case 'q': this.synthStops(1600, 500, duration, 2); break;
+          case 'p': this.synthStops(700, 200, duration, duration > 2 ? 4 : 2); break;
+          case 'q': this.synthStops(1600, 500, duration, duration > 2 ? 4 : 2); break;
           case 'r': this.synthVowel(320, 1250, duration, 130); break;
           case 's': this.synthSibilant(5200, duration, 0.85); break;
-          case 't': this.synthStops(3800, 500, duration, 2); break;
+          case 't': this.synthStops(3800, 500, duration, duration > 2 ? 4 : 2); break;
           case 'u': this.synthVowel(650, 1200, duration, 140); break;
           case 'v': this.synthSibilant(2200, duration, 0.5); break;
           case 'w': this.synthVowel(320, 750, duration, 135); break;
@@ -950,7 +950,7 @@
         }
       }
 
-      synthVowel(f1, f2, duration = 2.0, fundamental = 140) {
+      synthVowel(f1, f2, duration = 1.0, fundamental = 140) {
         const t = this.ctx.currentTime;
         const osc = this.ctx.createOscillator();
         osc.type = 'sawtooth';
@@ -962,8 +962,8 @@
         const gain1 = this.ctx.createGain(); const gain2 = this.ctx.createGain(); const masterGain = this.ctx.createGain();
         gain1.gain.setValueAtTime(0.65, t); gain2.gain.setValueAtTime(0.5, t);
         masterGain.gain.setValueAtTime(0.001, t);
-        masterGain.gain.linearRampToValueAtTime(0.42, t + 0.1);
-        masterGain.gain.setValueAtTime(0.42, t + duration - 0.25);
+        masterGain.gain.linearRampToValueAtTime(0.42, t + 0.08);
+        masterGain.gain.setValueAtTime(0.42, t + duration - (duration > 2 ? 0.3 : 0.15));
         masterGain.gain.exponentialRampToValueAtTime(0.001, t + duration);
 
         osc.connect(filter1); osc.connect(filter2);
@@ -973,7 +973,7 @@
         osc.start(t); osc.stop(t + duration);
       }
 
-      synthSibilant(freq = 5200, duration = 2.0, intensity = 0.8) {
+      synthSibilant(freq = 5200, duration = 1.0, intensity = 0.8) {
         const t = this.ctx.currentTime;
         const bufferSize = this.ctx.sampleRate * duration;
         const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
@@ -984,15 +984,15 @@
         const filter = this.ctx.createBiquadFilter(); filter.type = 'highpass'; filter.frequency.setValueAtTime(freq, t);
         const gain = this.ctx.createGain();
         gain.gain.setValueAtTime(0.001, t);
-        gain.gain.linearRampToValueAtTime(0.38 * intensity, t + 0.08);
-        gain.gain.setValueAtTime(0.38 * intensity, t + duration - 0.25);
+        gain.gain.linearRampToValueAtTime(0.38 * intensity, t + 0.06);
+        gain.gain.setValueAtTime(0.38 * intensity, t + duration - (duration > 2 ? 0.3 : 0.15));
         gain.gain.exponentialRampToValueAtTime(0.001, t + duration);
 
         noise.connect(filter); filter.connect(gain); gain.connect(this.ctx.destination);
         noise.start(t); noise.stop(t + duration);
       }
 
-      synthStops(freq, f2, totalDuration = 2.0, count = 2) {
+      synthStops(freq, f2, totalDuration = 1.0, count = 2) {
         const interval = totalDuration / count;
         for (let i = 0; i < count; i++) {
           setTimeout(() => {
@@ -1009,14 +1009,14 @@
         }
       }
 
-      // SLOW, CLEAR SPEECH (Rate 0.70 for clear 2s word pronunciation)
-      speakSlow(text, onEndCallback = null) {
+      // ARTICULATED SPEECH (Rate 0.85 for 1s Phase 1, Rate 0.50 for slow minigames)
+      speakWord(text, rate = 0.85, onEndCallback = null) {
         if (this.isMuted || !this.speechSynth) return;
         try {
           this.speechSynth.cancel();
           const utterance = new SpeechSynthesisUtterance(text);
           if (this.selectedVoice) utterance.voice = this.selectedVoice;
-          utterance.rate = 0.70;
+          utterance.rate = rate;
           utterance.pitch = 1.15;
           if (onEndCallback) utterance.onend = onEndCallback;
           this.speechSynth.speak(utterance);
@@ -1443,46 +1443,73 @@
     }
 
     // ==========================================
-    // 6. STEP 1: PRE-MAP LEARNING (STRESS-FREE, NO TIMERS, 1 EXAMPLE WORD)
+    // 6. PHASE 1: PRE-MAP DISCOVERY (1s SOUNDS & AUTO-TRANSITION ON BOTH CLICKED)
     // ==========================================
     class PreMapLearningStage {
       constructor() {
         this.currentLetterKey = 's';
         this.currentLetterData = PHONICS_DATA.letters['s'];
+        this.hasClickedLetter = false;
+        this.hasClickedWord = false;
+        this.isTransitioning = false;
+        this.autoTransitionTimer = 0;
         this.time = 0;
-        this.isWordCardActive = false;
       }
 
       onEnter(letterKey = 's') {
         this.currentLetterKey = letterKey || 's';
         this.currentLetterData = PHONICS_DATA.letters[this.currentLetterKey] || PHONICS_DATA.letters['s'];
-        this.isWordCardActive = false;
-        // NO AUTOPLAY: Completely silent until user clicks! No countdowns or timers.
+        this.hasClickedLetter = false;
+        this.hasClickedWord = false;
+        this.isTransitioning = false;
+        this.autoTransitionTimer = 0;
+        // NO AUTOPLAY: Completely silent until user actively clicks
       }
 
       update(dt) {
         this.time += dt;
+        if (this.isTransitioning) {
+          this.autoTransitionTimer += dt;
+          if (this.autoTransitionTimer >= 1.2) {
+            this.engine.switchScene('treasureMap', true);
+          }
+        }
+      }
+
+      checkAutoTransition() {
+        if (this.hasClickedLetter && this.hasClickedWord && !this.isTransitioning) {
+          this.isTransitioning = true;
+          this.autoTransitionTimer = 0;
+          soundEngine.playCelebration();
+          this.particles.burstConfetti(640, 320, 60);
+          const bubble = document.getElementById('companion-speech');
+          if (bubble) {
+            bubble.textContent = `🎉 Awesome! Unlocking Treasure Map for ${this.currentLetterKey.toUpperCase()}... 🗺️`;
+          }
+        }
       }
 
       onPointerDown(x, y) {
-        // 1. Click Big Center Letter Circle -> Plays 2-second phonetic sound
+        // 1. Click Letter Circle -> Plays 1-second short phonetic sound
         if (Math.hypot(x - 470, y - 320) < 120) {
-          this.isWordCardActive = false;
-          soundEngine.playLetterPhoneme(this.currentLetterKey, 2.0);
+          this.hasClickedLetter = true;
+          soundEngine.playLetterPhoneme(this.currentLetterKey, 1.0);
           this.particles.burstStars(470, 320, 25, this.currentLetterData.glow);
+          this.checkAutoTransition();
           return;
         }
 
-        // 2. Click The Exactly 1 Example Word Card -> Plays 2-second slow pronunciation
+        // 2. Click The Single Example Word Card -> Plays 1-second clear pronunciation
         if (Math.abs(x - 810) < 160 && Math.abs(y - 320) < 110) {
-          this.isWordCardActive = true;
+          this.hasClickedWord = true;
           soundEngine.playSparkle();
-          soundEngine.speakSlow(this.currentLetterData.example.breakdown);
+          soundEngine.speakWord(this.currentLetterData.example.word, 0.85);
           this.particles.burstStars(810, 320, 25, '#FFD600');
+          this.checkAutoTransition();
           return;
         }
 
-        // 3. Click "NEXT: GO TO TREASURE MAP 🗺️ ➔" Button (Waits manually for user click)
+        // 3. Manual "GO TO TREASURE MAP 🗺️ ➔" button
         if (Math.abs(x - 640) < 240 && Math.abs(y - 590) < 40) {
           soundEngine.playCelebration();
           this.engine.switchScene('treasureMap', true);
@@ -1490,7 +1517,7 @@
       }
 
       render(ctx) {
-        // Background Sky
+        // Sky Background
         const grad = ctx.createLinearGradient(0, 0, 0, 720);
         grad.addColorStop(0, '#120d33'); grad.addColorStop(1, '#0e2b34');
         ctx.fillStyle = grad; ctx.fillRect(0, 0, 1280, 720);
@@ -1502,7 +1529,7 @@
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.fillText(`Step 1: Pre-Map Discovery • Letter ${this.currentLetterKey.toUpperCase()}  ${this.currentLetterData.phoneme}`, 640, 58);
 
-        // Left Side: Big Bouncy Lowercase Letter (Click to Hear 2s Sound)
+        // Left Side: Big Bouncy Lowercase Letter (1-second click & hear)
         ctx.save();
         ctx.translate(470, 320);
         ctx.fillStyle = this.currentLetterData.color;
@@ -1517,18 +1544,24 @@
         ctx.font = '76px sans-serif';
         ctx.fillText(this.currentLetterData.icon, 48, 8);
 
+        // Checkmark badge if clicked
+        if (this.hasClickedLetter) {
+          ctx.fillStyle = '#00E676'; ctx.beginPath(); ctx.arc(80, -80, 24, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 26px sans-serif'; ctx.fillText('✓', 80, -80);
+        }
+
         ctx.fillStyle = '#FFF59D'; ctx.font = 'bold 18px "Fredoka", sans-serif';
-        ctx.fillText('👆 Click for 2s sound', 0, 140);
+        ctx.fillText(this.hasClickedLetter ? '✓ Sound Heard!' : '👆 Click for 1s sound', 0, 140);
         ctx.restore();
 
-        // Right Side: Exactly ONE Visual Example Word Card
+        // Right Side: Exactly ONE Visual Example Word Card (1-second click & hear)
         const ex = this.currentLetterData.example;
         ctx.save();
         ctx.translate(810, 320);
 
-        ctx.fillStyle = this.isWordCardActive ? 'rgba(25, 45, 95, 0.98)' : 'rgba(15, 28, 60, 0.95)';
-        ctx.strokeStyle = this.isWordCardActive ? '#00E676' : this.currentLetterData.color;
-        ctx.lineWidth = this.isWordCardActive ? 5 : 4;
+        ctx.fillStyle = this.hasClickedWord ? 'rgba(25, 45, 95, 0.98)' : 'rgba(15, 28, 60, 0.95)';
+        ctx.strokeStyle = this.hasClickedWord ? '#00E676' : this.currentLetterData.color;
+        ctx.lineWidth = this.hasClickedWord ? 5 : 4;
         ctx.beginPath(); ctx.roundRect(-160, -110, 320, 220, 26); ctx.fill(); ctx.stroke();
 
         ctx.font = '84px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
@@ -1537,21 +1570,33 @@
         ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 36px "Fredoka", sans-serif';
         ctx.fillText(ex.word, 0, 44);
 
+        if (this.hasClickedWord) {
+          ctx.fillStyle = '#00E676'; ctx.beginPath(); ctx.arc(130, -85, 24, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 26px sans-serif'; ctx.fillText('✓', 130, -85);
+        }
+
         ctx.fillStyle = '#80DEEA'; ctx.font = 'bold 16px "Fredoka", sans-serif';
-        ctx.fillText(`👆 Click to hear "${ex.word}"`, 0, 80);
+        ctx.fillText(this.hasClickedWord ? '✓ Word Heard!' : `👆 Click to hear "${ex.word}"`, 0, 80);
         ctx.restore();
 
-        // "NEXT: GO TO TREASURE MAP 🗺️ ➔" Button (Waits for manual click)
-        ctx.fillStyle = '#00E676'; ctx.strokeStyle = '#FFFFFF'; ctx.lineWidth = 4;
+        // Bottom Flow Status Banner / Button
+        ctx.fillStyle = (this.hasClickedLetter && this.hasClickedWord) ? '#00E676' : 'rgba(255, 255, 255, 0.12)';
+        ctx.strokeStyle = '#FFFFFF'; ctx.lineWidth = 4;
         ctx.beginPath(); ctx.roundRect(390, 555, 500, 72, 36); ctx.fill(); ctx.stroke();
-        ctx.fillStyle = '#08162B'; ctx.font = 'bold 26px "Fredoka", sans-serif';
+        ctx.fillStyle = (this.hasClickedLetter && this.hasClickedWord) ? '#08162B' : '#FFFFFF';
+        ctx.font = 'bold 25px "Fredoka", sans-serif';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-        ctx.fillText('NEXT: GO TO TREASURE MAP 🗺️ ➔', 640, 591);
+
+        if (this.hasClickedLetter && this.hasClickedWord) {
+          ctx.fillText('✨ UNLOCKING TREASURE MAP... 🗺️', 640, 591);
+        } else {
+          ctx.fillText('👆 Click letter & word to open Map 🗺️ ➔', 640, 591);
+        }
       }
     }
 
     // ==========================================
-    // 7. STEP 2: ILLUSTRATED TREASURE MAP SCENE
+    // 7. PHASE 2: ILLUSTRATED TREASURE MAP SCENE
     // ==========================================
     class TreasureMapStage {
       constructor() {
@@ -1615,7 +1660,8 @@
           if (Math.hypot(worldX - n.x, y - n.y) < 55 || (Math.abs(worldX - n.x) < 110 && Math.abs(y - (n.y + 60)) < 25)) {
             if (n.unlocked) {
               soundEngine.playStarCollect();
-              soundEngine.playLetterPhoneme(n.letter, 2.0);
+              // In Phase 2, sounds are longer & slower (4.5s) for thorough articulation
+              soundEngine.playLetterPhoneme(n.letter, 4.5);
               this.particles.burstStars(n.x - this.cameraX, n.y, 25, n.zone.color);
 
               if (window.gameApp) {
@@ -1623,7 +1669,7 @@
               }
             } else {
               soundEngine.playGentleBounce();
-              soundEngine.speakSlow(`Complete previous node to unlock ${n.nodeTitle}!`);
+              soundEngine.speakWord(`Complete previous node to unlock ${n.nodeTitle}!`, 0.75);
             }
             return;
           }
@@ -1794,7 +1840,7 @@
     }
 
     // ==========================================
-    // 8. STEP 3A: SOUND MATCHING BUBBLES
+    // 8. CORE MINI-GAME 1: SOUND MATCHING (DEEP SLOW ARTICULATION)
     // ==========================================
     class BubblePhonicsStage {
       constructor() {
@@ -1852,10 +1898,10 @@
       }
 
       onPointerDown(x, y) {
-        // Click Center Letter to trigger 2-second sound
+        // Click Center Letter to trigger long slow phonetic articulation (4.5s)
         if (Math.hypot(x - 640, y - 290) < 110) {
           this.bounceScale = 1.35;
-          soundEngine.playLetterPhoneme(this.currentLetterKey, 2.0);
+          soundEngine.playLetterPhoneme(this.currentLetterKey, 4.5);
           this.particles.emitSparkleTrail(640, 290, this.currentLetterData.glow);
           return;
         }
@@ -1863,7 +1909,7 @@
         // Click Bubble
         for (const b of this.bubbles) {
           if (Math.hypot(x - b.x, y - b.y) < b.radius * 1.1) {
-            soundEngine.playLetterPhoneme(b.letter, 2.0);
+            soundEngine.playLetterPhoneme(b.letter, 4.5);
             soundEngine.playBubblePop();
             this.particles.burstBubble(b.x, b.y, b.glow);
 
@@ -1875,19 +1921,20 @@
               this.bounceScale = 1.4;
 
               const praise = ["Super Star!", "You Did It!", "Amazing Job!", "Fantastic!"][Math.floor(Math.random() * 4)];
-              setTimeout(() => soundEngine.speakSlow(`${praise} ${this.currentLetterData.example.word}!`), 300);
+              setTimeout(() => soundEngine.speakWord(`${praise} ${this.currentLetterData.example.breakdown}`, 0.50), 300);
 
               if (window.gameApp) {
                 window.gameApp.addStar(1);
                 window.gameApp.advanceNode();
               }
 
+              // Automatic smooth transition to Step 3B Tracing
               setTimeout(() => {
                 this.engine.switchScene('letterTracing', true, this.currentLetterKey);
-              }, 1600);
+              }, 2200);
             } else {
               soundEngine.playGentleBounce();
-              soundEngine.speakSlow(`Listen closely: ${this.currentLetterData.soundDesc}!`);
+              soundEngine.speakWord(`Listen to the slow sound: ${this.currentLetterData.soundDesc}!`, 0.60);
             }
             break;
           }
@@ -1949,7 +1996,7 @@
     }
 
     // ==========================================
-    // 9. STEP 3B: GUIDED LETTER TRACING
+    // 9. CORE MINI-GAME 2: GUIDED LETTER TRACING (DEEP ARTICULATION)
     // ==========================================
     class LetterTracingStage {
       constructor() {
@@ -1993,8 +2040,9 @@
         this.starPhase += dt * 4;
         if (this.isLetterComplete) {
           this.celebrateTimer += dt;
-          if (this.celebrateTimer >= 2.0) {
-            this.engine.switchScene('treasureMap');
+          if (this.celebrateTimer >= 2.4) {
+            // Automatic flow into CVC blending
+            this.engine.switchScene('cvcFactory');
           }
         }
       }
@@ -2008,7 +2056,7 @@
           this.isTracing = true;
           this.currentDrawnPoints = [{ x, y }];
           soundEngine.playSparkle();
-          soundEngine.playLetterPhoneme(this.currentLetterKey, 2.0);
+          soundEngine.playLetterPhoneme(this.currentLetterKey, 4.5);
         }
       }
 
@@ -2036,10 +2084,10 @@
                 soundEngine.playStarCollect();
                 soundEngine.playCelebration();
                 this.particles.burstConfetti(this.board.x, this.board.y, 55);
-                soundEngine.playLetterPhoneme(this.currentLetterKey, 2.0);
+                soundEngine.playLetterPhoneme(this.currentLetterKey, 4.5);
 
                 const praise = ["Super Writer!", "You Did It!", "Amazing Tracing!"][Math.floor(Math.random() * 3)];
-                setTimeout(() => soundEngine.speakSlow(`${praise} ${this.currentLetterData.example.word}!`), 350);
+                setTimeout(() => soundEngine.speakWord(`${praise} ${this.currentLetterData.example.breakdown}`, 0.50), 350);
 
                 if (window.gameApp) {
                   window.gameApp.addStar(1);
@@ -2116,7 +2164,7 @@
     }
 
     // ==========================================
-    // 10. STEP 3C: DRAG-TO-BLEND WORD READING
+    // 10. CORE MINI-GAME 3: CVC BLENDING (DEEP ARTICULATION)
     // ==========================================
     class CVCFactoryStage {
       constructor() {
@@ -2167,9 +2215,11 @@
 
         if (this.isBlended) {
           this.celebrateTimer += dt;
-          if (this.celebrateTimer >= 2.4) {
+          if (this.celebrateTimer >= 2.8) {
             this.wordIndex = (this.wordIndex + 1) % this.words.length;
             this.loadWord(this.wordIndex);
+            // Return to Treasure map to continue progression
+            this.engine.switchScene('treasureMap');
           }
         }
       }
@@ -2189,7 +2239,8 @@
               b.inSlot = null;
             }
 
-            soundEngine.playLetterPhoneme(b.letter, 2.0);
+            // In Phase 2 minigames, sound is slow and articulated
+            soundEngine.playLetterPhoneme(b.letter, 4.5);
             soundEngine.playBubblePop();
             this.particles.emitSparkleTrail(b.x, b.y, b.color);
             break;
@@ -2236,7 +2287,7 @@
             this.particles.burstConfetti(640, 360, 60);
 
             setTimeout(() => {
-              soundEngine.speakSlow(`${this.currentWord.word.toUpperCase()}! You blended the word! Fantastic!`);
+              soundEngine.speakWord(`${this.currentWord.word.toUpperCase()}! You blended the word! Fantastic!`, 0.50);
             }, 300);
 
             if (window.gameApp) {
@@ -2336,7 +2387,7 @@
       }
 
       selectLetter(letterKey) {
-        // Step 1: Pre-Map Learning Phase first!
+        // Step 1: Pre-Map Discovery first!
         this.engine.switchScene('introLearning', true, letterKey);
         this.highlightDock('introLearning');
       }
@@ -2353,7 +2404,7 @@
         if (newlyUnlocked.length > 0) {
           const item = newlyUnlocked[0];
           this.showRewardNotification(`🎁 New Treasure Unlocked: ${item.icon} ${item.name}!`);
-          soundEngine.speakSlow(`Awesome! You unlocked the ${item.name}!`);
+          soundEngine.speakWord(`Awesome! You unlocked the ${item.name}!`, 0.85);
         }
       }
 
@@ -2432,7 +2483,7 @@
         });
 
         document.getElementById('companion-avatar').addEventListener('click', () => {
-          soundEngine.speakSlow("I'm Astro! Click any letter or card to hear its 2-second sound!");
+          soundEngine.speakWord("I'm Astro! Click the letter and word to open the Treasure Map!", 0.85);
         });
       }
 
