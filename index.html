@@ -143,7 +143,7 @@
 
     @keyframes starPulse {
       0% { transform: scale(1); }
-      50% { transform: scale(1.3) rotate(8deg); }
+      50% { transform: scale(1.35) rotate(8deg); }
       100% { transform: scale(1); }
     }
 
@@ -152,22 +152,23 @@
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
     }
 
-    /* CURRENT ACTIVITY HEADER AT TOP OF SCREEN */
-    .top-activity-header {
+    /* CENTER HEADER: ACTIVITY TITLE + 4-STAR PROGRESSION BAR */
+    .top-center-header-wrap {
       position: absolute;
       top: 8px;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
       align-items: center;
+      gap: 10px;
       background: rgba(12, 18, 42, 0.95);
       border: 3px solid #00E5FF;
       border-radius: 32px;
-      padding: 4px 16px;
+      padding: 4px 14px;
       box-shadow: 0 8px 24px rgba(0, 229, 255, 0.45);
       backdrop-filter: blur(8px);
       pointer-events: auto;
-      max-width: 60vw;
+      max-width: 65vw;
       overflow: hidden;
       white-space: nowrap;
     }
@@ -175,11 +176,41 @@
     #activity-title-text {
       color: #FFFFFF;
       font-family: 'Fredoka', 'Comic Sans MS', sans-serif;
-      font-size: clamp(0.85rem, 1.3vw, 1.05rem);
+      font-size: clamp(0.82rem, 1.2vw, 1.02rem);
       font-weight: 800;
       letter-spacing: 0.5px;
       text-overflow: ellipsis;
       overflow: hidden;
+    }
+
+    /* DYNAMIC 4-STAR MODULE PROGRESS BAR */
+    .letter-star-bar {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(0, 0, 0, 0.45);
+      border: 2px solid rgba(255, 214, 0, 0.5);
+      border-radius: 18px;
+      padding: 2px 8px;
+    }
+
+    .star-slot {
+      font-size: clamp(1rem, 1.5vw, 1.25rem);
+      color: rgba(255, 255, 255, 0.25);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.2s ease;
+      display: inline-block;
+    }
+
+    .star-slot.filled {
+      color: #FFD600;
+      text-shadow: 0 0 10px #FFD600, 0 0 20px #FF9100;
+      animation: starFillPop 0.45s ease forwards;
+    }
+
+    @keyframes starFillPop {
+      0% { transform: scale(0.4) rotate(-30deg); opacity: 0.3; }
+      60% { transform: scale(1.4) rotate(15deg); opacity: 1; }
+      100% { transform: scale(1.0) rotate(0deg); opacity: 1; }
     }
 
     /* COMPANION ASSISTANT */
@@ -236,7 +267,7 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(6, 4, 18, 0.90);
+      background: rgba(6, 4, 18, 0.92);
       backdrop-filter: blur(10px);
       display: flex;
       justify-content: center;
@@ -290,12 +321,12 @@
       line-height: 1.35;
     }
 
-    /* REWARD CELEBRATION POP-UP SPECIFIC */
+    /* INSTANT POSITIVE FEEDBACK SCREEN (EXPLICIT REWARD POPUP) */
     .reward-modal-window {
-      max-width: 620px;
+      max-width: 600px;
       border: 5px solid #FFD600;
-      box-shadow: 0 0 50px rgba(255, 214, 0, 0.6), inset 0 2px 12px rgba(255, 255, 255, 0.6);
-      background: linear-gradient(180deg, #241442 0%, #0c1638 100%);
+      box-shadow: 0 0 60px rgba(255, 214, 0, 0.7), inset 0 2px 14px rgba(255, 255, 255, 0.7);
+      background: linear-gradient(180deg, #2a1452 0%, #0d1a45 100%);
     }
 
     .reward-sparkle-header {
@@ -304,62 +335,56 @@
       animation: starPulse 1s infinite alternate;
     }
 
-    .reward-popup-cards {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      margin: 16px 0;
-      flex-wrap: wrap;
-    }
-
-    .reward-popup-card-single {
-      background: linear-gradient(180deg, rgba(255, 214, 0, 0.22) 0%, rgba(255, 152, 0, 0.1) 100%);
+    .reward-popup-card-large {
+      background: linear-gradient(180deg, rgba(255, 214, 0, 0.25) 0%, rgba(255, 152, 0, 0.12) 100%);
       border: 3px solid #FFD600;
-      border-radius: 20px;
-      padding: 16px 20px;
-      min-width: 170px;
+      border-radius: 24px;
+      padding: 20px 24px;
+      margin: 16px auto;
+      max-width: 380px;
       text-align: center;
-      box-shadow: 0 10px 28px rgba(255, 214, 0, 0.35);
+      box-shadow: 0 12px 32px rgba(255, 214, 0, 0.4);
       animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    .reward-popup-icon {
-      font-size: clamp(3.2rem, 6vw, 4.5rem);
+    .reward-popup-icon-huge {
+      font-size: clamp(4rem, 8vw, 6rem);
       margin-bottom: 6px;
-      filter: drop-shadow(0 4px 12px rgba(255, 214, 0, 0.6));
+      filter: drop-shadow(0 6px 16px rgba(255, 214, 0, 0.7));
     }
 
-    .reward-popup-name {
-      font-size: clamp(0.95rem, 1.6vw, 1.25rem);
-      font-weight: 800;
-      color: #FFFFFF;
-      margin-bottom: 4px;
-    }
-
-    .reward-popup-tag {
-      display: inline-block;
-      background: #FFD600;
-      color: #1A237E;
-      font-size: 0.72rem;
+    .reward-popup-item-name {
+      font-size: clamp(1.15rem, 2vw, 1.5rem);
       font-weight: 900;
-      padding: 3px 10px;
-      border-radius: 12px;
+      color: #FFFFFF;
+      margin-bottom: 6px;
+    }
+
+    .reward-popup-condition-tag {
+      display: inline-block;
+      background: #00E5FF;
+      color: #08162B;
+      font-size: 0.76rem;
+      font-weight: 900;
+      padding: 4px 12px;
+      border-radius: 14px;
       text-transform: uppercase;
+      margin-bottom: 4px;
     }
 
     .reward-stars-badge {
       background: rgba(255, 255, 255, 0.1);
-      border: 2px dashed #00E5FF;
+      border: 2px dashed #FFD600;
       border-radius: 20px;
       padding: 8px 16px;
       color: #FFF59D;
       font-weight: 800;
       font-size: clamp(0.9rem, 1.4vw, 1.15rem);
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       display: inline-block;
     }
 
-    /* TREASURE GRID */
+    /* 100-ITEM TREASURE CHEST GRID */
     .treasure-tabs {
       display: flex;
       justify-content: center;
@@ -390,9 +415,9 @@
 
     .treasure-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
-      gap: 10px;
-      max-height: 340px;
+      grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
+      gap: 8px;
+      max-height: 350px;
       overflow-y: auto;
       padding: 6px;
     }
@@ -434,7 +459,7 @@
     }
 
     .reward-name {
-      font-size: clamp(0.7rem, 0.9vw, 0.8rem);
+      font-size: clamp(0.68rem, 0.85vw, 0.78rem);
       font-weight: 700;
       color: #FFFFFF;
       white-space: nowrap;
@@ -442,11 +467,14 @@
       text-overflow: ellipsis;
     }
 
-    .reward-type {
-      font-size: 0.65rem;
+    .reward-cond {
+      font-size: 0.60rem;
       font-weight: 700;
       color: #FFD600;
       text-transform: uppercase;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .btn-close-modal {
@@ -502,13 +530,13 @@
     }
 
     @media (max-width: 860px) {
-      .top-activity-header {
+      .top-center-header-wrap {
         top: auto;
         bottom: 8px;
         padding: 3px 10px;
       }
       #activity-title-text {
-        font-size: 0.76rem;
+        font-size: 0.74rem;
       }
       .companion-wrapper {
         display: none;
@@ -527,20 +555,26 @@
           <button id="btn-map" class="hud-btn gold" title="Open Phonics Treasure Map">
             <span>🗺️</span> Map
           </button>
-          <div class="star-counter-badge" title="Collected Stars">
+          <div class="star-counter-badge" title="Total Collected Stars">
             <span class="star-icon">⭐</span>
             <span id="star-count">0</span>
           </div>
         </div>
 
-        <!-- CURRENT ACTIVITY TITLE AT TOP OF SCREEN -->
-        <div class="top-activity-header" id="top-activity-header">
+        <!-- CURRENT ACTIVITY HEADER + 4-STAR PROGRESSION BAR -->
+        <div class="top-center-header-wrap" id="top-center-header">
           <span id="activity-title-text">🗺️ Treasure Map</span>
+          <div class="letter-star-bar" id="letter-star-bar" title="Letter Module Progress (4 Stars)">
+            <span class="star-slot" id="slot-star-1">★</span>
+            <span class="star-slot" id="slot-star-2">★</span>
+            <span class="star-slot" id="slot-star-3">★</span>
+            <span class="star-slot" id="slot-star-4">★</span>
+          </div>
         </div>
 
         <div class="hud-group-right">
-          <button id="btn-treasure-chest" class="hud-btn purple" title="Open 60-Item Treasure Chest">
-            <span>🎁</span> Chest (60)
+          <button id="btn-treasure-chest" class="hud-btn purple" title="Open 100-Item Treasure Chest">
+            <span>🎁</span> Chest (100)
           </button>
           <button id="btn-music" class="hud-btn" title="Music Toggle">
             🎵 Music
@@ -568,7 +602,7 @@
     <div id="welcome-modal" class="modal-backdrop">
       <div class="modal-window">
         <h1 class="modal-title">⭐ Phonics Galaxy & Treasure Island ⭐</h1>
-        <p class="modal-subtitle">1st-Grade Phonics Suite • 4-Step Sequence • 60 Collectible Rewards</p>
+        <p class="modal-subtitle">1st-Grade Phonics Suite • 4-Star Progression • 100 Reward Items</p>
 
         <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; text-align: left;">
           <div style="background:rgba(255,255,255,0.08); border:2px solid rgba(0,229,255,0.3); border-radius:14px; padding:8px 12px; display:flex; align-items:center; gap:8px;">
@@ -579,24 +613,24 @@
             </div>
           </div>
           <div style="background:rgba(255,255,255,0.08); border:2px solid rgba(0,229,255,0.3); border-radius:14px; padding:8px 12px; display:flex; align-items:center; gap:8px;">
-            <span style="font-size:1.6rem;">📖</span>
+            <span style="font-size:1.6rem;">⭐</span>
             <div>
-              <strong>Step 1: Learn the Sound</strong>
-              <div style="font-size:0.75rem; color:#80DEEA;">Click letter & word (0.5–1s sound)</div>
-            </div>
-          </div>
-          <div style="background:rgba(255,255,255,0.08); border:2px solid rgba(0,229,255,0.3); border-radius:14px; padding:8px 12px; display:flex; align-items:center; gap:8px;">
-            <span style="font-size:1.6rem;">🍎</span>
-            <div>
-              <strong>Step 2 & 3: Match & Trace</strong>
-              <div style="font-size:0.75rem; color:#80DEEA;">Match sound bubble & trace letter</div>
+              <strong>4-Star Letter Progress</strong>
+              <div style="font-size:0.75rem; color:#80DEEA;">Earn 1 shiny star in every phase!</div>
             </div>
           </div>
           <div style="background:rgba(255,255,255,0.08); border:2px solid rgba(0,229,255,0.3); border-radius:14px; padding:8px 12px; display:flex; align-items:center; gap:8px;">
             <span style="font-size:1.6rem;">🧩</span>
             <div>
-              <strong>Step 4: Word Blending</strong>
-              <div style="font-size:0.75rem; color:#80DEEA;">Click each letter sound & blend word!</div>
+              <strong>Interactive Blending</strong>
+              <div style="font-size:0.75rem; color:#80DEEA;">Click individual letter sounds before dragging!</div>
+            </div>
+          </div>
+          <div style="background:rgba(255,255,255,0.08); border:2px solid rgba(0,229,255,0.3); border-radius:14px; padding:8px 12px; display:flex; align-items:center; gap:8px;">
+            <span style="font-size:1.6rem;">🎁</span>
+            <div>
+              <strong>100 Rewards with Conditions</strong>
+              <div style="font-size:0.75rem; color:#80DEEA;">Instant positive feedback on each unlock!</div>
             </div>
           </div>
         </div>
@@ -607,42 +641,46 @@
       </div>
     </div>
 
-    <!-- EXPLICIT REWARD POP-UP CELEBRATION MODAL (>50 ITEMS INVENTORY) -->
+    <!-- INSTANT POSITIVE FEEDBACK SCREEN (EXPLICIT REWARD POPUP) -->
     <div id="reward-popup-modal" class="modal-backdrop hidden">
       <div class="modal-window reward-modal-window">
         <div class="reward-sparkle-header">✨ ⭐ ✨</div>
-        <h1 class="modal-title" style="color:#FFD600; font-size:clamp(1.6rem, 3.5vw, 2.4rem);">🎉 SUPER STAR! 🎉</h1>
+        <h1 class="modal-title" id="reward-popup-headline" style="color:#FFD600; font-size:clamp(1.6rem, 3.5vw, 2.4rem);">
+          🎉 SUPER STAR! 🎉
+        </h1>
         <p class="modal-subtitle" id="reward-popup-subtitle" style="font-size:clamp(0.95rem, 1.6vw, 1.2rem); color:#FFF59D; font-weight:700;">
-          Amazing Job! You completed the letter cycle!
+          Amazing Job! You unlocked a new treasure!
         </p>
 
-        <div id="reward-popup-cards-container" class="reward-popup-cards">
-          <!-- Dynamically populated with large reward cards -->
+        <div class="reward-popup-card-large" id="reward-popup-card">
+          <div class="reward-popup-condition-tag" id="reward-popup-cond-tag">CONDITION MET</div>
+          <div class="reward-popup-icon-huge" id="reward-popup-icon">🎁</div>
+          <div class="reward-popup-item-name" id="reward-popup-name">Magic Crown</div>
         </div>
 
-        <div class="reward-stars-badge">
-          <span>⭐⭐ +2 STARS EARNED! ⭐⭐</span>
+        <div class="reward-stars-badge" id="reward-popup-stars-badge">
+          <span>⭐ STAR EARNED! ⭐</span>
         </div>
 
         <br>
-        <button id="btn-claim-rewards-next" class="btn-primary-big" style="background:linear-gradient(180deg, #00E676 0%, #00B248 100%);">
-          <span>🗺️</span> NEXT: RETURN TO TREASURE MAP ➔
+        <button id="btn-reward-popup-next" class="btn-primary-big" style="background:linear-gradient(180deg, #00E676 0%, #00B248 100%);">
+          <span id="reward-popup-btn-icon">➔</span> <span id="reward-popup-btn-text">NEXT: CONTINUE ADVENTURE ➔</span>
         </button>
       </div>
     </div>
 
-    <!-- 60-ITEM TREASURE CHEST MODAL -->
+    <!-- 100-ITEM TREASURE CHEST MODAL -->
     <div id="treasure-modal" class="modal-backdrop hidden">
       <div class="modal-window">
         <button id="btn-close-treasure" class="btn-close-modal">✕</button>
-        <h2 class="modal-title">🎁 Phonics Treasure Chest 🎁</h2>
-        <p class="modal-subtitle">60 Collectible Stickers, Wearable Accessories & Magic FX!</p>
+        <h2 class="modal-title">🎁 Phonics Treasure Chest (100) 🎁</h2>
+        <p class="modal-subtitle">100 Collectible Stickers, Wearable Accessories & Magic FX with Unlock Conditions!</p>
         
         <div class="treasure-tabs">
-          <button class="treasure-tab-btn active" data-tab="all">🌟 All (60)</button>
-          <button class="treasure-tab-btn" data-tab="sticker">🏷️ Stickers (30)</button>
-          <button class="treasure-tab-btn" data-tab="wearable">🦸 Wearables (18)</button>
-          <button class="treasure-tab-btn" data-tab="fx">✨ Magic FX (12)</button>
+          <button class="treasure-tab-btn active" data-tab="all">🌟 All (100)</button>
+          <button class="treasure-tab-btn" data-tab="sticker">🏷️ Stickers (45)</button>
+          <button class="treasure-tab-btn" data-tab="wearable">🦸 Wearables (30)</button>
+          <button class="treasure-tab-btn" data-tab="fx">✨ Pets & FX (25)</button>
         </div>
 
         <div id="treasure-grid" class="treasure-grid"></div>
@@ -823,98 +861,162 @@
     };
 
     // ==========================================
-    // 2. EXPANDED REWARD INVENTORY: 60 UNIQUE ITEMS (>50 ITEMS STRICTLY)
-    // 2 Distinct Rewards Assigned Per Letter (26 x 2 = 52) + 8 Milestone Rewards
+    // 2. EXACT 100-ITEM REWARD SYSTEM WITH EXPLICIT CONDITIONS
     // ==========================================
-    const SIXTY_REWARDS = [
-      // Letter 's' (Node 0)
-      { id: 'r1', letterKey: 's', name: 'Astro Tiger Sticker', icon: '🐯', type: 'sticker', reqStars: 0, unlocked: true },
-      { id: 'r2', letterKey: 's', name: 'Super Sun Sticker', icon: '☀️', type: 'sticker', reqStars: 0, unlocked: true },
-      // Letter 'a' (Node 1)
-      { id: 'r3', letterKey: 'a', name: 'Golden Apple Sticker', icon: '🍎', type: 'sticker', reqStars: 1, unlocked: false },
-      { id: 'r4', letterKey: 'a', name: 'Ant Explorer Sticker', icon: '🐜', type: 'sticker', reqStars: 1, unlocked: false },
-      // Letter 't' (Node 2)
-      { id: 'r5', letterKey: 't', name: 'Rubber Ducky Sticker', icon: '🛁', type: 'sticker', reqStars: 2, unlocked: false },
-      { id: 'r6', letterKey: 't', name: 'Magic Wand', icon: '🪄', type: 'wearable', category: 'item', reqStars: 2, unlocked: false },
-      // Letter 'p' (Node 3)
-      { id: 'r7', letterKey: 'p', name: 'Piggy Pilot Sticker', icon: '🐷', type: 'sticker', reqStars: 3, unlocked: false },
-      { id: 'r8', letterKey: 'p', name: 'Party Cone Hat', icon: '🥳', type: 'wearable', category: 'hat', reqStars: 3, unlocked: false },
-      // Letter 'i' (Node 4)
-      { id: 'r9', letterKey: 'i', name: 'Crystal Ink Quill', icon: '🖋️', type: 'sticker', reqStars: 4, unlocked: false },
-      { id: 'r10', letterKey: 'i', name: 'Star Shades', icon: '⭐', type: 'wearable', category: 'glasses', reqStars: 4, unlocked: false },
-      // Letter 'n' (Node 5)
-      { id: 'r11', letterKey: 'n', name: 'Golden Peanut Sticker', icon: '🥜', type: 'sticker', reqStars: 5, unlocked: false },
-      { id: 'r12', letterKey: 'n', name: 'Hero Cape', icon: '🦸', type: 'wearable', category: 'cape', reqStars: 5, unlocked: false },
-      // Letter 'm' (Node 6)
-      { id: 'r13', letterKey: 'm', name: 'Cozy Mug Sticker', icon: '☕', type: 'sticker', reqStars: 6, unlocked: false },
-      { id: 'r14', letterKey: 'm', name: 'Cool Shades', icon: '🕶️', type: 'wearable', category: 'glasses', reqStars: 6, unlocked: false },
-      // Letter 'd' (Node 7)
-      { id: 'r15', letterKey: 'd', name: 'Puppy Dog Sticker', icon: '🐶', type: 'sticker', reqStars: 7, unlocked: false },
-      { id: 'r16', letterKey: 'd', name: 'Puppy Companion Pet', icon: '🐕', type: 'fx', reqStars: 7, unlocked: false },
-      // Letter 'g' (Node 8)
-      { id: 'r17', letterKey: 'g', name: 'Bubble Gum Sticker', icon: '🍬', type: 'sticker', reqStars: 8, unlocked: false },
-      { id: 'r18', letterKey: 'g', name: 'Rainbow Cloak', icon: '🌈', type: 'wearable', category: 'cape', reqStars: 8, unlocked: false },
-      // Letter 'o' (Node 9)
-      { id: 'r19', letterKey: 'o', name: 'Wise Owl Sticker', icon: '🦉', type: 'sticker', reqStars: 9, unlocked: false },
-      { id: 'r20', letterKey: 'o', name: 'Magic Top Hat', icon: '🎩', type: 'wearable', category: 'hat', reqStars: 9, unlocked: false },
-      // Letter 'c' (Node 10)
-      { id: 'r21', letterKey: 'c', name: 'Cosmic Cat Sticker', icon: '🐱', type: 'sticker', reqStars: 10, unlocked: false },
-      { id: 'r22', letterKey: 'c', name: 'Kitten Friend Pet', icon: '🐈', type: 'fx', reqStars: 10, unlocked: false },
-      // Letter 'k' (Node 11)
-      { id: 'r23', letterKey: 'k', name: 'Royal Kid Crown', icon: '👑', type: 'wearable', category: 'hat', reqStars: 11, unlocked: false },
-      { id: 'r24', letterKey: 'k', name: 'Light Saber', icon: '⚔️', type: 'wearable', category: 'item', reqStars: 11, unlocked: false },
-      // Letter 'e' (Node 12)
-      { id: 'r25', letterKey: 'e', name: 'Golden Egg Sticker', icon: '🥚', type: 'sticker', reqStars: 12, unlocked: false },
-      { id: 'r26', letterKey: 'e', name: 'Baby Chick Pet', icon: '🐥', type: 'fx', reqStars: 12, unlocked: false },
-      // Letter 'u' (Node 13)
-      { id: 'r27', letterKey: 'u', name: 'Teddy Bear Hug', icon: '🫂', type: 'sticker', reqStars: 13, unlocked: false },
-      { id: 'r28', letterKey: 'u', name: 'Heart Aura FX', icon: '💖', type: 'fx', reqStars: 13, unlocked: false },
-      // Letter 'r' (Node 14)
-      { id: 'r29', letterKey: 'r', name: 'Red Ruby Gem', icon: '🔴', type: 'sticker', reqStars: 14, unlocked: false },
-      { id: 'r30', letterKey: 'r', name: 'Star Cape', icon: '🌌', type: 'wearable', category: 'cape', reqStars: 14, unlocked: false },
-      // Letter 'h' (Node 15)
-      { id: 'r31', letterKey: 'h', name: 'Fancy Hat Sticker', icon: '🎩', type: 'sticker', reqStars: 15, unlocked: false },
-      { id: 'r32', letterKey: 'h', name: 'Cowboy Hat', icon: '🤠', type: 'wearable', category: 'hat', reqStars: 15, unlocked: false },
-      // Letter 'b' (Node 16)
-      { id: 'r33', letterKey: 'b', name: 'School Bus Sticker', icon: '🚌', type: 'sticker', reqStars: 16, unlocked: false },
-      { id: 'r34', letterKey: 'b', name: 'Party Balloon', icon: '🎈', type: 'wearable', category: 'item', reqStars: 16, unlocked: false },
-      // Letter 'f' (Node 17)
-      { id: 'r35', letterKey: 'f', name: 'Clever Fox Sticker', icon: '🦊', type: 'sticker', reqStars: 17, unlocked: false },
-      { id: 'r36', letterKey: 'f', name: 'Forest Fox Mask', icon: '🎭', type: 'wearable', category: 'hat', reqStars: 17, unlocked: false },
-      // Letter 'l' (Node 18)
-      { id: 'r37', letterKey: 'l', name: 'Campfire Log Sticker', icon: '🪵', type: 'sticker', reqStars: 18, unlocked: false },
-      { id: 'r38', letterKey: 'l', name: 'Campfire Flame FX', icon: '🔥', type: 'fx', reqStars: 18, unlocked: false },
-      // Letter 'j' (Node 19)
-      { id: 'r39', letterKey: 'j', name: 'Super Jet Sticker', icon: '✈️', type: 'sticker', reqStars: 19, unlocked: false },
-      { id: 'r40', letterKey: 'j', name: 'Cyber Visor', icon: '🥽', type: 'wearable', category: 'glasses', reqStars: 19, unlocked: false },
-      // Letter 'v' (Node 20)
-      { id: 'r41', letterKey: 'v', name: 'Adventure Van Sticker', icon: '🚐', type: 'sticker', reqStars: 20, unlocked: false },
-      { id: 'r42', letterKey: 'v', name: 'Space Helmet', icon: '👩‍🚀', type: 'wearable', category: 'hat', reqStars: 20, unlocked: false },
-      // Letter 'w' (Node 21)
-      { id: 'r43', letterKey: 'w', name: 'Spider Web Sticker', icon: '🕸️', type: 'sticker', reqStars: 21, unlocked: false },
-      { id: 'r44', letterKey: 'w', name: 'Bat Wings', icon: '🦇', type: 'wearable', category: 'cape', reqStars: 21, unlocked: false },
-      // Letter 'x' (Node 22)
-      { id: 'r45', letterKey: 'x', name: 'Mystery Box Sticker', icon: '📦', type: 'sticker', reqStars: 22, unlocked: false },
-      { id: 'r46', letterKey: 'x', name: 'Lightning Sparks FX', icon: '⚡', type: 'fx', reqStars: 22, unlocked: false },
-      // Letter 'y' (Node 23)
-      { id: 'r47', letterKey: 'y', name: 'Fluffy Yak Sticker', icon: '🦬', type: 'sticker', reqStars: 23, unlocked: false },
-      { id: 'r48', letterKey: 'y', name: 'Bunny Hop Pet', icon: '🐰', type: 'fx', reqStars: 23, unlocked: false },
-      // Letter 'z' (Node 24)
-      { id: 'r49', letterKey: 'z', name: 'Zigzag Zoo Safari', icon: '🤐', type: 'sticker', reqStars: 24, unlocked: false },
-      { id: 'r50', letterKey: 'z', name: 'Megablast Party FX', icon: '🎉', type: 'fx', reqStars: 24, unlocked: false },
-      // Letter 'q' (Node 25)
-      { id: 'r51', letterKey: 'q', name: 'Queen Tiara', icon: '👑', type: 'wearable', category: 'hat', reqStars: 25, unlocked: false },
-      { id: 'r52', letterKey: 'q', name: 'Grand Phonics Trophy', icon: '🏆', type: 'fx', reqStars: 25, unlocked: false },
+    const ONE_HUNDRED_REWARDS = [
+      // S MODULE (r1 - r3)
+      { id: 'r1', letterKey: 's', phase: 1, name: 'Astro Tiger Sticker', icon: '🐯', type: 'sticker', condition: 'Complete S Sound Match', unlocked: false },
+      { id: 'r2', letterKey: 's', phase: 3, name: 'Super Sun Sticker', icon: '☀️', type: 'sticker', condition: 'Complete Letter S Tracing', unlocked: false },
+      { id: 'r3', letterKey: 's', phase: 4, name: 'Sunbeam Cape', icon: '🦸', type: 'wearable', category: 'cape', condition: 'Finish Blending SUN', unlocked: false },
 
-      // Milestone Bonus Rewards
-      { id: 'r53', name: 'Baby T-Rex', icon: '🦖', type: 'sticker', reqStars: 8, unlocked: false },
-      { id: 'r54', name: 'Brontosaurus', icon: '🦕', type: 'sticker', reqStars: 14, unlocked: false },
-      { id: 'r55', name: 'Magic Unicorn', icon: '🦄', type: 'sticker', reqStars: 20, unlocked: false },
-      { id: 'r56', name: 'Playful Dolphin', icon: '🐬', type: 'sticker', reqStars: 26, unlocked: false },
-      { id: 'r57', name: 'Brave Lion', icon: '🦁', type: 'sticker', reqStars: 32, unlocked: false },
-      { id: 'r58', name: 'Giant Elephant', icon: '🐘', type: 'sticker', reqStars: 38, unlocked: false },
-      { id: 'r59', name: 'Saturn Planet', icon: '🪐', type: 'sticker', reqStars: 44, unlocked: false },
-      { id: 'r60', name: 'Rainbow Fireworks FX', icon: '🎆', type: 'fx', reqStars: 50, unlocked: false }
+      // A MODULE (r4 - r6)
+      { id: 'r4', letterKey: 'a', phase: 1, name: 'Golden Apple Badge', icon: '🍎', type: 'sticker', condition: 'Complete A Sound Match', unlocked: false },
+      { id: 'r5', letterKey: 'a', phase: 3, name: 'Ant Explorer Badge', icon: '🐜', type: 'sticker', condition: 'Complete Letter A Tracing', unlocked: false },
+      { id: 'r6', letterKey: 'a', phase: 4, name: 'Ant Hill Explorer Hat', icon: '🤠', type: 'wearable', category: 'hat', condition: 'Finish Blending ANT', unlocked: false },
+
+      // T MODULE (r7 - r9)
+      { id: 'r7', letterKey: 't', phase: 1, name: 'Rubber Ducky Sticker', icon: '🛁', type: 'sticker', condition: 'Complete T Sound Match', unlocked: false },
+      { id: 'r8', letterKey: 't', phase: 3, name: 'Magic Wand', icon: '🪄', type: 'wearable', category: 'item', condition: 'Complete Letter T Tracing', unlocked: false },
+      { id: 'r9', letterKey: 't', phase: 4, name: 'Splash Water FX', icon: '💦', type: 'fx', condition: 'Finish Blending TUB', unlocked: false },
+
+      // P MODULE (r10 - r12)
+      { id: 'r10', letterKey: 'p', phase: 1, name: 'Piggy Pilot Sticker', icon: '🐷', type: 'sticker', condition: 'Complete P Sound Match', unlocked: false },
+      { id: 'r11', letterKey: 'p', phase: 3, name: 'Party Cone Hat', icon: '🥳', type: 'wearable', category: 'hat', condition: 'Complete Letter P Tracing', unlocked: false },
+      { id: 'r12', letterKey: 'p', phase: 4, name: 'Flying Piggy Pet', icon: '🐽', type: 'fx', condition: 'Finish Blending PIG', unlocked: false },
+
+      // I MODULE (r13 - r15)
+      { id: 'r13', letterKey: 'i', phase: 1, name: 'Crystal Ink Quill', icon: '🖋️', type: 'sticker', condition: 'Complete I Sound Match', unlocked: false },
+      { id: 'r14', letterKey: 'i', phase: 3, name: 'Star Shades', icon: '⭐', type: 'wearable', category: 'glasses', condition: 'Complete Letter I Tracing', unlocked: false },
+      { id: 'r15', letterKey: 'i', phase: 4, name: 'Ink Splash Aura FX', icon: '✨', type: 'fx', condition: 'Finish Blending INK', unlocked: false },
+
+      // N MODULE (r16 - r18)
+      { id: 'r16', letterKey: 'n', phase: 1, name: 'Golden Peanut Sticker', icon: '🥜', type: 'sticker', condition: 'Complete N Sound Match', unlocked: false },
+      { id: 'r17', letterKey: 'n', phase: 3, name: 'Squirrel Nut Friend', icon: '🐿️', type: 'fx', condition: 'Complete Letter N Tracing', unlocked: false },
+      { id: 'r18', letterKey: 'n', phase: 4, name: 'Nutty Jungle Cape', icon: '🍃', type: 'wearable', category: 'cape', condition: 'Finish Blending NUT', unlocked: false },
+
+      // M MODULE (r19 - r21)
+      { id: 'r19', letterKey: 'm', phase: 1, name: 'Cozy Mug Sticker', icon: '☕', type: 'sticker', condition: 'Complete M Sound Match', unlocked: false },
+      { id: 'r20', letterKey: 'm', phase: 3, name: 'Cool Shades', icon: '🕶️', type: 'wearable', category: 'glasses', condition: 'Complete Letter M Tracing', unlocked: false },
+      { id: 'r21', letterKey: 'm', phase: 4, name: 'Magic Marshmallow Pet', icon: '🧁', type: 'fx', condition: 'Finish Blending MUG', unlocked: false },
+
+      // D MODULE (r22 - r24)
+      { id: 'r22', letterKey: 'd', phase: 1, name: 'Puppy Dog Sticker', icon: '🐶', type: 'sticker', condition: 'Complete D Sound Match', unlocked: false },
+      { id: 'r23', letterKey: 'd', phase: 3, name: 'Puppy Companion Pet', icon: '🐕', type: 'fx', condition: 'Complete Letter D Tracing', unlocked: false },
+      { id: 'r24', letterKey: 'd', phase: 4, name: 'Golden Bone Trophy', icon: '🦴', type: 'wearable', category: 'item', condition: 'Finish Blending DOG', unlocked: false },
+
+      // G MODULE (r25 - r27)
+      { id: 'r25', letterKey: 'g', phase: 1, name: 'Bubble Gum Sticker', icon: '🍬', type: 'sticker', condition: 'Complete G Sound Match', unlocked: false },
+      { id: 'r26', letterKey: 'g', phase: 3, name: 'Rainbow Cloak', icon: '🌈', type: 'wearable', category: 'cape', condition: 'Complete Letter G Tracing', unlocked: false },
+      { id: 'r27', letterKey: 'g', phase: 4, name: 'Giant Gum Bubble FX', icon: '🫧', type: 'fx', condition: 'Finish Blending GUM', unlocked: false },
+
+      // O MODULE (r28 - r30)
+      { id: 'r28', letterKey: 'o', phase: 1, name: 'Wise Owl Sticker', icon: '🦉', type: 'sticker', condition: 'Complete O Sound Match', unlocked: false },
+      { id: 'r29', letterKey: 'o', phase: 3, name: 'Magic Top Hat', icon: '🎩', type: 'wearable', category: 'hat', condition: 'Complete Letter O Tracing', unlocked: false },
+      { id: 'r30', letterKey: 'o', phase: 4, name: 'Night Feather Wings', icon: '🪶', type: 'wearable', category: 'cape', condition: 'Finish Blending OWL', unlocked: false },
+
+      // C MODULE (r31 - r33)
+      { id: 'r31', letterKey: 'c', phase: 1, name: 'Cosmic Cat Sticker', icon: '🐱', type: 'sticker', condition: 'Complete C Sound Match', unlocked: false },
+      { id: 'r32', letterKey: 'c', phase: 3, name: 'Kitten Friend Pet', icon: '🐈', type: 'fx', condition: 'Complete Letter C Tracing', unlocked: false },
+      { id: 'r33', letterKey: 'c', phase: 4, name: 'Cat Ears Headband', icon: '🐾', type: 'wearable', category: 'hat', condition: 'Finish Blending CAT', unlocked: false },
+
+      // K MODULE (r34 - r36)
+      { id: 'r34', letterKey: 'k', phase: 1, name: 'Royal Kid Crown', icon: '👑', type: 'wearable', category: 'hat', condition: 'Complete K Sound Match', unlocked: false },
+      { id: 'r35', letterKey: 'k', phase: 3, name: 'Light Saber', icon: '⚔️', type: 'wearable', category: 'item', condition: 'Complete Letter K Tracing', unlocked: false },
+      { id: 'r36', letterKey: 'k', phase: 4, name: 'Kingdom Shield Badge', icon: '🛡️', type: 'sticker', condition: 'Finish Blending KID', unlocked: false },
+
+      // E MODULE (r37 - r39)
+      { id: 'r37', letterKey: 'e', phase: 1, name: 'Golden Egg Sticker', icon: '🥚', type: 'sticker', condition: 'Complete E Sound Match', unlocked: false },
+      { id: 'r38', letterKey: 'e', phase: 3, name: 'Baby Chick Pet', icon: '🐥', type: 'fx', condition: 'Complete Letter E Tracing', unlocked: false },
+      { id: 'r39', letterKey: 'e', phase: 4, name: 'Eggshell Helmet', icon: '🐣', type: 'wearable', category: 'hat', condition: 'Finish Blending EGG', unlocked: false },
+
+      // U MODULE (r40 - r42)
+      { id: 'r40', letterKey: 'u', phase: 1, name: 'Teddy Bear Hug', icon: '🫂', type: 'sticker', condition: 'Complete U Sound Match', unlocked: false },
+      { id: 'r41', letterKey: 'u', phase: 3, name: 'Heart Aura FX', icon: '💖', type: 'fx', condition: 'Complete Letter U Tracing', unlocked: false },
+      { id: 'r42', letterKey: 'u', phase: 4, name: 'Warm Hug Cloak', icon: '🧸', type: 'wearable', category: 'cape', condition: 'Finish Blending HUG', unlocked: false },
+
+      // R MODULE (r43 - r45)
+      { id: 'r43', letterKey: 'r', phase: 1, name: 'Red Ruby Gem', icon: '🔴', type: 'sticker', condition: 'Complete R Sound Match', unlocked: false },
+      { id: 'r44', letterKey: 'r', phase: 3, name: 'Star Cape', icon: '🌌', type: 'wearable', category: 'cape', condition: 'Complete Letter R Tracing', unlocked: false },
+      { id: 'r45', letterKey: 'r', phase: 4, name: 'Red Dragon Fire FX', icon: '🐲', type: 'fx', condition: 'Finish Blending RED', unlocked: false },
+
+      // H MODULE (r46 - r48)
+      { id: 'r46', letterKey: 'h', phase: 1, name: 'Fancy Hat Sticker', icon: '🎩', type: 'sticker', condition: 'Complete H Sound Match', unlocked: false },
+      { id: 'r47', letterKey: 'h', phase: 3, name: 'Cowboy Hat', icon: '🤠', type: 'wearable', category: 'hat', condition: 'Complete Letter H Tracing', unlocked: false },
+      { id: 'r48', letterKey: 'h', phase: 4, name: 'Sombrero Party Hat', icon: '👒', type: 'wearable', category: 'hat', condition: 'Finish Blending HAT', unlocked: false },
+
+      // B MODULE (r49 - r51)
+      { id: 'r49', letterKey: 'b', phase: 1, name: 'School Bus Sticker', icon: '🚌', type: 'sticker', condition: 'Complete B Sound Match', unlocked: false },
+      { id: 'r50', letterKey: 'b', phase: 3, name: 'Party Balloon Item', icon: '🎈', type: 'wearable', category: 'item', condition: 'Complete Letter B Tracing', unlocked: false },
+      { id: 'r51', letterKey: 'b', phase: 4, name: 'Bus Driver Cap', icon: '🧢', type: 'wearable', category: 'hat', condition: 'Finish Blending BUS', unlocked: false },
+
+      // F MODULE (r52 - r54)
+      { id: 'r52', letterKey: 'f', phase: 1, name: 'Clever Fox Sticker', icon: '🦊', type: 'sticker', condition: 'Complete F Sound Match', unlocked: false },
+      { id: 'r53', letterKey: 'f', phase: 3, name: 'Forest Fox Mask', icon: '🎭', type: 'wearable', category: 'hat', condition: 'Complete Letter F Tracing', unlocked: false },
+      { id: 'r54', letterKey: 'f', phase: 4, name: 'Fox Tail Accessory', icon: '🌾', type: 'wearable', category: 'cape', condition: 'Finish Blending FOX', unlocked: false },
+
+      // L MODULE (r55 - r57)
+      { id: 'r55', letterKey: 'l', phase: 1, name: 'Campfire Log Sticker', icon: '🪵', type: 'sticker', condition: 'Complete L Sound Match', unlocked: false },
+      { id: 'r56', letterKey: 'l', phase: 3, name: 'Campfire Flame FX', icon: '🔥', type: 'fx', condition: 'Complete Letter L Tracing', unlocked: false },
+      { id: 'r57', letterKey: 'l', phase: 4, name: 'Lumberjack Hat', icon: '🪓', type: 'wearable', category: 'hat', condition: 'Finish Blending LOG', unlocked: false },
+
+      // J MODULE (r58 - r60)
+      { id: 'r58', letterKey: 'j', phase: 1, name: 'Super Jet Sticker', icon: '✈️', type: 'sticker', condition: 'Complete J Sound Match', unlocked: false },
+      { id: 'r59', letterKey: 'j', phase: 3, name: 'Cyber Visor', icon: '🥽', type: 'wearable', category: 'glasses', condition: 'Complete Letter J Tracing', unlocked: false },
+      { id: 'r60', letterKey: 'j', phase: 4, name: 'Jetpack Wings', icon: '🚀', type: 'wearable', category: 'cape', condition: 'Finish Blending JET', unlocked: false },
+
+      // V MODULE (r61 - r63)
+      { id: 'r61', letterKey: 'v', phase: 1, name: 'Adventure Van Sticker', icon: '🚐', type: 'sticker', condition: 'Complete V Sound Match', unlocked: false },
+      { id: 'r62', letterKey: 'v', phase: 3, name: 'Space Helmet', icon: '👩‍🚀', type: 'wearable', category: 'hat', condition: 'Complete Letter V Tracing', unlocked: false },
+      { id: 'r63', letterKey: 'v', phase: 4, name: 'Van Camping Lantern', icon: '🏮', type: 'wearable', category: 'item', condition: 'Finish Blending VAN', unlocked: false },
+
+      // W MODULE (r64 - r66)
+      { id: 'r64', letterKey: 'w', phase: 1, name: 'Spider Web Sticker', icon: '🕸️', type: 'sticker', condition: 'Complete W Sound Match', unlocked: false },
+      { id: 'r65', letterKey: 'w', phase: 3, name: 'Bat Wings', icon: '🦇', type: 'wearable', category: 'cape', condition: 'Complete Letter W Tracing', unlocked: false },
+      { id: 'r66', letterKey: 'w', phase: 4, name: 'Spider Hero Mask', icon: '🕷️', type: 'wearable', category: 'hat', condition: 'Finish Blending WEB', unlocked: false },
+
+      // X MODULE (r67 - r69)
+      { id: 'r67', letterKey: 'x', phase: 1, name: 'Mystery Box Sticker', icon: '📦', type: 'sticker', condition: 'Complete X Sound Match', unlocked: false },
+      { id: 'r68', letterKey: 'x', phase: 3, name: 'Lightning Sparks FX', icon: '⚡', type: 'fx', condition: 'Complete Letter X Tracing', unlocked: false },
+      { id: 'r69', letterKey: 'x', phase: 4, name: 'Treasure Key Item', icon: '🗝️', type: 'wearable', category: 'item', condition: 'Finish Blending BOX', unlocked: false },
+
+      // Y MODULE (r70 - r72)
+      { id: 'r70', letterKey: 'y', phase: 1, name: 'Fluffy Yak Sticker', icon: '🦬', type: 'sticker', condition: 'Complete Y Sound Match', unlocked: false },
+      { id: 'r71', letterKey: 'y', phase: 3, name: 'Bunny Hop Pet', icon: '🐰', type: 'fx', condition: 'Complete Letter Y Tracing', unlocked: false },
+      { id: 'r72', letterKey: 'y', phase: 4, name: 'Snow Mountain Scarf', icon: '🧣', type: 'wearable', category: 'cape', condition: 'Finish Blending YAK', unlocked: false },
+
+      // Z MODULE (r73 - r75)
+      { id: 'r73', letterKey: 'z', phase: 1, name: 'Zigzag Zoo Safari', icon: '🤐', type: 'sticker', condition: 'Complete Z Sound Match', unlocked: false },
+      { id: 'r74', letterKey: 'z', phase: 3, name: 'Megablast Party FX', icon: '🎉', type: 'fx', condition: 'Complete Letter Z Tracing', unlocked: false },
+      { id: 'r75', letterKey: 'z', phase: 4, name: 'Zebra Stripes Cloak', icon: '🦓', type: 'wearable', category: 'cape', condition: 'Finish Blending ZIP', unlocked: false },
+
+      // Q MODULE (r76 - r78)
+      { id: 'r76', letterKey: 'q', phase: 1, name: 'Queen Tiara', icon: '👑', type: 'wearable', category: 'hat', condition: 'Complete Q Sound Match', unlocked: false },
+      { id: 'r77', letterKey: 'q', phase: 3, name: 'Grand Phonics Trophy', icon: '🏆', type: 'fx', condition: 'Complete Letter Q Tracing', unlocked: false },
+      { id: 'r78', letterKey: 'q', phase: 4, name: 'Royal Scepter Item', icon: '🔮', type: 'wearable', category: 'item', condition: 'Finish Blending QUIZ', unlocked: false },
+
+      // MILESTONE STAR & MASTERY REWARDS (r79 - r100)
+      { id: 'r79', reqStars: 2, name: 'Baby T-Rex Sticker', icon: '🦖', type: 'sticker', condition: 'Collect 2 Stars', unlocked: false },
+      { id: 'r80', reqStars: 4, name: 'Brontosaurus Badge', icon: '🦕', type: 'sticker', condition: 'Collect 4 Stars', unlocked: false },
+      { id: 'r81', reqStars: 6, name: 'Magic Unicorn Pet', icon: '🦄', type: 'fx', condition: 'Collect 6 Stars', unlocked: false },
+      { id: 'r82', reqStars: 8, name: 'Playful Dolphin', icon: '🐬', type: 'sticker', condition: 'Collect 8 Stars', unlocked: false },
+      { id: 'r83', reqStars: 10, name: 'Brave Lion Mask', icon: '🦁', type: 'wearable', category: 'hat', condition: 'Collect 10 Stars', unlocked: false },
+      { id: 'r84', reqStars: 12, name: 'Giant Elephant Pet', icon: '🐘', type: 'fx', condition: 'Collect 12 Stars', unlocked: false },
+      { id: 'r85', reqStars: 14, name: 'Penguin Slider', icon: '🐧', type: 'sticker', condition: 'Collect 14 Stars', unlocked: false },
+      { id: 'r86', reqStars: 16, name: 'Saturn Planet Orb', icon: '🪐', type: 'fx', condition: 'Collect 16 Stars', unlocked: false },
+      { id: 'r87', reqStars: 18, name: 'Glowing Moon Sticker', icon: '🌕', type: 'sticker', condition: 'Collect 18 Stars', unlocked: false },
+      { id: 'r88', reqStars: 20, name: 'Shooting Star Wand', icon: '🌟', type: 'wearable', category: 'item', condition: 'Collect 20 Stars', unlocked: false },
+      { id: 'r89', reqStars: 22, name: 'Rainbow Fireworks FX', icon: '🎆', type: 'fx', condition: 'Collect 22 Stars', unlocked: false },
+      { id: 'r90', reqStars: 24, name: 'Crystal Diamond Gem', icon: '💎', type: 'sticker', condition: 'Collect 24 Stars', unlocked: false },
+      { id: 'r91', reqStars: 26, name: 'Rainbow Cloud Cape', icon: '🌈', type: 'wearable', category: 'cape', condition: 'Collect 26 Stars', unlocked: false },
+      { id: 'r92', reqStars: 28, name: 'Ice Cream Cone Badge', icon: '🍦', type: 'sticker', condition: 'Collect 28 Stars', unlocked: false },
+      { id: 'r93', reqStars: 30, name: 'Rainbow Lollipop Item', icon: '🍭', type: 'wearable', category: 'item', condition: 'Collect 30 Stars', unlocked: false },
+      { id: 'r94', reqStars: 32, name: 'Sweet Strawberry Badge', icon: '🍓', type: 'sticker', condition: 'Collect 32 Stars', unlocked: false },
+      { id: 'r95', reqStars: 34, name: 'Star Pizza Slice', icon: '🍕', type: 'sticker', condition: 'Collect 34 Stars', unlocked: false },
+      { id: 'r96', reqStars: 36, name: 'Panda Cub Pet', icon: '🐼', type: 'fx', condition: 'Collect 36 Stars', unlocked: false },
+      { id: 'r97', reqStars: 38, name: 'Green Frog Companion', icon: '🐸', type: 'fx', condition: 'Collect 38 Stars', unlocked: false },
+      { id: 'r98', reqStars: 40, name: 'Galaxy Star Halo', icon: '💫', type: 'wearable', category: 'hat', condition: 'Collect 40 Stars', unlocked: false },
+      { id: 'r99', reqStars: 45, name: 'Cosmic Super Hero Suit', icon: '🦸‍♂️', type: 'wearable', category: 'cape', condition: 'Collect 45 Stars', unlocked: false },
+      { id: 'r100', reqStars: 50, name: 'Supreme Phonics Crown', icon: '👑', type: 'wearable', category: 'hat', condition: 'Collect 50 Stars', unlocked: false }
     ];
 
     // ==========================================
@@ -1129,6 +1231,21 @@
           osc.connect(gain); gain.connect(this.ctx.destination);
           osc.start(t); osc.stop(t + 0.2);
         });
+      }
+
+      // REWARDING "DING" SOUND FOR STAR FILLS
+      playStarFillDing() {
+        this.initContext();
+        if (this.isMuted || !this.ctx) return;
+        const t = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
+        osc.type = 'sine'; osc.frequency.setValueAtTime(1318.51, t); // E6 High Ding
+        osc.frequency.exponentialRampToValueAtTime(1760.00, t + 0.08); // A6
+        gain.gain.setValueAtTime(0.001, t);
+        gain.gain.linearRampToValueAtTime(0.4, t + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.45);
+        osc.connect(gain); gain.connect(this.ctx.destination);
+        osc.start(t); osc.stop(t + 0.45);
       }
 
       playStarCollect() {
@@ -1373,28 +1490,32 @@
 
       updateActivityHeader(sceneName) {
         const titleElem = document.getElementById('activity-title-text');
+        const starBar = document.getElementById('letter-star-bar');
         if (!titleElem) return;
 
         const currentLetter = window.gameApp ? window.gameApp.currentSelectedLetter.toUpperCase() : 'S';
 
-        switch (sceneName) {
-          case 'treasureMap':
-            titleElem.textContent = '🗺️ Treasure Map';
-            break;
-          case 'introLearning':
-            titleElem.textContent = `📖 Learn the Sound • Letter ${currentLetter}`;
-            break;
-          case 'bubblePhonics':
-            titleElem.textContent = `🍎 Match Sound • Letter ${currentLetter}`;
-            break;
-          case 'letterTracing':
-            titleElem.textContent = `✏️ Tracing • Letter ${currentLetter}`;
-            break;
-          case 'cvcFactory':
-            titleElem.textContent = `🧩 Word Blending • Letter ${currentLetter}`;
-            break;
-          default:
-            titleElem.textContent = '⭐ Phonics Galaxy';
+        if (sceneName === 'treasureMap') {
+          titleElem.textContent = '🗺️ Treasure Map';
+          if (starBar) starBar.style.display = 'none';
+        } else {
+          if (starBar) starBar.style.display = 'flex';
+          switch (sceneName) {
+            case 'introLearning':
+              titleElem.textContent = `📖 Learn the Sound • Letter ${currentLetter}`;
+              break;
+            case 'bubblePhonics':
+              titleElem.textContent = `🍎 Match Sound • Letter ${currentLetter}`;
+              break;
+            case 'letterTracing':
+              titleElem.textContent = `✏️ Tracing • Letter ${currentLetter}`;
+              break;
+            case 'cvcFactory':
+              titleElem.textContent = `🧩 Word Blending • Letter ${currentLetter}`;
+              break;
+            default:
+              titleElem.textContent = '⭐ Phonics Galaxy';
+          }
         }
       }
 
@@ -1580,7 +1701,7 @@
     }
 
     // ==========================================
-    // 6. STEP 1: LEARN THE SOUND (INTRODUCTION)
+    // 6. STEP 1: LEARN THE SOUND (PHASE 1)
     // ==========================================
     class PreMapLearningStage {
       constructor() {
@@ -1620,10 +1741,12 @@
           return;
         }
 
-        // 3. Clear Visible "NEXT" Button -> Manual proceed to Step 2: Match Sound
+        // 3. Clear Visible "NEXT" Button -> Earn Phase 1 Star + Instant Positive Feedback Screen
         if (Math.abs(x - 640) < 240 && Math.abs(y - 590) < 40) {
           soundEngine.playCelebration();
-          this.engine.switchScene('bubblePhonics', true, this.currentLetterKey);
+          if (window.gameApp) {
+            window.gameApp.completeLetterPhase(1, this.currentLetterKey);
+          }
         }
       }
 
@@ -1727,7 +1850,7 @@
               zone: zone,
               x: x,
               y: y,
-              stars: curIdx <= this.currentNodeIndex ? 3 : 0,
+              stars: curIdx <= this.currentNodeIndex ? 4 : 0,
               unlocked: curIdx <= this.currentNodeIndex
             });
             curIdx++;
@@ -1900,8 +2023,8 @@
             ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
             ctx.fillText(n.letter.toUpperCase(), 0, 3);
 
-            for (let s = -1; s <= 1; s++) {
-              this.particles.drawStarShape(ctx, s * 15, -55, 5, 8, 4, '#FFD600');
+            for (let s = -1.5; s <= 1.5; s += 1) {
+              this.particles.drawStarShape(ctx, s * 14, -55, 5, 7, 3.5, '#FFD600');
             }
           } else {
             ctx.font = '24px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
@@ -1950,7 +2073,7 @@
     }
 
     // ==========================================
-    // 8. STEP 2: MATCH SOUND ACTIVITY
+    // 8. STEP 2: MATCH SOUND ACTIVITY (PHASE 2)
     // ==========================================
     class BubblePhonicsStage {
       constructor() {
@@ -2010,11 +2133,13 @@
       }
 
       onPointerDown(x, y) {
-        // Manual NEXT button click when completed
+        // Manual NEXT button click when completed -> Earn Phase 2 Star + Instant Positive Feedback Screen
         if (this.isCompleted) {
           if (Math.abs(x - 640) < 220 && Math.abs(y - 620) < 38) {
             soundEngine.playCelebration();
-            this.engine.switchScene('letterTracing', true, this.currentLetterKey);
+            if (window.gameApp) {
+              window.gameApp.completeLetterPhase(2, this.currentLetterKey);
+            }
             return;
           }
         }
@@ -2044,10 +2169,6 @@
 
               const praise = ["Super Star!", "You Did It!", "Amazing Job!", "Fantastic!"][Math.floor(Math.random() * 4)];
               setTimeout(() => soundEngine.speakWord(`${praise} ${this.currentLetterData.example.word.toUpperCase()}!`, 0.95), 250);
-
-              if (window.gameApp) {
-                window.gameApp.addStar(1);
-              }
             } else {
               soundEngine.playGentleBounce();
               soundEngine.speakWord(`Try again! Find ${this.currentLetterData.soundDesc}!`, 0.95);
@@ -2117,13 +2238,13 @@
           ctx.beginPath(); ctx.roundRect(420, 588, 440, 64, 32); ctx.fill(); ctx.stroke();
           ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 25px "Fredoka", sans-serif';
           ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-          ctx.fillText('NEXT: GO TO TRACING ➔', 640, 620);
+          ctx.fillText('NEXT: CLAIM STAR & TRACE ➔', 640, 620);
         }
       }
     }
 
     // ==========================================
-    // 9. STEP 3: TRACING ACTIVITY
+    // 9. STEP 3: TRACING ACTIVITY (PHASE 3)
     // ==========================================
     class LetterTracingStage {
       constructor() {
@@ -2166,10 +2287,13 @@
       }
 
       onPointerDown(x, y) {
+        // Manual NEXT button click when tracing completed -> Earn Phase 3 Star + Instant Feedback Screen
         if (this.isLetterComplete) {
           if (Math.abs(x - 640) < 220 && Math.abs(y - 645) < 36) {
             soundEngine.playCelebration();
-            this.engine.switchScene('cvcFactory', true, this.currentLetterKey);
+            if (window.gameApp) {
+              window.gameApp.completeLetterPhase(3, this.currentLetterKey);
+            }
             return;
           }
         }
@@ -2212,11 +2336,7 @@
                 soundEngine.playLetterPhoneme(this.currentLetterKey, 0.65);
 
                 const praise = ["Super Writer!", "You Did It!", "Amazing Tracing!"][Math.floor(Math.random() * 3)];
-                setTimeout(() => soundEngine.speakWord(`${praise} Now blend ${this.currentLetterData.example.word.toUpperCase()}!`, 0.95), 250);
-
-                if (window.gameApp) {
-                  window.gameApp.addStar(1);
-                }
+                setTimeout(() => soundEngine.speakWord(`${praise} Ready to blend ${this.currentLetterData.example.word.toUpperCase()}!`, 0.95), 250);
               }
             }
           }
@@ -2291,13 +2411,13 @@
           ctx.beginPath(); ctx.roundRect(420, 615, 440, 60, 30); ctx.fill(); ctx.stroke();
           ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 25px "Fredoka", sans-serif';
           ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-          ctx.fillText('NEXT: GO TO BLENDING ➔', 640, 645);
+          ctx.fillText('NEXT: CLAIM STAR & BLEND ➔', 640, 645);
         }
       }
     }
 
     // ==========================================
-    // 10. STEP 4: WORD BLENDING (INTERACTIVE CLICK-TO-HEAR ON EACH BLOCK)
+    // 10. STEP 4: WORD BLENDING (PHASE 4 - INTERACTIVE CLICK-TO-HEAR BEFORE DRAGGING)
     // ==========================================
     class CVCFactoryStage {
       constructor() {
@@ -2358,12 +2478,12 @@
       }
 
       onPointerDown(x, y) {
-        // NEXT button click when blending completed -> Trigger celebratory Full-Screen Reward Pop-Up!
+        // NEXT button click when blending completed -> Earn Phase 4 Star + Final Letter Mastery Popup!
         if (this.isBlended) {
           if (Math.abs(x - 640) < 250 && Math.abs(y - 620) < 38) {
             soundEngine.playCelebration();
             if (window.gameApp) {
-              window.gameApp.showCycleCompletionRewardPopUp(this.currentLetterKey);
+              window.gameApp.completeLetterPhase(4, this.currentLetterKey);
             }
             return;
           }
@@ -2383,7 +2503,7 @@
               b.inSlot = null;
             }
 
-            // Play the exact 0.5-1.0s sound for this letter!
+            // Immediately play the 0.5-1.0s crisp sound of this letter!
             soundEngine.playLetterPhoneme(b.letter, 0.65);
             soundEngine.playBubblePop();
             this.particles.emitSparkleTrail(b.x, b.y, b.color);
@@ -2435,10 +2555,6 @@
             setTimeout(() => {
               soundEngine.speakWord(this.currentWordData.word, 0.95);
             }, 300);
-
-            if (window.gameApp) {
-              window.gameApp.addStar(2);
-            }
           }
         }
       }
@@ -2455,7 +2571,7 @@
         ctx.fillText(`Step 4: Word Blending • Blend '${this.currentWordData.word.toUpperCase()}' • ${this.currentWordData.emoji}`, 640, 54);
 
         ctx.fillStyle = '#FFF59D'; ctx.font = 'bold 20px "Fredoka", sans-serif';
-        ctx.fillText('Click to hear individual letter sounds, then drag to blend! 👇', 640, 140);
+        ctx.fillText('Click to hear individual letter sounds, then drag into slots! 👇', 640, 140);
 
         for (const slot of this.slots) {
           ctx.save();
@@ -2478,7 +2594,6 @@
           ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
           ctx.fillText(b.letter, 0, 4);
 
-          // Click to hear label under block if not in slot
           if (!b.inSlot) {
             ctx.fillStyle = '#FFE082'; ctx.font = 'bold 12px "Fredoka", sans-serif';
             ctx.fillText('🔊 Click', 0, 62);
@@ -2497,28 +2612,30 @@
           ctx.fillText(this.currentWordData.word.toUpperCase(), 0, 50);
           ctx.restore();
 
-          // HIGHLY VISIBLE "NEXT: CLAIM REWARDS" BUTTON
+          // HIGHLY VISIBLE "NEXT: CLAIM FINAL REWARDS" BUTTON
           ctx.fillStyle = '#00E676'; ctx.strokeStyle = '#FFFFFF'; ctx.lineWidth = 4;
           ctx.beginPath(); ctx.roundRect(390, 588, 500, 64, 32); ctx.fill(); ctx.stroke();
           ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 24px "Fredoka", sans-serif';
           ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-          ctx.fillText('CLAIM REWARDS & FINISH 🎁 ➔', 640, 620);
+          ctx.fillText('CLAIM REWARDS & COMPLETE 🎁 ➔', 640, 620);
         }
       }
     }
 
     // ==========================================
-    // 11. APP COORDINATOR & 60-ITEM REWARD MANAGER
+    // 11. APP COORDINATOR & 100-ITEM REWARD MANAGER
     // ==========================================
     class PhonicsGameApp {
       constructor() {
         this.canvas = document.getElementById('game-canvas');
         this.engine = new GameEngine(this.canvas);
-        this.stars = 0;
+        this.totalStars = 0;
+        this.currentLetterStars = 0;
         this.unlockedNodeIndex = 0;
         this.currentSelectedLetter = 's';
-        this.rewards = JSON.parse(JSON.stringify(SIXTY_REWARDS));
-        this.equipped = { hat: 'r23', cape: 'r12', glasses: 'r10', item: 'r6' };
+        this.pendingNextAction = null;
+        this.rewards = JSON.parse(JSON.stringify(ONE_HUNDRED_REWARDS));
+        this.equipped = { hat: 'r34', cape: 'r3', glasses: 'r14', item: 'r8' };
 
         this.engine.registerScene('treasureMap', new TreasureMapStage());
         this.engine.registerScene('introLearning', new PreMapLearningStage());
@@ -2529,15 +2646,107 @@
         this.bindDOM();
       }
 
-      addStar(amount = 1) {
-        this.stars += amount;
-        document.getElementById('star-count').textContent = this.stars.toString();
+      resetLetterStars() {
+        this.currentLetterStars = 0;
+        for (let i = 1; i <= 4; i++) {
+          const slot = document.getElementById(`slot-star-${i}`);
+          if (slot) {
+            slot.classList.remove('filled');
+            slot.textContent = '★';
+          }
+        }
+      }
+
+      fillNextStar() {
+        this.currentLetterStars = Math.min(4, this.currentLetterStars + 1);
+        this.totalStars++;
+        document.getElementById('star-count').textContent = this.totalStars.toString();
+
+        const slot = document.getElementById(`slot-star-${this.currentLetterStars}`);
+        if (slot) {
+          slot.classList.add('filled');
+          soundEngine.playStarFillDing();
+        }
+
         const badge = document.querySelector('.star-counter-badge');
         if (badge) {
           badge.classList.add('star-bump');
           setTimeout(() => badge.classList.remove('star-bump'), 400);
         }
-        this.checkRewardUnlocks();
+
+        this.checkMilestoneUnlocks();
+      }
+
+      selectLetter(letterKey) {
+        this.currentSelectedLetter = letterKey;
+        this.resetLetterStars();
+        // STEP 1: Learn the Sound (Introduction)
+        this.engine.switchScene('introLearning', true, letterKey);
+      }
+
+      // PHASE COMPLETION WITH INSTANT POSITIVE FEEDBACK SCREEN (EXPLICIT REWARD POPUP)
+      completeLetterPhase(phaseNumber, letterKey) {
+        this.fillNextStar();
+
+        // Find specific reward matching this letter & phase
+        const reward = this.rewards.find(r => r.letterKey === letterKey && r.phase === phaseNumber) ||
+                       this.rewards.find(r => !r.unlocked);
+
+        if (reward) reward.unlocked = true;
+
+        const letterUpper = letterKey.toUpperCase();
+        let praiseTitle = "🎉 SUPER STAR! 🎉";
+        let nextText = "NEXT: CONTINUE ADVENTURE ➔";
+        let nextScene = 'treasureMap';
+
+        if (phaseNumber === 1) {
+          praiseTitle = "🌟 GREAT LISTENING! 🌟";
+          nextText = "NEXT: GO TO MATCH SOUND ➔";
+          nextScene = 'bubblePhonics';
+        } else if (phaseNumber === 2) {
+          praiseTitle = "🍎 BRILLIANT MATCH! 🍎";
+          nextText = "NEXT: GO TO TRACING ➔";
+          nextScene = 'letterTracing';
+        } else if (phaseNumber === 3) {
+          praiseTitle = "✏️ AWESOME WRITING! ✏️";
+          nextText = "NEXT: GO TO WORD BLENDING ➔";
+          nextScene = 'cvcFactory';
+        } else if (phaseNumber === 4) {
+          praiseTitle = "👑 LETTER MASTERED! 👑";
+          nextText = "NEXT: RETURN TO TREASURE MAP 🗺️ ➔";
+          nextScene = 'treasureMap';
+        }
+
+        this.pendingNextAction = () => {
+          if (phaseNumber === 4) {
+            this.advanceNode();
+          }
+          this.engine.switchScene(nextScene, true, letterKey);
+        };
+
+        // Render Instant Positive Feedback Screen
+        document.getElementById('reward-popup-headline').textContent = praiseTitle;
+        document.getElementById('reward-popup-subtitle').textContent =
+          `Super! You earned Star #${this.currentLetterStars} for Letter ${letterUpper}!`;
+
+        if (reward) {
+          document.getElementById('reward-popup-icon').textContent = reward.icon;
+          document.getElementById('reward-popup-name').textContent = reward.name;
+          document.getElementById('reward-popup-cond-tag').textContent = `CONDITION MET: ${reward.condition}`;
+        }
+
+        document.getElementById('reward-popup-btn-text').textContent = nextText;
+
+        soundEngine.playRewardFanfare();
+        soundEngine.playCelebration();
+
+        // Strong positive spoken voice reinforcement
+        const rewardText = reward ? `You won the ${reward.name}!` : `You got a shiny gold star!`;
+        setTimeout(() => {
+          soundEngine.speakWord(`Super job! ${rewardText}`, 0.95);
+        }, 350);
+
+        document.getElementById('reward-popup-modal').classList.remove('hidden');
       }
 
       advanceNode() {
@@ -2546,53 +2755,9 @@
         }
       }
 
-      selectLetter(letterKey) {
-        this.currentSelectedLetter = letterKey;
-        // STEP 1: Learn the Sound (Introduction)
-        this.engine.switchScene('introLearning', true, letterKey);
-      }
-
-      // EXPLICIT REWARD POP-UP TRIGGER (2 DISTINCT REWARDS PER LETTER)
-      showCycleCompletionRewardPopUp(letterKey) {
-        const matchingRewards = this.rewards.filter(r => r.letterKey === letterKey);
-        matchingRewards.forEach(r => { r.unlocked = true; });
-
-        const cardsContainer = document.getElementById('reward-popup-cards-container');
-        cardsContainer.innerHTML = '';
-
-        const displayedRewards = matchingRewards.length > 0 ? matchingRewards : this.rewards.slice(0, 2);
-
-        displayedRewards.forEach(r => {
-          const card = document.createElement('div');
-          card.className = 'reward-popup-card-single';
-          card.innerHTML = `
-            <div class="reward-popup-icon">${r.icon}</div>
-            <div class="reward-popup-name">${r.name}</div>
-            <div class="reward-popup-tag">${r.type.toUpperCase()}</div>
-          `;
-          cardsContainer.appendChild(card);
-        });
-
-        const letterUpper = letterKey.toUpperCase();
-        const wordUpper = PHONICS_DATA.letters[letterKey].example.word.toUpperCase();
-        document.getElementById('reward-popup-subtitle').textContent =
-          `Amazing! You blended ${wordUpper} and mastered Letter ${letterUpper}!`;
-
-        soundEngine.playRewardFanfare();
-        soundEngine.playCelebration();
-
-        // Strong positive reinforcement voiceover
-        const rewardNames = displayedRewards.map(r => r.name).join(' and ');
-        setTimeout(() => {
-          soundEngine.speakWord(`Amazing Super Star! You got the ${rewardNames}!`, 0.95);
-        }, 350);
-
-        document.getElementById('reward-popup-modal').classList.remove('hidden');
-      }
-
-      checkRewardUnlocks() {
+      checkMilestoneUnlocks() {
         this.rewards.forEach(r => {
-          if (!r.unlocked && this.stars >= r.reqStars) {
+          if (!r.unlocked && r.reqStars !== undefined && this.totalStars >= r.reqStars) {
             r.unlocked = true;
           }
         });
@@ -2646,12 +2811,14 @@
           });
         });
 
-        // REWARD POPUP "NEXT: RETURN TO TREASURE MAP" BUTTON
-        document.getElementById('btn-claim-rewards-next').addEventListener('click', () => {
+        // REWARD POPUP "NEXT" BUTTON TO PROCEED
+        document.getElementById('btn-reward-popup-next').addEventListener('click', () => {
           soundEngine.playCelebration();
           document.getElementById('reward-popup-modal').classList.add('hidden');
-          this.advanceNode();
-          this.engine.switchScene('treasureMap');
+          if (this.pendingNextAction) {
+            this.pendingNextAction();
+            this.pendingNextAction = null;
+          }
         });
 
         document.getElementById('companion-avatar').addEventListener('click', () => {
@@ -2675,7 +2842,7 @@
           card.innerHTML = `
             <div class="reward-icon">${r.unlocked ? r.icon : '❓'}</div>
             <div class="reward-name">${r.unlocked ? r.name : 'Locked Item'}</div>
-            <div class="reward-type">${r.unlocked ? r.type.toUpperCase() : `⭐ ${r.reqStars} Stars`}</div>
+            <div class="reward-cond">${r.condition}</div>
           `;
 
           if (r.unlocked && r.type === 'wearable') {
