@@ -47,9 +47,10 @@
       display: block;
       z-index: 1;
       touch-action: none;
+      cursor: pointer;
     }
 
-    /* TOP HUD */
+    /* TOP HUD - STRICT POINTER-EVENTS CONTROL (CANVAS NEVER BLOCKED) */
     #ui-overlay {
       position: absolute;
       top: 0;
@@ -69,7 +70,7 @@
       justify-content: space-between;
       align-items: center;
       width: 100%;
-      pointer-events: auto;
+      pointer-events: none;
       gap: 6px;
       flex-wrap: nowrap;
     }
@@ -78,6 +79,7 @@
       display: flex;
       align-items: center;
       gap: clamp(4px, 0.8vw, 8px);
+      pointer-events: none;
     }
 
     .hud-btn {
@@ -97,6 +99,7 @@
       transition: transform 0.15s ease, box-shadow 0.15s ease;
       white-space: nowrap;
       flex-shrink: 0;
+      pointer-events: auto;
     }
 
     .hud-btn:hover {
@@ -135,6 +138,7 @@
       transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       white-space: nowrap;
       flex-shrink: 0;
+      pointer-events: auto;
     }
 
     .star-bump {
@@ -152,7 +156,7 @@
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
     }
 
-    /* CENTER HEADER: ACTIVITY TITLE + EMPTY-TO-YELLOW STAR PROGRESSION BAR */
+    /* CENTER HEADER: ACTIVITY TITLE + PURE WHITE EMPTY STARS */
     .top-center-header-wrap {
       position: absolute;
       top: 8px;
@@ -167,7 +171,7 @@
       padding: 4px 14px;
       box-shadow: 0 8px 24px rgba(0, 229, 255, 0.45);
       backdrop-filter: blur(8px);
-      pointer-events: auto;
+      pointer-events: none;
       max-width: 65vw;
       overflow: hidden;
       white-space: nowrap;
@@ -183,7 +187,7 @@
       overflow: hidden;
     }
 
-    /* EMPTY-TO-YELLOW STAR PROGRESSION BAR (PURE WHITE OUTLINES -> BRIGHT YELLOW ON DING) */
+    /* PURE WHITE EMPTY STARS -> BRIGHT YELLOW ON CORRECT COMPLETION */
     .letter-star-bar {
       display: flex;
       align-items: center;
@@ -192,28 +196,34 @@
       border: 2px solid rgba(255, 255, 255, 0.4);
       border-radius: 20px;
       padding: 3px 8px;
+      pointer-events: auto;
     }
 
     .star-slot {
       font-size: clamp(1rem, 1.4vw, 1.25rem);
-      color: #FFFFFF;
-      border: 2px solid #FFFFFF;
-      border-radius: 50%;
       width: clamp(24px, 2.6vw, 30px);
       height: clamp(24px, 2.6vw, 30px);
       display: flex;
       justify-content: center;
       align-items: center;
-      background: rgba(255, 255, 255, 0.12);
+      border-radius: 50%;
       transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
+    .star-slot.empty {
+      color: #FFFFFF !important;
+      border: 2px solid #FFFFFF !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+      box-shadow: none !important;
+      text-shadow: none !important;
+    }
+
     .star-slot.filled {
-      color: #FFEB3B;
-      border-color: #FFEE58;
-      background: radial-gradient(circle, #FFD600 0%, #FF9100 100%);
-      text-shadow: 0 0 10px #FFD600, 0 0 20px #FF9100;
-      box-shadow: 0 0 16px rgba(255, 214, 0, 0.8);
+      color: #FFD600 !important;
+      border: 2px solid #FFEE58 !important;
+      background: radial-gradient(circle, #FFD600 0%, #FF9100 100%) !important;
+      text-shadow: 0 0 10px #FFD600, 0 0 20px #FF9100 !important;
+      box-shadow: 0 0 16px rgba(255, 214, 0, 0.9) !important;
       animation: starFillPop 0.45s ease forwards;
     }
 
@@ -231,7 +241,7 @@
       display: flex;
       align-items: flex-end;
       gap: 10px;
-      pointer-events: auto;
+      pointer-events: none;
       max-width: min(460px, 60vw);
     }
 
@@ -249,6 +259,7 @@
       box-shadow: 0 6px 16px rgba(255, 152, 0, 0.5), inset 0 2px 6px rgba(255, 255, 255, 0.6);
       cursor: pointer;
       transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      pointer-events: auto;
     }
 
     .companion-avatar:hover {
@@ -268,6 +279,7 @@
       word-wrap: break-word;
       line-height: 1.35;
       max-width: 100%;
+      pointer-events: auto;
     }
 
     /* MODALS */
@@ -286,12 +298,13 @@
       opacity: 1;
       transition: opacity 0.3s ease, visibility 0.3s ease;
       padding: clamp(10px, 2vw, 20px);
+      pointer-events: auto;
     }
 
     .modal-backdrop.hidden {
       opacity: 0;
       visibility: hidden;
-      pointer-events: none;
+      pointer-events: none !important;
     }
 
     .modal-window {
@@ -308,6 +321,7 @@
       overflow: hidden;
       max-height: 94vh;
       overflow-y: auto;
+      pointer-events: auto;
     }
 
     @keyframes modalBounce {
@@ -331,7 +345,7 @@
       line-height: 1.35;
     }
 
-    /* MASSIVE CELEBRATION POP-UP (EXACT 100 REWARDS WITH EXPLICIT CONDITIONS) */
+    /* MASSIVE CELEBRATION POP-UP (100 REWARDS WITH CONDITIONS) */
     .reward-modal-window {
       max-width: 580px;
       border: 5px solid #FFD600;
@@ -414,6 +428,7 @@
       font-weight: 700;
       cursor: pointer;
       transition: all 0.2s ease;
+      pointer-events: auto;
     }
 
     .treasure-tab-btn.active {
@@ -440,6 +455,7 @@
       text-align: center;
       transition: transform 0.2s ease, border-color 0.2s ease;
       overflow: hidden;
+      pointer-events: auto;
     }
 
     .reward-card.unlocked {
@@ -504,6 +520,7 @@
       justify-content: center;
       align-items: center;
       transition: all 0.15s ease;
+      pointer-events: auto;
     }
 
     .btn-close-modal:hover {
@@ -527,6 +544,7 @@
       align-items: center;
       gap: 10px;
       white-space: nowrap;
+      pointer-events: auto;
     }
 
     .btn-primary-big:hover {
@@ -558,7 +576,7 @@
   <div id="app-container">
     <canvas id="game-canvas"></canvas>
 
-    <!-- UI Overlay -->
+    <!-- UI Overlay (pointer-events: none so clicks pass cleanly to canvas) -->
     <div id="ui-overlay">
       <div class="top-hud">
         <div class="hud-group-left">
@@ -571,14 +589,14 @@
           </div>
         </div>
 
-        <!-- CURRENT ACTIVITY HEADER + EMPTY-TO-YELLOW STAR PROGRESSION BAR -->
+        <!-- CURRENT ACTIVITY HEADER + PURE WHITE EMPTY STARS BAR -->
         <div class="top-center-header-wrap" id="top-center-header">
           <span id="activity-title-text">🗺️ Treasure Map</span>
-          <div class="letter-star-bar" id="letter-star-bar" title="Star Progress (Starts at 0 White Stars)">
-            <div class="star-slot" id="slot-star-1">☆</div>
-            <div class="star-slot" id="slot-star-2">☆</div>
-            <div class="star-slot" id="slot-star-3">☆</div>
-            <div class="star-slot" id="slot-star-4">☆</div>
+          <div class="letter-star-bar" id="letter-star-bar" title="Star Progress (Starts with 0 White Stars)">
+            <div class="star-slot empty" id="slot-star-1">☆</div>
+            <div class="star-slot empty" id="slot-star-2">☆</div>
+            <div class="star-slot empty" id="slot-star-3">☆</div>
+            <div class="star-slot empty" id="slot-star-4">☆</div>
           </div>
         </div>
 
@@ -619,13 +637,13 @@
             <span style="font-size:1.6rem;">🎙️</span>
             <div>
               <strong>Natural Human Voice</strong>
-              <div style="font-size:0.75rem; color:#80DEEA;">Authentic teacher pronunciation audio!</div>
+              <div style="font-size:0.75rem; color:#80DEEA;">Authentic teacher pronunciation & instructions!</div>
             </div>
           </div>
           <div style="background:rgba(255,255,255,0.08); border:2px solid rgba(0,229,255,0.3); border-radius:14px; padding:8px 12px; display:flex; align-items:center; gap:8px;">
             <span style="font-size:1.6rem;">⭐</span>
             <div>
-              <strong>Empty-to-Yellow Stars</strong>
+              <strong>White-to-Yellow Stars</strong>
               <div style="font-size:0.75rem; color:#80DEEA;">Starts at 0 white stars, fills yellow on correct actions!</div>
             </div>
           </div>
@@ -651,7 +669,7 @@
       </div>
     </div>
 
-    <!-- FULL-SCREEN CELEBRATION POP-UP (PAUSES GAME + COLLECT BUTTON) -->
+    <!-- FULL-SCREEN CELEBRATION POP-UP -->
     <div id="reward-popup-modal" class="modal-backdrop hidden">
       <div class="modal-window reward-modal-window">
         <div class="reward-sparkle-header">✨ ⭐ ✨</div>
@@ -1030,7 +1048,7 @@
     ];
 
     // ==========================================
-    // 3. NATURAL HUMAN-LIKE AUDIO ENGINE (AUTHENTIC STUDIO AUDIO FILES + TEACHER VOICE)
+    // 3. NATURAL HUMAN-LIKE AUDIO ENGINE (100% STUDIO AUDIO + HUMAN TEACHER SPEECH)
     // ==========================================
     class PhonicsAudioEngine {
       constructor() {
@@ -1040,7 +1058,6 @@
         this.speechSynth = window.speechSynthesis || null;
         this.musicTimer = null;
         this.musicStep = 0;
-        this.audioCache = new Map();
         this.selectedVoice = null;
         this.initVoices();
       }
@@ -1054,19 +1071,20 @@
         if (this.musicEnabled && !this.musicTimer) this.startMusicLoop();
       }
 
-      // SELECT THE MOST NATURAL, WARM HUMAN TEACHER VOICE
+      // SELECT THE MOST NATURAL HUMAN TEACHER VOICE
       initVoices() {
         if (!this.speechSynth) return;
         const findNaturalVoice = () => {
           const voices = this.speechSynth.getVoices();
-          // Prioritize high-quality neural/natural teacher voices
+          // Filter exclusively for natural, human-recorded teacher voices
           this.selectedVoice = voices.find(v => v.lang.startsWith('en') && (
             v.name.includes('Natural') ||
             v.name.includes('Google US English') ||
-            v.name.includes('Samantha') ||
+            v.name.includes('Samantha (Enhanced)') ||
             v.name.includes('Serena') ||
             v.name.includes('Victoria') ||
             v.name.includes('Karen') ||
+            v.name.includes('Samantha') ||
             v.name.includes('Jenny')
           )) || voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang.startsWith('en')) || voices[0];
         };
@@ -1117,14 +1135,14 @@
           const gain = this.ctx.createGain();
           osc.type = 'sine'; osc.frequency.setValueAtTime(freq, t);
           gain.gain.setValueAtTime(0.001, t);
-          gain.gain.linearRampToValueAtTime(0.025, t + 0.03);
+          gain.gain.linearRampToValueAtTime(0.02, t + 0.03);
           gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.38);
           osc.connect(gain); gain.connect(this.ctx.destination);
           osc.start(t); osc.stop(t + 0.38);
         } catch (e) {}
       }
 
-      // NATURAL HUMAN-LIKE AUDIO FOR WORDS (STUDIO RECORDINGS WITH NATURAL SPEECH FALLBACK)
+      // 100% NATURAL HUMAN AUDIO FOR WORDS (STUDIO RECORDINGS WITH NATURAL VOICE FALLBACK)
       playHumanWord(word, onEndCallback = null) {
         if (this.isMuted) return;
         const cleanWord = word.toLowerCase().trim();
@@ -1134,7 +1152,6 @@
         audio.playbackRate = 1.0;
         audio.onended = () => { if (onEndCallback) onEndCallback(); };
         audio.onerror = () => {
-          // Seamless fallback to natural human teacher speech synthesis
           this.speakTeacherVoice(cleanWord, 0.95, onEndCallback);
         };
         audio.play().catch(() => {
@@ -1142,13 +1159,12 @@
         });
       }
 
-      // NATURAL HUMAN-LIKE AUDIO FOR INDIVIDUAL LETTER PHONICS (0.5 - 1.0s)
+      // 100% NATURAL HUMAN AUDIO FOR INDIVIDUAL LETTER PHONICS (0.5 - 1.0s)
       playLetterPhoneme(letterChar, duration = 0.65) {
         if (this.isMuted) return;
         this.initContext();
         const char = letterChar.toLowerCase();
 
-        // 1. Try playing direct natural human recording
         if (char !== 'e') {
           const letterAudioUrl = `https://ssl.gstatic.com/dictionary/static/sounds/20200429/${char}--_us_1.mp3`;
           const a = new Audio(letterAudioUrl);
@@ -1161,7 +1177,7 @@
         }
       }
 
-      // ENTHUSIASTIC HUMAN TEACHER VOICEOVER FOR CELEBRATION & FEEDBACK
+      // ENTHUSIASTIC, NATURAL HUMAN TEACHER SPEECH (INSTRUCTIONS, NARRATOR & FEEDBACK)
       speakTeacherVoice(text, rate = 0.95, onEndCallback = null) {
         if (this.isMuted || !this.speechSynth) return;
         try {
@@ -1169,7 +1185,7 @@
           const utterance = new SpeechSynthesisUtterance(text);
           if (this.selectedVoice) utterance.voice = this.selectedVoice;
           utterance.rate = rate;
-          utterance.pitch = 1.08; // Friendly, warm, enthusiastic teacher pitch
+          utterance.pitch = 1.05; // Warm, friendly, cheerful human teacher tone
           if (onEndCallback) utterance.onend = onEndCallback;
           this.speechSynth.speak(utterance);
         } catch (e) {}
@@ -1199,7 +1215,7 @@
         });
       }
 
-      // REWARDING "DING" SOUND FOR YELLOW STAR FILLS
+      // REWARDING "DING" SOUND FOR WHITE-TO-YELLOW STAR TRANSITIONS
       playStarFillDing() {
         this.initContext();
         if (this.isMuted || !this.ctx) return;
@@ -1209,7 +1225,7 @@
         osc.frequency.setValueAtTime(1567.98, t); // G6 High Bell Ding
         osc.frequency.exponentialRampToValueAtTime(2093.00, t + 0.06); // C7
         gain.gain.setValueAtTime(0.001, t);
-        gain.gain.linearRampToValueAtTime(0.42, t + 0.015);
+        gain.gain.linearRampToValueAtTime(0.4, t + 0.015);
         gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.55);
         osc.connect(gain); gain.connect(this.ctx.destination);
         osc.start(t); osc.stop(t + 0.55);
@@ -1388,7 +1404,7 @@
     }
 
     // ==========================================
-    // 5. GAME ENGINE
+    // 5. GAME ENGINE (INSTANT UNIFIED POINTER EVENTS + ACCURATE HITBOXES)
     // ==========================================
     class GameEngine {
       constructor(canvas) {
@@ -1409,10 +1425,7 @@
         this.offsetX = 0;
         this.offsetY = 0;
 
-        this.pointer = { x: 0, y: 0, isDown: false, justPressed: false, justReleased: false };
-        this.keys = {};
-        this.activeTouches = new Map();
-
+        this.pointer = { x: 0, y: 0, isDown: false };
         this.initEvents();
         this.resize();
         window.addEventListener('resize', () => this.resize());
@@ -1497,10 +1510,15 @@
         }
       }
 
-      screenToWorld(clientX, clientY) {
+      getCanvasWorldPos(e) {
+        const rect = this.canvas.getBoundingClientRect();
+        const clientX = e.clientX !== undefined ? e.clientX : (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+        const clientY = e.clientY !== undefined ? e.clientY : (e.touches && e.touches[0] ? e.touches[0].clientY : 0);
+        const canvasX = clientX - rect.left;
+        const canvasY = clientY - rect.top;
         return {
-          x: (clientX - this.offsetX) / this.scale,
-          y: (clientY - this.offsetY) / this.scale
+          x: (canvasX - this.offsetX) / this.scale,
+          y: (canvasY - this.offsetY) / this.scale
         };
       }
 
@@ -1515,81 +1533,43 @@
       }
 
       initEvents() {
-        const unlockAudio = () => soundEngine.initContext();
-        window.addEventListener('pointerdown', unlockAudio, { passive: true });
-        window.addEventListener('touchstart', unlockAudio, { passive: true });
-        window.addEventListener('keydown', unlockAudio, { passive: true });
-
-        const handleTouchStart = (e) => {
-          for (let i = 0; i < e.changedTouches.length; i++) {
-            const t = e.changedTouches[i];
-            this.activeTouches.set(t.identifier, { clientX: t.clientX, clientY: t.clientY });
-            const worldPos = this.screenToWorld(t.clientX, t.clientY);
-            if (this.currentScene && this.currentScene.onPointerDown) this.currentScene.onPointerDown(worldPos.x, worldPos.y, e);
-          }
-          if (e.touches.length > 0) {
-            const worldPos = this.screenToWorld(e.touches[0].clientX, e.touches[0].clientY);
-            this.pointer.x = worldPos.x; this.pointer.y = worldPos.y;
-            this.pointer.isDown = true; this.pointer.justPressed = true;
+        // UNIFIED POINTER EVENTS WITH ZERO INPUT DELAY
+        const onDown = (e) => {
+          soundEngine.initContext();
+          const pos = this.getCanvasWorldPos(e);
+          this.pointer.x = pos.x;
+          this.pointer.y = pos.y;
+          this.pointer.isDown = true;
+          if (this.currentScene && this.currentScene.onPointerDown) {
+            this.currentScene.onPointerDown(pos.x, pos.y, e);
           }
         };
 
-        const handleTouchMove = (e) => {
-          for (let i = 0; i < e.changedTouches.length; i++) {
-            const t = e.changedTouches[i];
-            this.activeTouches.set(t.identifier, { clientX: t.clientX, clientY: t.clientY });
-            const worldPos = this.screenToWorld(t.clientX, t.clientY);
-            if (this.currentScene && this.currentScene.onPointerMove) this.currentScene.onPointerMove(worldPos.x, worldPos.y, e);
-          }
-          if (e.touches.length > 0) {
-            const worldPos = this.screenToWorld(e.touches[0].clientX, e.touches[0].clientY);
-            this.pointer.x = worldPos.x; this.pointer.y = worldPos.y;
+        const onMove = (e) => {
+          const pos = this.getCanvasWorldPos(e);
+          this.pointer.x = pos.x;
+          this.pointer.y = pos.y;
+          if (this.currentScene && this.currentScene.onPointerMove) {
+            this.currentScene.onPointerMove(pos.x, pos.y, e);
           }
         };
 
-        const handleTouchEnd = (e) => {
-          for (let i = 0; i < e.changedTouches.length; i++) {
-            const t = e.changedTouches[i];
-            this.activeTouches.delete(t.identifier);
-            const worldPos = this.screenToWorld(t.clientX, t.clientY);
-            if (this.currentScene && this.currentScene.onPointerUp) this.currentScene.onPointerUp(worldPos.x, worldPos.y, e);
-          }
-          if (e.touches.length === 0) {
-            this.pointer.isDown = false;
-            this.pointer.justReleased = true;
+        const onUp = (e) => {
+          const pos = this.getCanvasWorldPos(e);
+          this.pointer.isDown = false;
+          if (this.currentScene && this.currentScene.onPointerUp) {
+            this.currentScene.onPointerUp(pos.x, pos.y, e);
           }
         };
 
-        window.addEventListener('touchstart', handleTouchStart, { passive: false });
-        window.addEventListener('touchmove', handleTouchMove, { passive: false });
-        window.addEventListener('touchend', handleTouchEnd, { passive: false });
-
-        window.addEventListener('mousedown', (e) => {
-          if (e.button !== 0) return;
-          const worldPos = this.screenToWorld(e.clientX, e.clientY);
-          this.pointer.x = worldPos.x; this.pointer.y = worldPos.y;
-          this.pointer.isDown = true; this.pointer.justPressed = true;
-          if (this.currentScene && this.currentScene.onPointerDown) this.currentScene.onPointerDown(worldPos.x, worldPos.y, e);
-        });
-
-        window.addEventListener('mousemove', (e) => {
-          const worldPos = this.screenToWorld(e.clientX, e.clientY);
-          this.pointer.x = worldPos.x; this.pointer.y = worldPos.y;
-          if (this.currentScene && this.currentScene.onPointerMove) this.currentScene.onPointerMove(worldPos.x, worldPos.y, e);
-        });
-
-        window.addEventListener('mouseup', (e) => {
-          const worldPos = this.screenToWorld(e.clientX, e.clientY);
-          this.pointer.x = worldPos.x; this.pointer.y = worldPos.y;
-          this.pointer.isDown = false; this.pointer.justReleased = true;
-          if (this.currentScene && this.currentScene.onPointerUp) this.currentScene.onPointerUp(worldPos.x, worldPos.y, e);
-        });
+        this.canvas.addEventListener('pointerdown', onDown, { passive: false });
+        window.addEventListener('pointermove', onMove, { passive: false });
+        window.addEventListener('pointerup', onUp, { passive: false });
+        window.addEventListener('pointercancel', onUp, { passive: false });
 
         window.addEventListener('keydown', (e) => {
-          this.keys[e.code] = true;
           if (e.key === 'f' || e.key === 'F') this.toggleFullscreen();
         });
-        window.addEventListener('keyup', (e) => { this.keys[e.code] = false; });
       }
 
       start() {
@@ -1602,8 +1582,6 @@
         this.lastTime = currentTime;
         this.update(dt);
         this.render();
-        this.pointer.justPressed = false;
-        this.pointer.justReleased = false;
         requestAnimationFrame((t) => this.loop(t));
       }
 
@@ -1681,7 +1659,7 @@
 
       onPointerDown(x, y) {
         // 1. Click Letter Circle -> Natural human letter sound
-        if (Math.hypot(x - 470, y - 320) < 120) {
+        if (Math.hypot(x - 470, y - 320) < 130) {
           this.hasClickedLetter = true;
           soundEngine.playLetterPhoneme(this.currentLetterKey, 0.65);
           this.particles.burstStars(470, 320, 20, this.currentLetterData.glow);
@@ -1689,8 +1667,8 @@
           return;
         }
 
-        // 2. Click Word Card -> Natural human studio word pronunciation
-        if (Math.abs(x - 810) < 160 && Math.abs(y - 320) < 110) {
+        // 2. Click Word Card -> Natural studio human word pronunciation
+        if (Math.abs(x - 810) < 170 && Math.abs(y - 320) < 120) {
           this.hasClickedWord = true;
           soundEngine.playSparkle();
           soundEngine.playHumanWord(this.currentLetterData.example.word);
@@ -1699,8 +1677,8 @@
           return;
         }
 
-        // 3. Clear Visible "NEXT" Button -> Move to Match Sound
-        if (Math.abs(x - 640) < 240 && Math.abs(y - 590) < 40) {
+        // 3. Click "NEXT: MATCH SOUND" Button
+        if (Math.abs(x - 640) < 260 && Math.abs(y - 590) < 45) {
           soundEngine.playCelebration();
           if (window.gameApp) {
             window.gameApp.engine.switchScene('bubblePhonics', true, this.currentLetterKey);
@@ -1790,7 +1768,7 @@
     }
 
     // ==========================================
-    // 7. START SCREEN: TREASURE MAP (SWIPEABLE)
+    // 7. START SCREEN: TREASURE MAP (SWIPEABLE & INSTANT CLICKS)
     // ==========================================
     class TreasureMapStage {
       constructor() {
@@ -1867,7 +1845,7 @@
         if (wasClick) {
           const worldX = x + this.cameraX;
           for (const n of this.nodes) {
-            if (Math.hypot(worldX - n.x, y - n.y) < 55 || (Math.abs(worldX - n.x) < 110 && Math.abs(y - (n.y + 60)) < 25)) {
+            if (Math.hypot(worldX - n.x, y - n.y) < 65 || (Math.abs(worldX - n.x) < 120 && Math.abs(y - (n.y + 65)) < 35)) {
               if (n.unlocked) {
                 soundEngine.playLetterPhoneme(n.letter, 0.65);
                 this.particles.burstStars(n.x - this.cameraX, n.y, 25, n.zone.color);
@@ -2103,7 +2081,7 @@
       onPointerDown(x, y) {
         // Manual NEXT button click when completed
         if (this.isCompleted) {
-          if (Math.abs(x - 640) < 220 && Math.abs(y - 620) < 38) {
+          if (Math.abs(x - 640) < 240 && Math.abs(y - 620) < 45) {
             soundEngine.playCelebration();
             if (window.gameApp) {
               window.gameApp.engine.switchScene('letterTracing', true, this.currentLetterKey);
@@ -2113,7 +2091,7 @@
         }
 
         // Center Letter: Natural letter sound
-        if (Math.hypot(x - 640, y - 270) < 100) {
+        if (Math.hypot(x - 640, y - 270) < 110) {
           this.bounceScale = 1.35;
           soundEngine.playLetterPhoneme(this.currentLetterKey, 0.65);
           this.particles.emitSparkleTrail(640, 270, this.currentLetterData.glow);
@@ -2122,7 +2100,7 @@
 
         // Bubbles: Test sound on click
         for (const b of this.bubbles) {
-          if (Math.hypot(x - b.x, y - b.y) < b.radius * 1.1) {
+          if (Math.hypot(x - b.x, y - b.y) < 70) {
             soundEngine.playLetterPhoneme(b.letter, 0.65);
             soundEngine.playBubblePop();
             this.particles.burstBubble(b.x, b.y, b.glow);
@@ -2267,7 +2245,7 @@
       onPointerDown(x, y) {
         // Manual NEXT button click when tracing completed
         if (this.isLetterComplete) {
-          if (Math.abs(x - 640) < 220 && Math.abs(y - 645) < 36) {
+          if (Math.abs(x - 640) < 240 && Math.abs(y - 645) < 45) {
             soundEngine.playCelebration();
             if (window.gameApp) {
               window.gameApp.engine.switchScene('cvcFactory', true, this.currentLetterKey);
@@ -2279,7 +2257,7 @@
         const stroke = this.currentLetterData.tracing.strokes[this.currentStrokeIdx];
         if (!stroke) return;
         const target = this.toBoardCoords(stroke.points[this.currentCheckpointIdx]);
-        if (Math.hypot(x - target.x, y - target.y) < 65) {
+        if (Math.hypot(x - target.x, y - target.y) < 75) {
           this.isTracing = true;
           this.currentDrawnPoints = [{ x, y }];
           soundEngine.playSparkle();
@@ -2297,7 +2275,7 @@
         const nextPt = stroke.points[this.currentCheckpointIdx + 1];
         if (nextPt) {
           const target = this.toBoardCoords(nextPt);
-          if (Math.hypot(x - target.x, y - target.y) < 60) {
+          if (Math.hypot(x - target.x, y - target.y) < 70) {
             this.currentCheckpointIdx++;
             soundEngine.playSparkle();
             if (this.currentCheckpointIdx >= stroke.points.length - 1) {
@@ -2466,7 +2444,7 @@
       onPointerDown(x, y) {
         // NEXT button click when blending completed
         if (this.isBlended) {
-          if (Math.abs(x - 640) < 250 && Math.abs(y - 620) < 38) {
+          if (Math.abs(x - 640) < 265 && Math.abs(y - 620) < 45) {
             soundEngine.playCelebration();
             if (window.gameApp) {
               window.gameApp.completeModuleAndReturnToMap(this.currentLetterKey);
@@ -2478,7 +2456,7 @@
         // STRICT REQUIREMENT 1: EVERY INDIVIDUAL LETTER BLOCK IS SEPARATELY CLICKABLE AS MANY TIMES AS DESIRED
         for (let i = this.blocks.length - 1; i >= 0; i--) {
           const b = this.blocks[i];
-          if (Math.abs(x - b.x) < 55 && Math.abs(y - b.y) < 55) {
+          if (Math.abs(x - b.x) < 65 && Math.abs(y - b.y) < 65) {
             this.draggingBlock = b;
             this.dragOffset.x = x - b.x;
             this.dragOffset.y = y - b.y;
@@ -2639,19 +2617,19 @@
         this.bindDOM();
       }
 
-      // RESETS TO PURE WHITE EMPTY STARS (ALWAYS STARTS AT 0)
+      // INITIALIZES ALL STARS AS COMPLETELY WHITE (EMPTY OUTLINES)
       resetLetterStars() {
         this.currentLetterStars = 0;
         for (let i = 1; i <= 4; i++) {
           const slot = document.getElementById(`slot-star-${i}`);
           if (slot) {
-            slot.classList.remove('filled');
+            slot.className = 'star-slot empty';
             slot.textContent = '☆';
           }
         }
       }
 
-      // TURNS PURE WHITE EMPTY STAR INSTANTLY INTO BRIGHT YELLOW WITH REWARDING DING SOUND
+      // TURNS WHITE STAR BRIGHT YELLOW ONLY UPON SUCCESSFUL TASK COMPLETION
       earnCorrectStar(starNumber) {
         this.currentLetterStars = Math.min(4, Math.max(this.currentLetterStars, starNumber));
         this.totalStars++;
@@ -2659,7 +2637,7 @@
 
         const slot = document.getElementById(`slot-star-${starNumber}`);
         if (slot) {
-          slot.classList.add('filled');
+          slot.className = 'star-slot filled';
           slot.textContent = '⭐';
           soundEngine.playStarFillDing();
         }
