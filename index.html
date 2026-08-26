@@ -35,11 +35,9 @@
       overflow: hidden;
     }
 
-    /* TOP GLOBAL HUD */
+    /* TOP GLOBAL HUD (CLEAN, RESPONSIVE, NEVER BLOCKS CLICKS) */
     #top-hud {
-      position: absolute;
-      top: 0;
-      left: 0;
+      position: relative;
       width: 100%;
       height: 64px;
       display: flex;
@@ -47,9 +45,10 @@
       align-items: center;
       padding: 6px 14px;
       z-index: 50;
-      background: rgba(10, 16, 38, 0.95);
-      border-bottom: 2px solid #00E5FF;
+      background: rgba(10, 16, 38, 0.96);
+      border-bottom: 3px solid #00E5FF;
       box-shadow: 0 4px 20px rgba(0, 229, 255, 0.3);
+      flex-shrink: 0;
     }
 
     .hud-left, .hud-right {
@@ -70,7 +69,7 @@
       border-radius: 20px;
       color: #FFFFFF;
       font-family: 'Fredoka', sans-serif;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 700;
       padding: 6px 14px;
       cursor: pointer;
@@ -78,11 +77,16 @@
       align-items: center;
       gap: 6px;
       transition: transform 0.15s ease, background 0.15s ease;
+      white-space: nowrap;
     }
 
     .hud-btn:hover {
       transform: translateY(-2px);
       background: linear-gradient(180deg, #3d4f8e 0%, #202e60 100%);
+    }
+
+    .hud-btn:active {
+      transform: translateY(1px);
     }
 
     .hud-btn.gold {
@@ -106,17 +110,19 @@
       display: flex;
       align-items: center;
       gap: 4px;
+      white-space: nowrap;
     }
 
     #activity-title-badge {
       color: #00E5FF;
       font-weight: 800;
-      font-size: 1.1rem;
+      font-size: clamp(0.85rem, 1.4vw, 1.15rem);
       letter-spacing: 0.5px;
+      white-space: nowrap;
     }
 
-    /* HARDCODED 100% PURE WHITE DEFAULT STARS */
-    .star-bar-wrap {
+    /* HARDCODED 100% PURE WHITE STAR PROGRESSION BAR */
+    .star-progress-bar {
       display: none;
       align-items: center;
       gap: 6px;
@@ -126,7 +132,7 @@
       padding: 3px 10px;
     }
 
-    .star-slot {
+    .hud-star {
       display: inline-flex;
       justify-content: center;
       align-items: center;
@@ -135,11 +141,11 @@
       border-radius: 50%;
       font-size: 18px;
       font-weight: 900;
-      transition: all 0.3s ease;
+      transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    /* HARDCODED 100% WHITE EMPTY STATE */
-    .star-slot.star-white {
+    /* 100% HARDCODED PURE WHITE EMPTY STATE */
+    .hud-star.white {
       color: #FFFFFF !important;
       background: rgba(255, 255, 255, 0.08) !important;
       border: 2px solid #FFFFFF !important;
@@ -147,19 +153,19 @@
       box-shadow: none !important;
     }
 
-    /* TURN YELLOW ONLY ON GENUINE TASK COMPLETION */
-    .star-slot.star-yellow {
+    /* TURNS BRIGHT YELLOW STRICTLY AFTER TASK COMPLETION */
+    .hud-star.yellow {
       color: #000000 !important;
-      background: #FFD700 !important;
+      background: radial-gradient(circle, #FFD700 0%, #FF9100 100%) !important;
       border: 2px solid #FFF59D !important;
       text-shadow: 0 0 4px #FFFFFF !important;
       box-shadow: 0 0 16px #FFD700, 0 0 24px #FF9100 !important;
-      animation: starPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      animation: starPopAnim 0.45s ease forwards;
     }
 
-    @keyframes starPop {
+    @keyframes starPopAnim {
       0% { transform: scale(0.3) rotate(-30deg); }
-      60% { transform: scale(1.4) rotate(15deg); }
+      60% { transform: scale(1.35) rotate(15deg); }
       100% { transform: scale(1.0) rotate(0deg); }
     }
 
@@ -176,6 +182,7 @@
       justify-content: center;
       overflow: hidden;
       padding: 16px;
+      z-index: 10;
     }
 
     .game-screen.active {
@@ -183,7 +190,7 @@
     }
 
     /* ==========================================
-       SCREEN 1: TREASURE MAP (SWIPEABLE / CLICKABLE REAL DOM BUTTONS)
+       SCREEN 1: TREASURE MAP WITH EXPLICIT "PLAY" BUTTONS UNDER NODES
        ========================================== */
     #screen-map {
       padding: 0;
@@ -191,41 +198,29 @@
       background: linear-gradient(180deg, #4fc3f7 0%, #81d4fa 45%, #0091ea 46%, #01579b 100%);
       overflow-x: auto;
       overflow-y: hidden;
-      cursor: grab;
-    }
-
-    #screen-map:active {
-      cursor: grabbing;
     }
 
     .map-track {
       display: inline-flex;
       align-items: center;
-      gap: 30px;
+      gap: 36px;
       height: 100%;
-      padding: 40px 80px 80px 80px;
+      padding: 30px 80px 70px 80px;
       min-width: max-content;
       position: relative;
     }
 
-    .map-zone-banner {
-      position: absolute;
-      top: 16px;
-      background: rgba(10, 20, 45, 0.9);
-      border: 3px solid #00E5FF;
-      border-radius: 20px;
-      padding: 6px 18px;
-      font-size: 1.1rem;
-      font-weight: 800;
-      color: #00E5FF;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.4);
-      white-space: nowrap;
+    .map-node-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
     }
 
-    .map-letter-btn {
-      position: relative;
-      width: 110px;
-      height: 110px;
+    .node-circle-btn {
+      width: 105px;
+      height: 105px;
       border-radius: 50%;
       border: 5px solid #FFFFFF;
       background: linear-gradient(180deg, #FF9800 0%, #E65100 100%);
@@ -235,22 +230,22 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.5), inset 0 2px 6px rgba(255,255,255,0.6);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4), inset 0 2px 6px rgba(255,255,255,0.6);
       transition: transform 0.15s ease, box-shadow 0.15s ease;
-      flex-shrink: 0;
+      position: relative;
     }
 
-    .map-letter-btn:hover {
-      transform: translateY(-6px) scale(1.08);
-      box-shadow: 0 14px 32px rgba(255, 214, 0, 0.7);
+    .node-circle-btn:hover {
+      transform: translateY(-4px) scale(1.06);
+      box-shadow: 0 12px 30px rgba(255, 214, 0, 0.6);
       border-color: #FFD600;
     }
 
-    .map-letter-btn:active {
-      transform: translateY(2px) scale(0.95);
+    .node-circle-btn:active {
+      transform: translateY(2px) scale(0.96);
     }
 
-    .map-letter-btn.locked {
+    .node-circle-btn.locked {
       background: #37474F;
       border-color: #546E7A;
       cursor: not-allowed;
@@ -258,7 +253,7 @@
       box-shadow: none;
     }
 
-    .map-letter-btn.locked:hover {
+    .node-circle-btn.locked:hover {
       transform: none;
     }
 
@@ -269,28 +264,14 @@
       text-shadow: 0 2px 8px rgba(0,0,0,0.4);
     }
 
-    .btn-letter-title {
-      position: absolute;
-      bottom: -32px;
-      background: rgba(10, 22, 50, 0.95);
-      border: 2px solid #00E5FF;
-      border-radius: 14px;
-      padding: 3px 10px;
-      font-size: 0.76rem;
-      font-weight: 800;
-      color: #FFFFFF;
-      white-space: nowrap;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    }
-
     .btn-here-badge {
       position: absolute;
-      top: -38px;
+      top: -34px;
       background: #FF1744;
       border: 2px solid #FFFFFF;
       border-radius: 14px;
       padding: 3px 8px;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 900;
       color: #FFFFFF;
       white-space: nowrap;
@@ -299,7 +280,99 @@
 
     @keyframes herePulse {
       0% { transform: translateY(0); }
-      100% { transform: translateY(-5px); }
+      100% { transform: translateY(-4px); }
+    }
+
+    .node-title-label {
+      background: rgba(10, 22, 50, 0.95);
+      border: 2px solid #00E5FF;
+      border-radius: 12px;
+      padding: 3px 8px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      white-space: nowrap;
+    }
+
+    /* DEDICATED "PLAY" BUTTON DIRECTLY UNDER EVERY LETTER NODE */
+    .node-play-btn {
+      background: linear-gradient(180deg, #00E676 0%, #00B248 100%);
+      border: 2px solid #FFFFFF;
+      border-radius: 16px;
+      color: #FFFFFF;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 900;
+      text-transform: lowercase;
+      padding: 4px 18px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0, 230, 118, 0.6);
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+
+    .node-play-btn:hover {
+      transform: scale(1.12);
+      background: linear-gradient(180deg, #69F0AE 0%, #00C853 100%);
+    }
+
+    .node-play-btn:active {
+      transform: scale(0.95);
+    }
+
+    .node-play-btn.locked {
+      background: #455A64;
+      border-color: #78909C;
+      cursor: not-allowed;
+      opacity: 0.6;
+      box-shadow: none;
+    }
+
+    /* ==========================================
+       TIGER MASCOT (SPEECH BUBBLE HIDDEN BY DEFAULT)
+       ========================================== */
+    .tiger-companion-wrap {
+      position: absolute;
+      bottom: 12px;
+      left: 14px;
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      z-index: 60;
+    }
+
+    .tiger-mascot-btn {
+      width: clamp(50px, 6vw, 64px);
+      height: clamp(50px, 6vw, 64px);
+      background: linear-gradient(180deg, #FF9800 0%, #E65100 100%);
+      border: 3px solid #FFD600;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(255, 152, 0, 0.5);
+      transition: transform 0.2s ease;
+    }
+
+    .tiger-mascot-btn:hover {
+      transform: scale(1.1) rotate(6deg);
+    }
+
+    /* SPEECH BUBBLE: STRICTLY HIDDEN (DISPLAY: NONE) BY DEFAULT */
+    .tiger-speech-bubble {
+      display: none;
+      background: rgba(255, 255, 255, 0.98);
+      border: 3px solid #FFD600;
+      border-radius: 18px 18px 18px 4px;
+      color: #1A237E;
+      font-size: 0.88rem;
+      font-weight: 800;
+      padding: 8px 14px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      max-width: 320px;
+      line-height: 1.35;
+      animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     /* ==========================================
@@ -308,10 +381,10 @@
     #screen-learn {
       background: radial-gradient(circle, #192454 0%, #0a0d24 100%);
       text-align: center;
-      gap: 20px;
+      gap: 18px;
     }
 
-    .learn-content-row {
+    .learn-cards-row {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -323,7 +396,7 @@
       background: rgba(255, 255, 255, 0.08);
       border: 4px solid #00E5FF;
       border-radius: 28px;
-      padding: 24px 36px;
+      padding: 22px 34px;
       cursor: pointer;
       display: flex;
       flex-direction: column;
@@ -344,7 +417,7 @@
     }
 
     .card-char-big {
-      font-size: clamp(4.5rem, 9vw, 7rem);
+      font-size: clamp(4.5rem, 8vw, 6.8rem);
       font-weight: 900;
       color: #FFD600;
       line-height: 1;
@@ -352,7 +425,7 @@
     }
 
     .card-emoji-big {
-      font-size: clamp(3.8rem, 7vw, 5.5rem);
+      font-size: clamp(3.6rem, 6vw, 5rem);
       margin-bottom: 4px;
     }
 
@@ -378,7 +451,7 @@
       border-radius: 32px;
       color: #FFFFFF;
       font-family: 'Fredoka', sans-serif;
-      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      font-size: clamp(1rem, 1.8vw, 1.35rem);
       font-weight: 900;
       padding: 12px 36px;
       cursor: pointer;
@@ -387,6 +460,7 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
+      white-space: nowrap;
     }
 
     .btn-action-large:hover {
@@ -399,7 +473,7 @@
     #screen-match {
       background: radial-gradient(circle, #102a45 0%, #081120 100%);
       text-align: center;
-      gap: 24px;
+      gap: 22px;
     }
 
     .bubble-row {
@@ -434,7 +508,7 @@
     .match-bubble-btn.correct {
       background: linear-gradient(180deg, #00E676 0%, #009624 100%);
       border-color: #FFFFFF;
-      animation: starPop 0.4s ease;
+      animation: starPopAnim 0.4s ease;
     }
 
     /* ==========================================
@@ -442,7 +516,7 @@
        ========================================== */
     #screen-trace {
       background: radial-gradient(circle, #25123d 0%, #090614 100%);
-      gap: 16px;
+      gap: 14px;
     }
 
     #trace-canvas-wrap {
@@ -469,14 +543,14 @@
     #screen-blend {
       background: radial-gradient(circle, #2d1848 0%, #0c081e 100%);
       text-align: center;
-      gap: 24px;
+      gap: 20px;
     }
 
     .blend-slots-row {
       display: flex;
       justify-content: center;
       gap: 16px;
-      margin-bottom: 20px;
+      margin-bottom: 14px;
     }
 
     .blend-slot-box {
@@ -529,7 +603,7 @@
       margin-top: 2px;
     }
 
-    /* MODALS */
+    /* MODAL WINDOWS */
     .modal-backdrop {
       position: absolute;
       top: 0;
@@ -634,6 +708,11 @@
       border-color: #FFD600;
       background: rgba(255, 214, 0, 0.15);
     }
+
+    @keyframes popIn {
+      0% { transform: scale(0.6); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
   </style>
 </head>
 <body>
@@ -653,11 +732,11 @@
       <div class="hud-center">
         <span id="activity-title-badge">🗺️ Treasure Map</span>
         <!-- HARDCODED 100% PURE WHITE DEFAULT STARS -->
-        <div id="star-bar" class="star-bar-wrap">
-          <span id="star-slot-1" class="star-slot star-white">☆</span>
-          <span id="star-slot-2" class="star-slot star-white">☆</span>
-          <span id="star-slot-3" class="star-slot star-white">☆</span>
-          <span id="star-slot-4" class="star-slot star-white">☆</span>
+        <div id="star-bar" class="star-progress-bar">
+          <span id="star-slot-1" class="hud-star white">☆</span>
+          <span id="star-slot-2" class="hud-star white">☆</span>
+          <span id="star-slot-3" class="hud-star white">☆</span>
+          <span id="star-slot-4" class="hud-star white">☆</span>
         </div>
       </div>
 
@@ -674,12 +753,22 @@
       </div>
     </header>
 
-    <!-- SCREEN 1: TREASURE MAP -->
+    <!-- SCREEN 1: TREASURE MAP (SWIPEABLE / EXPLICIT "PLAY" BUTTONS) -->
     <main id="screen-map" class="game-screen active">
       <div class="map-track" id="map-track-container">
-        <!-- 26 Letter Node Buttons inserted by JS with standard onclick -->
+        <!-- 26 Letter Node Cards with "play" text buttons generated by JS -->
       </div>
     </main>
+
+    <!-- TIGER MASCOT COMPANION (SPEECH BUBBLE STRICTLY HIDDEN ON LOAD) -->
+    <div class="tiger-companion-wrap">
+      <button id="tiger-mascot-btn" class="tiger-mascot-btn" onclick="toggleTigerMascot()" title="Click Astro Tiger!">
+        🐯
+      </button>
+      <div id="tiger-speech-bubble" class="tiger-speech-bubble">
+        <span id="tiger-speech-text">Click 'play' under any letter on the map to start learning! 🚀</span>
+      </div>
+    </div>
 
     <!-- SCREEN 2: LEARN THE SOUND (STEP 1) -->
     <section id="screen-learn" class="game-screen">
@@ -690,7 +779,7 @@
         Click the letter and word below to hear their natural sounds!
       </p>
 
-      <div class="learn-content-row">
+      <div class="learn-cards-row">
         <div id="card-learn-letter" class="big-sound-card" onclick="clickLearnLetter()">
           <span class="card-char-big" id="learn-letter-char">s</span>
           <span class="click-to-hear-tag">Click to hear</span>
@@ -740,7 +829,7 @@
         Step 3: Letter Tracing
       </h2>
       <p style="color:#80DEEA; font-size:1.05rem;">
-        Trace the path from start to end!
+        Trace the letter from start to finish!
       </p>
 
       <div id="trace-canvas-wrap">
@@ -760,7 +849,7 @@
         Step 4: Word Blending
       </h2>
       <p style="color:#80DEEA; font-size:1.05rem;">
-        Click individual letter tiles to hear sounds, then tap them in order to spell the word!
+        Click individual letter blocks to hear sounds, then tap them in order to spell the word!
       </p>
 
       <div id="blend-target-preview" style="font-size:3.5rem; margin-bottom:4px;">☀️</div>
@@ -806,10 +895,10 @@
   </div>
 
   <script>
-    console.log("Phonics Galaxy 100% DOM Engine Loading...");
+    console.log("Phonics Galaxy Initializing...");
 
     // ==========================================
-    // 1. PHONICS DATA (26 LETTERS & CVC WORDS)
+    // 1. PHONICS DATA (26 LETTERS & MATCHING CVC WORDS)
     // ==========================================
     const PHONICS_DATA = {
       's': { letter: 's', title: 'Snake Safari 🐍', word: 'sun', emoji: '☀️', letters: ['s', 'u', 'n'], phoneme: '/sss/' },
@@ -842,9 +931,9 @@
 
     const LETTER_KEYS = Object.keys(PHONICS_DATA);
 
-    // 100 REWARDS LIST WITH UNIQUE CONDITIONS
+    // EXACT 100 REWARDS LIST
     const REWARDS_LIST = [];
-    LETTER_KEYS.forEach((l, idx) => {
+    LETTER_KEYS.forEach((l) => {
       const p = PHONICS_DATA[l];
       REWARDS_LIST.push({ id: `r_${l}_1`, letter: l, phase: 2, name: `${p.title} Sticker`, icon: '🏷️', condition: `Match sound for '${l.toUpperCase()}'`, unlocked: false });
       REWARDS_LIST.push({ id: `r_${l}_2`, letter: l, phase: 3, name: `Master '${l.toUpperCase()}' Badge`, icon: '⭐', condition: `Trace letter '${l.toUpperCase()}'`, unlocked: false });
@@ -855,7 +944,7 @@
     }
 
     // ==========================================
-    // 2. 100% NATURAL HUMAN AUDIO ENGINE
+    // 2. 100% NATURAL HUMAN AUDIO ENGINE (0.5 - 1.0s)
     // ==========================================
     class PhonicsAudio {
       constructor() {
@@ -892,24 +981,29 @@
         if (this.synth.onvoiceschanged !== undefined) this.synth.onvoiceschanged = pick;
       }
 
+      // STUDIO HUMAN AUDIO FOR WORDS (0.5 - 1.0s)
       playHumanWord(word) {
         if (this.isMuted) return;
         this.initContext();
         const a = new Audio(`https://ssl.gstatic.com/dictionary/static/sounds/20200429/${word.toLowerCase().trim()}--_us_1.mp3`);
+        a.playbackRate = 1.0;
         a.play().catch(() => this.speak(word));
       }
 
+      // STUDIO HUMAN AUDIO FOR PHONEMES (0.5 - 1.0s)
       playLetterPhoneme(char) {
         if (this.isMuted) return;
         this.initContext();
         if (char !== 'e') {
           const a = new Audio(`https://ssl.gstatic.com/dictionary/static/sounds/20200429/${char.toLowerCase()}--_us_1.mp3`);
+          a.playbackRate = 1.05;
           a.play().catch(() => this.speak(char));
         } else {
           this.speak('e');
         }
       }
 
+      // NATURAL TEACHER SPEECH FOR NARRATION & INSTRUCTIONS
       speak(text) {
         if (this.isMuted || !this.synth) return;
         try {
@@ -921,6 +1015,7 @@
         } catch (e) {}
       }
 
+      // HIGH REWARD BELL DING WHEN TURNING STAR YELLOW
       playStarFillDing() {
         this.initContext();
         if (this.isMuted || !this.ctx) return;
@@ -989,6 +1084,7 @@
     let totalEarnedStars = 0;
     let hasClickedLearnLetter = false;
     let hasClickedLearnWord = false;
+    let tigerSpeechTimer = null;
 
     // ==========================================
     // 4. STAR PROGRESSION ENGINE (HARDCODED PURE WHITE TO YELLOW)
@@ -997,17 +1093,17 @@
       for (let i = 1; i <= 4; i++) {
         const star = document.getElementById(`star-slot-${i}`);
         if (star) {
-          star.className = 'star-slot star-white';
+          star.className = 'hud-star white';
           star.textContent = '☆';
         }
       }
     }
 
-    // STRICTLY TURNS STAR YELLOW ONLY WHEN TASK IS PERFECTLY COMPLETED
+    // STRICTLY AWARDS YELLOW STAR ONLY AFTER THE TASK IS COMPLETED
     function awardYellowStar(stepNumber) {
       const star = document.getElementById(`star-slot-${stepNumber}`);
-      if (star && !star.classList.contains('star-yellow')) {
-        star.className = 'star-slot star-yellow';
+      if (star && !star.classList.contains('yellow')) {
+        star.className = 'hud-star yellow';
         star.textContent = '★';
         totalEarnedStars++;
         document.getElementById('total-star-display').textContent = totalEarnedStars;
@@ -1017,7 +1113,30 @@
     }
 
     // ==========================================
-    // 5. SCREEN TRANSITIONS & MAP POPULATION
+    // 5. TIGER MASCOT COMPANION LOGIC
+    // ==========================================
+    function toggleTigerMascot() {
+      const bubble = document.getElementById('tiger-speech-bubble');
+      const textElem = document.getElementById('tiger-speech-text');
+
+      if (bubble.style.display === 'block') {
+        bubble.style.display = 'none';
+        if (tigerSpeechTimer) clearTimeout(tigerSpeechTimer);
+      } else {
+        bubble.style.display = 'block';
+        const msg = "Hi, I'm Astro! Click 'play' under any letter on the map to start your quest! 🚀";
+        textElem.textContent = msg;
+        soundEngine.speak(msg);
+
+        if (tigerSpeechTimer) clearTimeout(tigerSpeechTimer);
+        tigerSpeechTimer = setTimeout(() => {
+          bubble.style.display = 'none';
+        }, 6000);
+      }
+    }
+
+    // ==========================================
+    // 6. SCREEN TRANSITIONS & MAP POPULATION
     // ==========================================
     function showScreen(screenId) {
       document.querySelectorAll('.game-screen').forEach(s => s.classList.remove('active'));
@@ -1033,14 +1152,14 @@
       } else {
         starBar.style.display = 'inline-flex';
         const letterUp = currentLetterKey.toUpperCase();
-        if (screenId === 'screen-learn') titleBadge.textContent = `📖 Learn '${letterUp}'`;
-        if (screenId === 'screen-match') titleBadge.textContent = `🍎 Match '${letterUp}'`;
-        if (screenId === 'screen-trace') titleBadge.textContent = `✏️ Trace '${letterUp}'`;
-        if (screenId === 'screen-blend') titleBadge.textContent = `🧩 Blend '${letterUp}'`;
+        if (screenId === 'screen-learn') titleBadge.textContent = `📖 Learn the Sound • Letter ${letterUp}`;
+        if (screenId === 'screen-match') titleBadge.textContent = `🍎 Match Sound • Letter ${letterUp}`;
+        if (screenId === 'screen-trace') titleBadge.textContent = `✏️ Tracing • Letter ${letterUp}`;
+        if (screenId === 'screen-blend') titleBadge.textContent = `🧩 Word Blending • Letter ${letterUp}`;
       }
     }
 
-    // POPULATE 26 LETTER NODES ON MAP WITH STANDARD ONCLICK
+    // POPULATE 26 LETTER NODES WITH "PLAY" BUTTONS DIRECTLY UNDERNEATH
     function buildTreasureMap() {
       const container = document.getElementById('map-track-container');
       container.innerHTML = '';
@@ -1050,14 +1169,28 @@
         const isUnlocked = idx <= unlockedNodeIndex;
         const isCurrent = idx === unlockedNodeIndex;
 
-        const btn = document.createElement('button');
-        btn.className = `map-letter-btn ${isUnlocked ? 'unlocked' : 'locked'}`;
-        btn.id = `map-node-${lKey}`;
+        const card = document.createElement('div');
+        card.className = 'map-node-card';
+        card.id = `map-card-${lKey}`;
 
-        // DIRECT HARDCODED ONCLICK HANDLER
-        btn.onclick = () => {
+        card.innerHTML = `
+          <button class="node-circle-btn ${isUnlocked ? 'unlocked' : 'locked'}" id="node-circle-${lKey}">
+            ${isCurrent ? '<div class="btn-here-badge">🚩 YOU ARE HERE</div>' : ''}
+            <div class="btn-letter-char">${lKey.toUpperCase()}</div>
+          </button>
+          <div class="node-title-label">${p.title}</div>
+          <button class="node-play-btn ${isUnlocked ? 'unlocked' : 'locked'}" id="node-play-btn-${lKey}">
+            ${isUnlocked ? 'play' : '🔒'}
+          </button>
+        `;
+
+        // BIND CLICK EVENTS TO BOTH CIRCLE AND "PLAY" BUTTON
+        const circleBtn = card.querySelector(`#node-circle-${lKey}`);
+        const playBtn = card.querySelector(`#node-play-btn-${lKey}`);
+
+        const handleStart = () => {
           if (isUnlocked) {
-            console.log(`Node ${lKey.toUpperCase()} clicked! Opening letter activities...`);
+            console.log(`Starting activity for letter ${lKey.toUpperCase()}`);
             soundEngine.playLetterPhoneme(lKey);
             startLetterActivity(lKey);
           } else {
@@ -1065,30 +1198,26 @@
           }
         };
 
-        btn.innerHTML = `
-          ${isCurrent ? '<div class="btn-here-badge">🚩 YOU ARE HERE</div>' : ''}
-          <div class="btn-letter-char">${lKey.toUpperCase()}</div>
-          <div class="btn-letter-title">${p.title}</div>
-        `;
+        circleBtn.onclick = handleStart;
+        playBtn.onclick = handleStart;
 
-        container.appendChild(btn);
+        container.appendChild(card);
       });
     }
 
     // ==========================================
-    // 6. LETTER ACTIVITY SEQUENCE CONTROLLERS
+    // 7. STEP-BY-STEP ACTIVITY LOGIC
     // ==========================================
 
-    // START 4-STEP ACTIVITY FOR GIVEN LETTER
     function startLetterActivity(lKey) {
       currentLetterKey = lKey;
       hasClickedLearnLetter = false;
       hasClickedLearnWord = false;
 
-      // STRICTLY RESET ALL 4 STARS TO 100% PURE WHITE
+      // 1. STRICTLY HARDCODE ALL STARS AS 100% PURE WHITE (EMPTY)
       resetStarsToWhite();
 
-      // Load Step 1: Learn the Sound
+      // 2. Load Step 1: Learn the Sound
       const p = PHONICS_DATA[lKey];
       document.getElementById('learn-letter-char').textContent = lKey;
       document.getElementById('learn-word-emoji').textContent = p.emoji;
@@ -1101,7 +1230,7 @@
       soundEngine.speak(`Letter ${lKey.toUpperCase()}! Click to hear!`);
     }
 
-    // STEP 1 INTERACTIONS
+    // STEP 1 INTERACTIONS (CLICK TO HEAR LETTER & WORD)
     function clickLearnLetter() {
       hasClickedLearnLetter = true;
       document.getElementById('card-learn-letter').classList.add('clicked');
@@ -1153,6 +1282,7 @@
             document.getElementById('match-next-wrap').style.display = 'block';
             soundEngine.speak(`Great match! Letter ${opt.toUpperCase()}!`);
           } else {
+            // MISTAKE = ZERO STARS
             soundEngine.speak("Try again!");
           }
         };
@@ -1170,7 +1300,7 @@
       showScreen('screen-trace');
     }
 
-    // STEP 3 INTERACTIONS (TRACING)
+    // STEP 3 INTERACTIONS (LETTER TRACING)
     let traceCanvas, traceCtx, isDrawing = false, strokePoints = 0;
 
     function setupStep3Tracing() {
@@ -1179,7 +1309,6 @@
       traceCtx = traceCanvas.getContext('2d');
       strokePoints = 0;
 
-      // Draw background letter guide
       traceCtx.clearRect(0, 0, traceCanvas.width, traceCanvas.height);
       traceCtx.fillStyle = 'rgba(255, 255, 255, 0.15)';
       traceCtx.font = 'bold 220px "Fredoka", sans-serif';
@@ -1187,7 +1316,6 @@
       traceCtx.textBaseline = 'middle';
       traceCtx.fillText(currentLetterKey, traceCanvas.width / 2, traceCanvas.height / 2 + 10);
 
-      // Simple touch/mouse tracing
       const getPos = (e) => {
         const r = traceCanvas.getBoundingClientRect();
         const cx = e.clientX !== undefined ? e.clientX : (e.touches ? e.touches[0].clientX : 0);
@@ -1231,7 +1359,7 @@
       showScreen('screen-blend');
     }
 
-    // STEP 4 INTERACTIONS (WORD BLENDING)
+    // STEP 4 INTERACTIONS (WORD BLENDING WITH INDIVIDUAL LETTER CLICKING)
     let currentSpellProgress = [];
 
     function setupStep4Blending() {
@@ -1260,7 +1388,7 @@
         btn.innerHTML = `<span>${l}</span><span class="blend-tile-sub">🔊 Tap</span>`;
 
         btn.onclick = () => {
-          // 1. Play individual short letter sound
+          // 1. Play individual short letter sound immediately
           soundEngine.playLetterPhoneme(l);
 
           // 2. Put letter in next available slot
@@ -1299,7 +1427,7 @@
     }
 
     // ==========================================
-    // 7. REWARD MODALS & TREASURE CHEST
+    // 8. 100-ITEM REWARD POP-UP & CHEST
     // ==========================================
     function triggerReward(letterKey, phase) {
       const reward = REWARDS_LIST.find(r => r.letter === letterKey && r.phase === phase && !r.unlocked);
