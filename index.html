@@ -473,11 +473,11 @@
     <div id="ui-overlay">
       <div class="top-hud">
         <div class="hud-group-left">
-          <button id="btn-learning-hub" class="hud-btn" title="Open Pre-Map Discovery">
-            <span>🔍</span> 1. Discovery
-          </button>
           <button id="btn-map" class="hud-btn gold" title="Open Phonics Treasure Map">
-            <span>🗺️</span> 2. Treasure Map
+            <span>🗺️</span> Treasure Map
+          </button>
+          <button id="btn-learning-hub" class="hud-btn" title="Open Letter Intro">
+            <span>🔍</span> Intro
           </button>
           <div class="star-counter-badge" title="Collected Stars">
             <span class="star-icon">⭐</span>
@@ -486,11 +486,11 @@
         </div>
 
         <div class="stage-dock">
-          <button class="dock-item active" data-stage="introLearning">
-            <span>🔍</span> 1. Discovery
+          <button class="dock-item active" data-stage="treasureMap">
+            <span>🗺️</span> Treasure Map
           </button>
-          <button class="dock-item" data-stage="treasureMap">
-            <span>🗺️</span> 2. Treasure Map
+          <button class="dock-item" data-stage="introLearning">
+            <span>🔍</span> Intro
           </button>
           <button class="dock-item" data-stage="bubblePhonics">
             <span>🍎</span> Match Sound
@@ -524,7 +524,7 @@
           🐯
         </div>
         <div id="companion-speech" class="companion-speech-bubble">
-          Click the letter and the word to unlock the Treasure Map! ⭐
+          Swipe left or right to explore all 26 letter nodes on the Treasure Map! 🗺️
         </div>
       </div>
     </div>
@@ -533,41 +533,41 @@
     <div id="welcome-modal" class="modal-backdrop">
       <div class="modal-window">
         <h1 class="modal-title">⭐ Phonics Galaxy & Treasure Island ⭐</h1>
-        <p class="modal-subtitle">1st-Grade Phonics Suite • Click to Hear • Dynamic Pacing</p>
+        <p class="modal-subtitle">1st-Grade Phonics Suite • Swipeable Map • Click to Hear</p>
 
         <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; text-align: left;">
           <div style="background:rgba(255,255,255,0.08); border:2px solid rgba(0,229,255,0.3); border-radius:14px; padding:8px 12px; display:flex; align-items:center; gap:8px;">
+            <span style="font-size:1.6rem;">🗺️</span>
+            <div>
+              <strong>Map First & Swipeable</strong>
+              <div style="font-size:0.75rem; color:#80DEEA;">Explore full archipelago & letter nodes</div>
+            </div>
+          </div>
+          <div style="background:rgba(255,255,255,0.08); border:2px solid rgba(0,229,255,0.3); border-radius:14px; padding:8px 12px; display:flex; align-items:center; gap:8px;">
             <span style="font-size:1.6rem;">👆</span>
             <div>
-              <strong>Click-to-Hear Only</strong>
-              <div style="font-size:0.75rem; color:#80DEEA;">No progress bars • 1s sound per click</div>
+              <strong>Click to Hear (1s Intro)</strong>
+              <div style="font-size:0.75rem; color:#80DEEA;">No progress bars • Single click sound</div>
             </div>
           </div>
           <div style="background:rgba(255,255,255,0.08); border:2px solid rgba(0,229,255,0.3); border-radius:14px; padding:8px 12px; display:flex; align-items:center; gap:8px;">
             <span style="font-size:1.6rem;">⚡</span>
             <div>
-              <strong>Auto-Transition Flow</strong>
-              <div style="font-size:0.75rem; color:#80DEEA;">Click letter & word to open Map</div>
+              <strong>Auto-Transitions</strong>
+              <div style="font-size:0.75rem; color:#80DEEA;">Click letter & word to enter activities</div>
             </div>
           </div>
           <div style="background:rgba(255,255,255,0.08); border:2px solid rgba(0,229,255,0.3); border-radius:14px; padding:8px 12px; display:flex; align-items:center; gap:8px;">
-            <span style="font-size:1.6rem;">🔍</span>
+            <span style="font-size:1.6rem;">🔊</span>
             <div>
-              <strong>Phase 1: Pre-Map Discovery</strong>
-              <div style="font-size:0.75rem; color:#80DEEA;">Letter & 1 clear example word (1s)</div>
-            </div>
-          </div>
-          <div style="background:rgba(255,255,255,0.08); border:2px solid rgba(0,229,255,0.3); border-radius:14px; padding:8px 12px; display:flex; align-items:center; gap:8px;">
-            <span style="font-size:1.6rem;">🗺️</span>
-            <div>
-              <strong>Phase 2: Deep Articulation</strong>
-              <div style="font-size:0.75rem; color:#80DEEA;">Longer & slower sounds in mini-games</div>
+              <strong>Elongated Sound Practice</strong>
+              <div style="font-size:0.75rem; color:#80DEEA;">Slow, drawn-out sounds in mini-games</div>
             </div>
           </div>
         </div>
 
         <button id="btn-start-adventure" class="btn-primary-big">
-          <span>🚀</span> START DISCOVERY QUEST!
+          <span>🚀</span> EXPLORE TREASURE MAP!
         </button>
       </div>
     </div>
@@ -834,7 +834,7 @@
     ];
 
     // ==========================================
-    // 3. AUDIO ENGINE (1s FOR INTRO, SLOW & LONG FOR MINI-GAMES)
+    // 3. AUDIO ENGINE (1s INTRO / ELONGATED 4.5s MINIGAMES)
     // ==========================================
     class PhonicsAudioEngine {
       constructor() {
@@ -914,7 +914,7 @@
         } catch (e) {}
       }
 
-      // DYNAMIC DURATION PHONETIC SOUND SYNTHESIS (1.0s in Intro, 4.5s in Minigames)
+      // DYNAMIC DURATION PHONETIC SOUND SYNTHESIS
       playLetterPhoneme(letterChar, duration = 1.0) {
         this.initContext();
         if (this.isMuted || !this.ctx) return;
@@ -1009,7 +1009,7 @@
         }
       }
 
-      // ARTICULATED SPEECH (Rate 0.85 for 1s Phase 1, Rate 0.50 for slow minigames)
+      // ARTICULATED SPEECH (Rate 0.85 for 1s Phase 1, Rate 0.48 for elongated minigames)
       speakWord(text, rate = 0.85, onEndCallback = null) {
         if (this.isMuted || !this.speechSynth) return;
         try {
@@ -1443,7 +1443,7 @@
     }
 
     // ==========================================
-    // 6. PHASE 1: PRE-MAP DISCOVERY (1s SOUNDS & AUTO-TRANSITION ON BOTH CLICKED)
+    // 6. PHASE 1: PRE-ACTIVITY INTRO (STRICTLY "CLICK TO HEAR", AUTO-TRANSITIONS)
     // ==========================================
     class PreMapLearningStage {
       constructor() {
@@ -1470,8 +1470,9 @@
         this.time += dt;
         if (this.isTransitioning) {
           this.autoTransitionTimer += dt;
-          if (this.autoTransitionTimer >= 1.2) {
-            this.engine.switchScene('treasureMap', true);
+          if (this.autoTransitionTimer >= 1.1) {
+            // Automatically transitions to Bubble Matching minigame!
+            this.engine.switchScene('bubblePhonics', true, this.currentLetterKey);
           }
         }
       }
@@ -1484,13 +1485,13 @@
           this.particles.burstConfetti(640, 320, 60);
           const bubble = document.getElementById('companion-speech');
           if (bubble) {
-            bubble.textContent = `🎉 Awesome! Unlocking Treasure Map for ${this.currentLetterKey.toUpperCase()}... 🗺️`;
+            bubble.textContent = `🎉 Awesome! Starting activity for letter ${this.currentLetterKey.toUpperCase()}... 🚀`;
           }
         }
       }
 
       onPointerDown(x, y) {
-        // 1. Click Letter Circle -> Plays 1-second short phonetic sound
+        // 1. Click Letter Circle -> Concise 1-second sound
         if (Math.hypot(x - 470, y - 320) < 120) {
           this.hasClickedLetter = true;
           soundEngine.playLetterPhoneme(this.currentLetterKey, 1.0);
@@ -1499,7 +1500,7 @@
           return;
         }
 
-        // 2. Click The Single Example Word Card -> Plays 1-second clear pronunciation
+        // 2. Click Example Word Card -> Concise 1-second pronunciation
         if (Math.abs(x - 810) < 160 && Math.abs(y - 320) < 110) {
           this.hasClickedWord = true;
           soundEngine.playSparkle();
@@ -1507,12 +1508,6 @@
           this.particles.burstStars(810, 320, 25, '#FFD600');
           this.checkAutoTransition();
           return;
-        }
-
-        // 3. Manual "GO TO TREASURE MAP 🗺️ ➔" button
-        if (Math.abs(x - 640) < 240 && Math.abs(y - 590) < 40) {
-          soundEngine.playCelebration();
-          this.engine.switchScene('treasureMap', true);
         }
       }
 
@@ -1527,9 +1522,9 @@
         ctx.beginPath(); ctx.roundRect(240, 24, 800, 68, 34); ctx.fill(); ctx.stroke();
         ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 28px "Fredoka", sans-serif';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-        ctx.fillText(`Step 1: Pre-Map Discovery • Letter ${this.currentLetterKey.toUpperCase()}  ${this.currentLetterData.phoneme}`, 640, 58);
+        ctx.fillText(`Letter Intro • Letter ${this.currentLetterKey.toUpperCase()}  ${this.currentLetterData.phoneme}`, 640, 58);
 
-        // Left Side: Big Bouncy Lowercase Letter (1-second click & hear)
+        // Left Side: Big Bouncy Lowercase Letter
         ctx.save();
         ctx.translate(470, 320);
         ctx.fillStyle = this.currentLetterData.color;
@@ -1544,17 +1539,17 @@
         ctx.font = '76px sans-serif';
         ctx.fillText(this.currentLetterData.icon, 48, 8);
 
-        // Checkmark badge if clicked
         if (this.hasClickedLetter) {
           ctx.fillStyle = '#00E676'; ctx.beginPath(); ctx.arc(80, -80, 24, 0, Math.PI * 2); ctx.fill();
           ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 26px sans-serif'; ctx.fillText('✓', 80, -80);
         }
 
-        ctx.fillStyle = '#FFF59D'; ctx.font = 'bold 18px "Fredoka", sans-serif';
-        ctx.fillText(this.hasClickedLetter ? '✓ Sound Heard!' : '👆 Click for 1s sound', 0, 140);
+        // STRICT REQUIREMENT: Display ONLY "Click to hear" under the items
+        ctx.fillStyle = '#FFF59D'; ctx.font = 'bold 20px "Fredoka", sans-serif';
+        ctx.fillText('Click to hear', 0, 140);
         ctx.restore();
 
-        // Right Side: Exactly ONE Visual Example Word Card (1-second click & hear)
+        // Right Side: Exactly ONE Visual Example Word Card
         const ex = this.currentLetterData.example;
         ctx.save();
         ctx.translate(810, 320);
@@ -1575,28 +1570,24 @@
           ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 26px sans-serif'; ctx.fillText('✓', 130, -85);
         }
 
-        ctx.fillStyle = '#80DEEA'; ctx.font = 'bold 16px "Fredoka", sans-serif';
-        ctx.fillText(this.hasClickedWord ? '✓ Word Heard!' : `👆 Click to hear "${ex.word}"`, 0, 80);
+        // STRICT REQUIREMENT: Display ONLY "Click to hear" under the items
+        ctx.fillStyle = '#80DEEA'; ctx.font = 'bold 20px "Fredoka", sans-serif';
+        ctx.fillText('Click to hear', 0, 80);
         ctx.restore();
 
-        // Bottom Flow Status Banner / Button
-        ctx.fillStyle = (this.hasClickedLetter && this.hasClickedWord) ? '#00E676' : 'rgba(255, 255, 255, 0.12)';
-        ctx.strokeStyle = '#FFFFFF'; ctx.lineWidth = 4;
-        ctx.beginPath(); ctx.roundRect(390, 555, 500, 72, 36); ctx.fill(); ctx.stroke();
-        ctx.fillStyle = (this.hasClickedLetter && this.hasClickedWord) ? '#08162B' : '#FFFFFF';
-        ctx.font = 'bold 25px "Fredoka", sans-serif';
-        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-
+        // Status Feedback Banner
         if (this.hasClickedLetter && this.hasClickedWord) {
-          ctx.fillText('✨ UNLOCKING TREASURE MAP... 🗺️', 640, 591);
-        } else {
-          ctx.fillText('👆 Click letter & word to open Map 🗺️ ➔', 640, 591);
+          ctx.fillStyle = '#00E676'; ctx.strokeStyle = '#FFFFFF'; ctx.lineWidth = 4;
+          ctx.beginPath(); ctx.roundRect(390, 560, 500, 68, 34); ctx.fill(); ctx.stroke();
+          ctx.fillStyle = '#08162B'; ctx.font = 'bold 24px "Fredoka", sans-serif';
+          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillText('✨ STARTING ACTIVITY... 🚀', 640, 594);
         }
       }
     }
 
     // ==========================================
-    // 7. PHASE 2: ILLUSTRATED TREASURE MAP SCENE
+    // 7. MAP FIRST: SWIPEABLE & HORIZONTALLY SCROLLABLE TREASURE MAP
     // ==========================================
     class TreasureMapStage {
       constructor() {
@@ -1606,6 +1597,7 @@
         this.targetCameraX = 0;
         this.isDraggingMap = false;
         this.dragStartX = 0;
+        this.dragTotalDistance = 0;
         this.mapWidth = 3800;
 
         this.nodes = [];
@@ -1641,7 +1633,7 @@
 
       update(dt) {
         this.time += dt;
-        this.cameraX += (this.targetCameraX - this.cameraX) * 8 * dt;
+        this.cameraX += (this.targetCameraX - this.cameraX) * 10 * dt;
 
         if (window.gameApp) {
           this.currentNodeIndex = window.gameApp.unlockedNodeIndex;
@@ -1654,37 +1646,42 @@
       onPointerDown(x, y) {
         this.isDraggingMap = true;
         this.dragStartX = x;
-
-        const worldX = x + this.cameraX;
-        for (const n of this.nodes) {
-          if (Math.hypot(worldX - n.x, y - n.y) < 55 || (Math.abs(worldX - n.x) < 110 && Math.abs(y - (n.y + 60)) < 25)) {
-            if (n.unlocked) {
-              soundEngine.playStarCollect();
-              // In Phase 2, sounds are longer & slower (4.5s) for thorough articulation
-              soundEngine.playLetterPhoneme(n.letter, 4.5);
-              this.particles.burstStars(n.x - this.cameraX, n.y, 25, n.zone.color);
-
-              if (window.gameApp) {
-                window.gameApp.selectLetter(n.letter);
-              }
-            } else {
-              soundEngine.playGentleBounce();
-              soundEngine.speakWord(`Complete previous node to unlock ${n.nodeTitle}!`, 0.75);
-            }
-            return;
-          }
-        }
+        this.dragTotalDistance = 0;
       }
 
       onPointerMove(x, y) {
         if (!this.isDraggingMap) return;
         const dx = x - this.dragStartX;
         this.dragStartX = x;
+        this.dragTotalDistance += Math.abs(dx);
+        // Seamless swipe / drag left and right
         this.targetCameraX = Math.max(0, Math.min(this.mapWidth - 1280, this.targetCameraX - dx * 1.5));
       }
 
-      onPointerUp() {
+      onPointerUp(x, y) {
+        const wasClick = this.dragTotalDistance < 15;
         this.isDraggingMap = false;
+
+        if (wasClick) {
+          const worldX = x + this.cameraX;
+          for (const n of this.nodes) {
+            if (Math.hypot(worldX - n.x, y - n.y) < 55 || (Math.abs(worldX - n.x) < 110 && Math.abs(y - (n.y + 60)) < 25)) {
+              if (n.unlocked) {
+                soundEngine.playStarCollect();
+                this.particles.burstStars(n.x - this.cameraX, n.y, 25, n.zone.color);
+
+                // Transition to clean Pre-Activity Intro Phase for this letter!
+                if (window.gameApp) {
+                  window.gameApp.selectLetter(n.letter);
+                }
+              } else {
+                soundEngine.playGentleBounce();
+                soundEngine.speakWord(`Complete previous node to unlock ${n.nodeTitle}!`, 0.75);
+              }
+              return;
+            }
+          }
+        }
       }
 
       render(ctx) {
@@ -1830,17 +1827,17 @@
 
         ctx.restore();
 
-        // Footer Guidance Banner
+        // Swipe Guidance Banner
         ctx.fillStyle = 'rgba(15, 25, 55, 0.92)'; ctx.strokeStyle = '#00E5FF'; ctx.lineWidth = 3;
         ctx.beginPath(); ctx.roundRect(320, 650, 640, 52, 26); ctx.fill(); ctx.stroke();
         ctx.fillStyle = '#FFF59D'; ctx.font = 'bold 20px "Fredoka", sans-serif';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-        ctx.fillText('👆 Drag map to explore • Tap adventure node to practice!', 640, 676);
+        ctx.fillText('👈 Swipe Left / Right to Explore Map • Tap Node to Play! 👉', 640, 676);
       }
     }
 
     // ==========================================
-    // 8. CORE MINI-GAME 1: SOUND MATCHING (DEEP SLOW ARTICULATION)
+    // 8. CORE MINI-GAME 1: SOUND MATCHING (ELONGATED AUDIO)
     // ==========================================
     class BubblePhonicsStage {
       constructor() {
@@ -1898,7 +1895,7 @@
       }
 
       onPointerDown(x, y) {
-        // Click Center Letter to trigger long slow phonetic articulation (4.5s)
+        // Center Letter: Heavily elongated phonetic sound (4.5s)
         if (Math.hypot(x - 640, y - 290) < 110) {
           this.bounceScale = 1.35;
           soundEngine.playLetterPhoneme(this.currentLetterKey, 4.5);
@@ -1906,7 +1903,7 @@
           return;
         }
 
-        // Click Bubble
+        // Bubbles: Heavily elongated phonetic sound
         for (const b of this.bubbles) {
           if (Math.hypot(x - b.x, y - b.y) < b.radius * 1.1) {
             soundEngine.playLetterPhoneme(b.letter, 4.5);
@@ -1921,14 +1918,14 @@
               this.bounceScale = 1.4;
 
               const praise = ["Super Star!", "You Did It!", "Amazing Job!", "Fantastic!"][Math.floor(Math.random() * 4)];
-              setTimeout(() => soundEngine.speakWord(`${praise} ${this.currentLetterData.example.breakdown}`, 0.50), 300);
+              setTimeout(() => soundEngine.speakWord(`${praise} ${this.currentLetterData.example.breakdown}`, 0.48), 300);
 
               if (window.gameApp) {
                 window.gameApp.addStar(1);
                 window.gameApp.advanceNode();
               }
 
-              // Automatic smooth transition to Step 3B Tracing
+              // Automatically progress to next activity: Tracing!
               setTimeout(() => {
                 this.engine.switchScene('letterTracing', true, this.currentLetterKey);
               }, 2200);
@@ -1996,7 +1993,7 @@
     }
 
     // ==========================================
-    // 9. CORE MINI-GAME 2: GUIDED LETTER TRACING (DEEP ARTICULATION)
+    // 9. CORE MINI-GAME 2: GUIDED LETTER TRACING (ELONGATED AUDIO)
     // ==========================================
     class LetterTracingStage {
       constructor() {
@@ -2041,7 +2038,7 @@
         if (this.isLetterComplete) {
           this.celebrateTimer += dt;
           if (this.celebrateTimer >= 2.4) {
-            // Automatic flow into CVC blending
+            // Automatically progress to CVC Blending!
             this.engine.switchScene('cvcFactory');
           }
         }
@@ -2087,7 +2084,7 @@
                 soundEngine.playLetterPhoneme(this.currentLetterKey, 4.5);
 
                 const praise = ["Super Writer!", "You Did It!", "Amazing Tracing!"][Math.floor(Math.random() * 3)];
-                setTimeout(() => soundEngine.speakWord(`${praise} ${this.currentLetterData.example.breakdown}`, 0.50), 350);
+                setTimeout(() => soundEngine.speakWord(`${praise} ${this.currentLetterData.example.breakdown}`, 0.48), 350);
 
                 if (window.gameApp) {
                   window.gameApp.addStar(1);
@@ -2164,7 +2161,7 @@
     }
 
     // ==========================================
-    // 10. CORE MINI-GAME 3: CVC BLENDING (DEEP ARTICULATION)
+    // 10. CORE MINI-GAME 3: CVC BLENDING (ELONGATED AUDIO)
     // ==========================================
     class CVCFactoryStage {
       constructor() {
@@ -2218,7 +2215,7 @@
           if (this.celebrateTimer >= 2.8) {
             this.wordIndex = (this.wordIndex + 1) % this.words.length;
             this.loadWord(this.wordIndex);
-            // Return to Treasure map to continue progression
+            // Automatically return to Treasure Map to unlock the next node!
             this.engine.switchScene('treasureMap');
           }
         }
@@ -2239,7 +2236,6 @@
               b.inSlot = null;
             }
 
-            // In Phase 2 minigames, sound is slow and articulated
             soundEngine.playLetterPhoneme(b.letter, 4.5);
             soundEngine.playBubblePop();
             this.particles.emitSparkleTrail(b.x, b.y, b.color);
@@ -2287,7 +2283,7 @@
             this.particles.burstConfetti(640, 360, 60);
 
             setTimeout(() => {
-              soundEngine.speakWord(`${this.currentWord.word.toUpperCase()}! You blended the word! Fantastic!`, 0.50);
+              soundEngine.speakWord(`${this.currentWord.word.toUpperCase()}! You blended the word! Fantastic!`, 0.48);
             }, 300);
 
             if (window.gameApp) {
@@ -2360,8 +2356,8 @@
         this.rewards = JSON.parse(JSON.stringify(FIFTY_REWARDS));
         this.equipped = { hat: 'r26', cape: 'r31', glasses: 'r35', item: 'r38' };
 
-        this.engine.registerScene('introLearning', new PreMapLearningStage());
         this.engine.registerScene('treasureMap', new TreasureMapStage());
+        this.engine.registerScene('introLearning', new PreMapLearningStage());
         this.engine.registerScene('bubblePhonics', new BubblePhonicsStage());
         this.engine.registerScene('letterTracing', new LetterTracingStage());
         this.engine.registerScene('cvcFactory', new CVCFactoryStage());
@@ -2387,7 +2383,7 @@
       }
 
       selectLetter(letterKey) {
-        // Step 1: Pre-Map Discovery first!
+        // Transition to the Pre-Activity Intro Phase for this letter
         this.engine.switchScene('introLearning', true, letterKey);
         this.highlightDock('introLearning');
       }
@@ -2422,20 +2418,21 @@
           soundEngine.initContext();
           soundEngine.playCelebration();
           document.getElementById('welcome-modal').classList.add('hidden');
-          this.engine.switchScene('introLearning', false, 's');
-          this.highlightDock('introLearning');
-        });
-
-        document.getElementById('btn-learning-hub').addEventListener('click', () => {
-          soundEngine.playClick();
-          this.engine.switchScene('introLearning');
-          this.highlightDock('introLearning');
+          // STRICT REQUIREMENT: Game MUST start on the Treasure Map
+          this.engine.switchScene('treasureMap', false);
+          this.highlightDock('treasureMap');
         });
 
         document.getElementById('btn-map').addEventListener('click', () => {
           soundEngine.playClick();
           this.engine.switchScene('treasureMap');
           this.highlightDock('treasureMap');
+        });
+
+        document.getElementById('btn-learning-hub').addEventListener('click', () => {
+          soundEngine.playClick();
+          this.engine.switchScene('introLearning');
+          this.highlightDock('introLearning');
         });
 
         document.getElementById('btn-music').addEventListener('click', () => {
@@ -2483,7 +2480,7 @@
         });
 
         document.getElementById('companion-avatar').addEventListener('click', () => {
-          soundEngine.speakWord("I'm Astro! Click the letter and word to open the Treasure Map!", 0.85);
+          soundEngine.speakWord("I'm Astro! Swipe the map to explore, or tap a letter node to play!", 0.85);
         });
       }
 
@@ -2524,7 +2521,8 @@
 
       start() {
         this.engine.start();
-        this.engine.switchScene('introLearning', false, 's');
+        // Start directly on Treasure Map
+        this.engine.switchScene('treasureMap', false);
       }
     }
 
