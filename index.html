@@ -1,0 +1,2313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Phonics Galaxy & Treasure Island - Illustrated 26-Letter World Map</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@700;900&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #070614;
+      font-family: 'Fredoka', 'Nunito', 'Comic Sans MS', cursive, sans-serif;
+      color: #FFFFFF;
+      touch-action: none;
+    }
+
+    #app-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #0d1e3a;
+      overflow: hidden;
+      touch-action: none;
+    }
+
+    #game-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 1;
+      touch-action: none;
+    }
+
+    /* TOP HUD */
+    #ui-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 12px 18px;
+    }
+
+    .top-hud {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      pointer-events: auto;
+    }
+
+    .hud-group-left, .hud-group-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hud-btn {
+      background: linear-gradient(180deg, #2d3b6e 0%, #172147 100%);
+      border: 3px solid #00E5FF;
+      border-radius: 24px;
+      color: #FFFFFF;
+      font-family: 'Fredoka', 'Comic Sans MS', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      box-shadow: 0 5px 14px rgba(0, 229, 255, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.4);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .hud-btn:hover {
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 8px 22px rgba(0, 229, 255, 0.55);
+    }
+
+    .hud-btn:active {
+      transform: translateY(2px) scale(0.95);
+    }
+
+    .hud-btn.gold {
+      border-color: #FFD600;
+      background: linear-gradient(180deg, #614a06 0%, #382902 100%);
+      box-shadow: 0 6px 16px rgba(255, 214, 0, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+    }
+
+    .hud-btn.purple {
+      border-color: #E040FB;
+      background: linear-gradient(180deg, #511c60 0%, #290b33 100%);
+      box-shadow: 0 6px 16px rgba(224, 64, 251, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+    }
+
+    .star-counter-badge {
+      background: linear-gradient(180deg, #FFD600 0%, #FF9100 100%);
+      border: 3px solid #FFF59D;
+      border-radius: 28px;
+      padding: 5px 16px 5px 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #1A237E;
+      font-weight: 900;
+      font-size: 1.25rem;
+      box-shadow: 0 5px 16px rgba(255, 145, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.6);
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .star-bump {
+      animation: starPulse 0.4s ease;
+    }
+
+    @keyframes starPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.3) rotate(8deg); }
+      100% { transform: scale(1); }
+    }
+
+    .star-icon {
+      font-size: 1.35rem;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    }
+
+    /* STAGE SELECTOR DOCK */
+    .stage-dock {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      background: rgba(15, 22, 48, 0.92);
+      border: 3px solid rgba(0, 229, 255, 0.6);
+      border-radius: 32px;
+      padding: 4px 8px;
+      gap: 6px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      pointer-events: auto;
+    }
+
+    .dock-item {
+      background: transparent;
+      border: 2px solid transparent;
+      border-radius: 22px;
+      padding: 6px 14px;
+      color: #B0BEC5;
+      font-family: 'Fredoka', 'Comic Sans MS', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .dock-item:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #FFFFFF;
+    }
+
+    .dock-item.active {
+      background: linear-gradient(180deg, #00E5FF 0%, #00B0FF 100%);
+      color: #08162B;
+      border-color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(0, 229, 255, 0.6);
+    }
+
+    /* COMPANION ASSISTANT */
+    .companion-wrapper {
+      position: absolute;
+      bottom: 16px;
+      left: 18px;
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      pointer-events: auto;
+    }
+
+    .companion-avatar {
+      width: 68px;
+      height: 68px;
+      background: linear-gradient(180deg, #FF9800 0%, #E65100 100%);
+      border: 4px solid #FFD600;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2.1rem;
+      box-shadow: 0 6px 18px rgba(255, 152, 0, 0.5), inset 0 2px 6px rgba(255, 255, 255, 0.6);
+      cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .companion-avatar:hover {
+      transform: scale(1.1) rotate(6deg);
+    }
+
+    .companion-speech-bubble {
+      background: rgba(255, 255, 255, 0.96);
+      border: 3px solid #FFD600;
+      border-radius: 20px 20px 20px 4px;
+      color: #1A237E;
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 9px 16px;
+      max-width: 320px;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.35);
+      animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    /* MODALS */
+    .modal-backdrop {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(6, 4, 18, 0.88);
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      opacity: 1;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .modal-backdrop.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .modal-window {
+      background: linear-gradient(180deg, #19234b 0%, #0d1226 100%);
+      border: 5px solid #00E5FF;
+      border-radius: 34px;
+      padding: 28px 32px;
+      width: 92%;
+      max-width: 780px;
+      box-shadow: 0 20px 60px rgba(0, 229, 255, 0.4), inset 0 2px 8px rgba(255, 255, 255, 0.4);
+      text-align: center;
+      position: relative;
+      animation: modalBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes modalBounce {
+      0% { transform: scale(0.7); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-title {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #FFD600;
+      text-shadow: 0 4px 12px rgba(255, 214, 0, 0.5);
+      margin-bottom: 6px;
+    }
+
+    .modal-subtitle {
+      font-size: 1.05rem;
+      color: #80DEEA;
+      margin-bottom: 16px;
+    }
+
+    .treasure-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .treasure-tab-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 2px solid rgba(0, 229, 255, 0.4);
+      border-radius: 20px;
+      padding: 6px 14px;
+      color: #FFFFFF;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .treasure-tab-btn.active {
+      background: #00E5FF;
+      color: #08162B;
+      border-color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(0, 229, 255, 0.5);
+    }
+
+    .treasure-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 12px;
+      max-height: 380px;
+      overflow-y: auto;
+      padding: 8px;
+    }
+
+    .reward-card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 3px solid rgba(255, 255, 255, 0.15);
+      border-radius: 16px;
+      padding: 10px 6px;
+      text-align: center;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .reward-card.unlocked {
+      background: linear-gradient(180deg, rgba(255, 214, 0, 0.18) 0%, rgba(255, 152, 0, 0.06) 100%);
+      border-color: #FFD600;
+      box-shadow: 0 4px 14px rgba(255, 214, 0, 0.3);
+      cursor: pointer;
+    }
+
+    .reward-card.unlocked:hover {
+      transform: scale(1.08) translateY(-3px);
+    }
+
+    .reward-card.equipped {
+      border-color: #00E676;
+      box-shadow: 0 4px 14px rgba(0, 230, 118, 0.5);
+    }
+
+    .reward-card.locked {
+      opacity: 0.35;
+      filter: grayscale(85%);
+    }
+
+    .reward-icon {
+      font-size: 2.2rem;
+      margin-bottom: 2px;
+    }
+
+    .reward-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 1px;
+    }
+
+    .reward-type {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #FFD600;
+      text-transform: uppercase;
+    }
+
+    .btn-close-modal {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid #FFFFFF;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      color: #FFFFFF;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.15s ease;
+    }
+
+    .btn-close-modal:hover {
+      background: #FF5252;
+      transform: scale(1.1);
+    }
+
+    .btn-primary-big {
+      background: linear-gradient(180deg, #00E676 0%, #00B248 100%);
+      border: 4px solid #FFFFFF;
+      border-radius: 36px;
+      color: #FFFFFF;
+      font-family: 'Fredoka', 'Comic Sans MS', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      padding: 14px 40px;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(0, 230, 118, 0.5), inset 0 2px 6px rgba(255, 255, 255, 0.6);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-primary-big:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 14px 40px rgba(0, 230, 118, 0.7);
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.6); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @media (max-width: 860px) {
+      .stage-dock {
+        top: auto;
+        bottom: 12px;
+        padding: 3px 6px;
+      }
+      .dock-item {
+        padding: 5px 10px;
+        font-size: 0.85rem;
+      }
+      .companion-wrapper {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app-container">
+    <canvas id="game-canvas"></canvas>
+
+    <!-- UI Overlay -->
+    <div id="ui-overlay">
+      <div class="top-hud">
+        <div class="hud-group-left">
+          <button id="btn-map" class="hud-btn gold" title="Open Phonics Treasure Map">
+            <span>🗺️</span> Treasure Map
+          </button>
+          <div class="star-counter-badge" title="Collected Stars">
+            <span class="star-icon">⭐</span>
+            <span id="star-count">0</span>
+          </div>
+        </div>
+
+        <div class="stage-dock">
+          <button class="dock-item active" data-stage="treasureMap">
+            <span>🗺️</span> Treasure Map
+          </button>
+          <button class="dock-item" data-stage="bubblePhonics">
+            <span>🍎</span> Stage 1: Sounds
+          </button>
+          <button class="dock-item" data-stage="letterTracing">
+            <span>✏️</span> Stage 2: Tracing
+          </button>
+          <button class="dock-item" data-stage="cvcFactory">
+            <span>🧩</span> Stage 3: Reading
+          </button>
+        </div>
+
+        <div class="hud-group-right">
+          <button id="btn-treasure-chest" class="hud-btn purple" title="Open 50-Item Treasure Chest">
+            <span>🎁</span> Chest (50)
+          </button>
+          <button id="btn-music" class="hud-btn" title="Music Toggle">
+            🎵 Music
+          </button>
+          <button id="btn-fullscreen" class="hud-btn" title="Toggle Fullscreen">
+            <span>⛶</span>
+          </button>
+          <button id="btn-mute" class="hud-btn" title="Sound Toggle">
+            🔊
+          </button>
+        </div>
+      </div>
+
+      <div class="companion-wrapper">
+        <div id="companion-avatar" class="companion-avatar" title="Click Astro for help!">
+          🐯
+        </div>
+        <div id="companion-speech" class="companion-speech-bubble">
+          Explore the illustrated tropical island map to master all 26 letters and claim 50 rewards! ⭐
+        </div>
+      </div>
+    </div>
+
+    <!-- WELCOME MODAL -->
+    <div id="welcome-modal" class="modal-backdrop">
+      <div class="modal-window">
+        <h1 class="modal-title">⭐ Phonics Treasure Island ⭐</h1>
+        <p class="modal-subtitle">An illustrated 26-letter phonics quest with pirate ships, waterfalls, and 50 rewards!</p>
+
+        <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px; text-align: left;">
+          <div style="background:rgba(255,255,255,0.08); border:2px solid rgba(0,229,255,0.3); border-radius:16px; padding:10px 14px; display:flex; align-items:center; gap:10px;">
+            <span style="font-size:1.8rem;">🗺️</span>
+            <div>
+              <strong>Illustrated Map & Banners</strong>
+              <div style="font-size:0.8rem; color:#80DEEA;">Pirate ships, waterfalls & node banners</div>
+            </div>
+          </div>
+          <div style="background:rgba(255,255,255,0.08); border:2px solid rgba(0,229,255,0.3); border-radius:16px; padding:10px 14px; display:flex; align-items:center; gap:10px;">
+            <span style="font-size:1.8rem;">🔤</span>
+            <div>
+              <strong>26 Letter Adventures</strong>
+              <div style="font-size:0.8rem; color:#80DEEA;">From Snake Safari to Queen's Palace</div>
+            </div>
+          </div>
+          <div style="background:rgba(255,255,255,0.08); border:2px solid rgba(0,229,255,0.3); border-radius:16px; padding:10px 14px; display:flex; align-items:center; gap:10px;">
+            <span style="font-size:1.8rem;">✏️</span>
+            <div>
+              <strong>Guided Tracing & Blending</strong>
+              <div style="font-size:0.8rem; color:#80DEEA;">Follow glowing stars & connect words</div>
+            </div>
+          </div>
+          <div style="background:rgba(255,255,255,0.08); border:2px solid rgba(0,229,255,0.3); border-radius:16px; padding:10px 14px; display:flex; align-items:center; gap:10px;">
+            <span style="font-size:1.8rem;">🎁</span>
+            <div>
+              <strong>50 Daily Rewards</strong>
+              <div style="font-size:0.8rem; color:#80DEEA;">Stickers, capes, hats, wands & pets</div>
+            </div>
+          </div>
+        </div>
+
+        <button id="btn-start-adventure" class="btn-primary-big">
+          <span>🚀</span> START TREASURE QUEST!
+        </button>
+      </div>
+    </div>
+
+    <!-- 50-ITEM TREASURE CHEST MODAL -->
+    <div id="treasure-modal" class="modal-backdrop hidden">
+      <div class="modal-window">
+        <button id="btn-close-treasure" class="btn-close-modal">✕</button>
+        <h2 class="modal-title">🎁 Phonics Treasure Chest 🎁</h2>
+        <p class="modal-subtitle">50 Collectible Stickers, Wearable Accessories & Magic FX!</p>
+        
+        <div class="treasure-tabs">
+          <button class="treasure-tab-btn active" data-tab="all">🌟 All (50)</button>
+          <button class="treasure-tab-btn" data-tab="sticker">🏷️ Stickers (25)</button>
+          <button class="treasure-tab-btn" data-tab="wearable">🦸 Wearables (15)</button>
+          <button class="treasure-tab-btn" data-tab="fx">✨ Magic FX (10)</button>
+        </div>
+
+        <div id="treasure-grid" class="treasure-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ==========================================
+    // 1. DATA: 26 THEMATIC ADVENTURE NODES
+    // ==========================================
+    const TREASURE_MAP_ZONES = [
+      { id: 'zone1', name: '🌴 Sunlit Jungle Archipelago', color: '#00E676', letters: ['s', 'a', 't', 'p', 'i', 'n'] },
+      { id: 'zone2', name: '💎 Crystal Pirate Lagoon', color: '#00E5FF', letters: ['m', 'd', 'g', 'o', 'c', 'k'] },
+      { id: 'zone3', name: '🌋 Rainbow Volcano Cove', color: '#FF9100', letters: ['e', 'u', 'r', 'h', 'b', 'f', 'l'] },
+      { id: 'zone4', name: '🌌 Cosmic Star Galaxy', color: '#D500F9', letters: ['j', 'v', 'w', 'x', 'y', 'z', 'q'] }
+    ];
+
+    const PHONICS_DATA = {
+      letters: {
+        's': { letter: 's', nodeTitle: 'Snake Safari Park 🐍', phoneme: '/sss/', sampleWord: 'sun', color: '#FFD600', glow: '#FFF59D', icon: '☀️', tracing: { strokes: [{ points: [{x:195,y:135},{x:150,y:110},{x:115,y:140},{x:150,y:175},{x:185,y:210},{x:150,y:245},{x:105,y:220}] }] } },
+        'a': { letter: 'a', nodeTitle: 'Apple Adventure Island 🍎', phoneme: '/æ/', sampleWord: 'apple', color: '#FF5722', glow: '#FFA726', icon: '🍎', tracing: { strokes: [{ points: [{x:200,y:140},{x:150,y:110},{x:100,y:150},{x:100,y:200},{x:150,y:240},{x:200,y:210},{x:200,y:140}] }, { points: [{x:200,y:130},{x:200,y:190},{x:200,y:240},{x:215,y:245}] }] } },
+        't': { letter: 't', nodeTitle: 'Turtle Treasure Cove 🐢', phoneme: '/tuh/', sampleWord: 'turtle', color: '#26A69A', glow: '#80CBC4', icon: '🐢', tracing: { strokes: [{ points: [{x:150,y:70},{x:150,y:200},{x:155,y:235},{x:190,y:235}] }, { points: [{x:110,y:130},{x:190,y:130}] }] } },
+        'p': { letter: 'p', nodeTitle: 'Pirate Piggy Port 🐷', phoneme: '/puh/', sampleWord: 'pig', color: '#F06292', glow: '#F8BBD0', icon: '🐷', tracing: { strokes: [{ points: [{x:115,y:125},{x:115,y:210},{x:115,y:275}] }, { points: [{x:115,y:135},{x:155,y:120},{x:195,y:160},{x:155,y:205},{x:115,y:205}] }] } },
+        'i': { letter: 'i', nodeTitle: 'Igloo Ice Cavern 🧊', phoneme: '/ih/', sampleWord: 'igloo', color: '#03A9F4', glow: '#81D4FA', icon: '🧊', tracing: { strokes: [{ points: [{x:150,y:130},{x:150,y:190},{x:150,y:245}] }, { points: [{x:150,y:80},{x:150,y:85}] }] } },
+        'n': { letter: 'n', nodeTitle: 'Nutty Monkey Jungle 🥜', phoneme: '/nnn/', sampleWord: 'nut', color: '#795548', glow: '#BCAAA4', icon: '🥜', tracing: { strokes: [{ points: [{x:105,y:130},{x:105,y:245}] }, { points: [{x:105,y:150},{x:150,y:130},{x:190,y:160},{x:190,y:245}] }] } },
+        'm': { letter: 'm', nodeTitle: 'Moonlit Magic Mountain 🌙', phoneme: '/mmm/', sampleWord: 'moon', color: '#3F51B5', glow: '#9FA8DA', icon: '🌙', tracing: { strokes: [{ points: [{x:80,y:130},{x:80,y:245}] }, { points: [{x:80,y:150},{x:120,y:130},{x:145,y:155},{x:145,y:245}] }, { points: [{x:145,y:150},{x:185,y:130},{x:215,y:155},{x:215,y:245}] }] } },
+        'd': { letter: 'd', nodeTitle: 'Dinosaur Dog Dunes 🐶', phoneme: '/duh/', sampleWord: 'dog', color: '#00BCD4', glow: '#80DEEA', icon: '🐶', tracing: { strokes: [{ points: [{x:190,y:140},{x:145,y:115},{x:100,y:160},{x:100,y:200},{x:145,y:240},{x:190,y:210},{x:190,y:140}] }, { points: [{x:190,y:60},{x:190,y:150},{x:190,y:245}] }] } },
+        'g': { letter: 'g', nodeTitle: 'Golden Gift Lagoon 🎁', phoneme: '/guh/', sampleWord: 'gift', color: '#9C27B0', glow: '#CE93D8', icon: '🎁', tracing: { strokes: [{ points: [{x:190,y:130},{x:145,y:105},{x:100,y:150},{x:100,y:185},{x:145,y:215},{x:190,y:190},{x:190,y:130}] }, { points: [{x:190,y:130},{x:190,y:235},{x:170,y:270},{x:120,y:270}] }] } },
+        'o': { letter: 'o', nodeTitle: 'Orange Octopus Ocean 🍊', phoneme: '/off/', sampleWord: 'orange', color: '#FF6F00', glow: '#FFB74D', icon: '🍊', tracing: { strokes: [{ points: [{x:150,y:110},{x:100,y:150},{x:100,y:200},{x:150,y:245},{x:200,y:200},{x:200,y:150},{x:150,y:110}] }] } },
+        'c': { letter: 'c', nodeTitle: 'Cat Castle Quest 🐱', phoneme: '/kuh/', sampleWord: 'cat', color: '#FF9800', glow: '#FFD54F', icon: '🐱', tracing: { strokes: [{ points: [{x:210,y:135},{x:160,y:110},{x:100,y:160},{x:100,y:200},{x:155,y:245},{x:210,y:220}] }] } },
+        'k': { letter: 'k', nodeTitle: 'Flying Kite Kingdom 🪁', phoneme: '/kuh/', sampleWord: 'kite', color: '#7C4DFF', glow: '#B388FF', icon: '🪁', tracing: { strokes: [{ points: [{x:110,y:60},{x:110,y:245}] }, { points: [{x:185,y:135},{x:115,y:185},{x:190,y:245}] }] } },
+        'e': { letter: 'e', nodeTitle: 'Egg Explorer Valley 🥚', phoneme: '/eh/', sampleWord: 'egg', color: '#E91E63', glow: '#F48FB1', icon: '🥚', tracing: { strokes: [{ points: [{x:100,y:180},{x:200,y:180},{x:180,y:125},{x:130,y:125},{x:95,y:175},{x:130,y:240},{x:195,y:230}] }] } },
+        'u': { letter: 'u', nodeTitle: 'Umbrella Unicorn Oasis ☂️', phoneme: '/uh/', sampleWord: 'umbrella', color: '#AB47BC', glow: '#CE93D8', icon: '☂️', tracing: { strokes: [{ points: [{x:105,y:130},{x:105,y:200},{x:150,y:240},{x:195,y:200},{x:195,y:130}] }, { points: [{x:195,y:130},{x:195,y:245}] }] } },
+        'r': { letter: 'r', nodeTitle: 'Rainbow Rocket Reef 🚀', phoneme: '/rrr/', sampleWord: 'rocket', color: '#E53935', glow: '#EF9A9A', icon: '🚀', tracing: { strokes: [{ points: [{x:120,y:130},{x:120,y:245}] }, { points: [{x:120,y:160},{x:155,y:130},{x:190,y:140}] }] } },
+        'h': { letter: 'h', nodeTitle: 'Happy Hat Hideout 🎩', phoneme: '/huh/', sampleWord: 'hat', color: '#FFC107', glow: '#FFE082', icon: '🎩', tracing: { strokes: [{ points: [{x:110,y:60},{x:110,y:150},{x:110,y:245}] }, { points: [{x:110,y:160},{x:150,y:135},{x:190,y:165},{x:190,y:245}] }] } },
+        'b': { letter: 'b', nodeTitle: 'Bear Beach Party 🚌', phoneme: '/buh/', sampleWord: 'bus', color: '#4CAF50', glow: '#81C784', icon: '🚌', tracing: { strokes: [{ points: [{x:110,y:60},{x:110,y:150},{x:110,y:240}] }, { points: [{x:110,y:150},{x:155,y:135},{x:200,y:180},{x:155,y:235},{x:110,y:235}] }] } },
+        'f': { letter: 'f', nodeTitle: 'Friendly Fish Falls 🐠', phoneme: '/fff/', sampleWord: 'fish', color: '#00E676', glow: '#69F0AE', icon: '🐠', tracing: { strokes: [{ points: [{x:190,y:80},{x:150,y:60},{x:130,y:95},{x:130,y:245}] }, { points: [{x:100,y:145},{x:170,y:145}] }] } },
+        'l': { letter: 'l', nodeTitle: 'Lion Lagoon Lookout 🦁', phoneme: '/lll/', sampleWord: 'lion', color: '#FFD600', glow: '#FFE57F', icon: '🦁', tracing: { strokes: [{ points: [{x:150,y:60},{x:150,y:245}] }] } },
+        'j': { letter: 'j', nodeTitle: 'Jungle Jet Junction ✈️', phoneme: '/juh/', sampleWord: 'jet', color: '#FF4081', glow: '#FF80AB', icon: '✈️', tracing: { strokes: [{ points: [{x:170,y:130},{x:170,y:240},{x:140,y:270},{x:100,y:260}] }, { points: [{x:170,y:80},{x:170,y:85}] }] } },
+        'v': { letter: 'v', nodeTitle: 'Volcano Van Valley 🚐', phoneme: '/vvv/', sampleWord: 'van', color: '#00BFA5', glow: '#64FFDA', icon: '🚐', tracing: { strokes: [{ points: [{x:110,y:130},{x:150,y:245},{x:190,y:130}] }] } },
+        'w': { letter: 'w', nodeTitle: 'Wizard Wand Wonderland 🪄', phoneme: '/wuh/', sampleWord: 'wand', color: '#0091EA', glow: '#80D8FF', icon: '🪄', tracing: { strokes: [{ points: [{x:90,y:130},{x:120,y:245},{x:150,y:160},{x:180,y:245},{x:210,y:130}] }] } },
+        'x': { letter: 'x', nodeTitle: 'Mystery Box Crossroads 📦', phoneme: '/ksss/', sampleWord: 'box', color: '#FF6D00', glow: '#FFD180', icon: '📦', tracing: { strokes: [{ points: [{x:110,y:130},{x:190,y:245}] }, { points: [{x:190,y:130},{x:110,y:245}] }] } },
+        'y': { letter: 'y', nodeTitle: 'Yellow Yo-Yo Yard 🪀', phoneme: '/yuh/', sampleWord: 'yo-yo', color: '#FFD600', glow: '#FFFF8D', icon: '🪀', tracing: { strokes: [{ points: [{x:110,y:130},{x:150,y:195}] }, { points: [{x:190,y:130},{x:110,y:275}] }] } },
+        'z': { letter: 'z', nodeTitle: 'Zebra Zigzag Zoo 🦓', phoneme: '/zzz/', sampleWord: 'zebra', color: '#64DD17', glow: '#CCFF90', icon: '🦓', tracing: { strokes: [{ points: [{x:110,y:130},{x:190,y:130},{x:110,y:245},{x:190,y:245}] }] } },
+        'q': { letter: 'q', nodeTitle: "Queen's Crystal Palace 👑", phoneme: '/kw/', sampleWord: 'queen', color: '#AA00FF', glow: '#EA80FC', icon: '👑', tracing: { strokes: [{ points: [{x:185,y:140},{x:145,y:115},{x:105,y:155},{x:105,y:195},{x:145,y:235},{x:185,y:205},{x:185,y:140}] }, { points: [{x:185,y:130},{x:185,y:275},{x:210,y:260}] }] } }
+      },
+      blendingWords: [
+        { word: 'cat', letters: ['c', 'a', 't'], sounds: ['kuh', 'ah', 'tuh'], emoji: '🐱' },
+        { word: 'pig', letters: ['p', 'i', 'g'], sounds: ['puh', 'ih', 'guh'], emoji: '🐷' },
+        { word: 'sun', letters: ['s', 'u', 'n'], sounds: ['sss', 'uh', 'nnn'], emoji: '☀️' },
+        { word: 'bus', letters: ['b', 'u', 's'], sounds: ['buh', 'uh', 'sss'], emoji: '🚌' },
+        { word: 'hat', letters: ['h', 'a', 't'], sounds: ['huh', 'ah', 'tuh'], emoji: '🎩' },
+        { word: 'dog', letters: ['d', 'o', 'g'], sounds: ['duh', 'off', 'guh'], emoji: '🐶' },
+        { word: 'pen', letters: ['p', 'e', 'n'], sounds: ['puh', 'eh', 'nnn'], emoji: '🖊️' },
+        { word: 'fox', letters: ['f', 'o', 'x'], sounds: ['fff', 'off', 'ksss'], emoji: '🦊' },
+        { word: 'bed', letters: ['b', 'e', 'd'], sounds: ['buh', 'eh', 'duh'], emoji: '🛏️' },
+        { word: 'nut', letters: ['n', 'u', 't'], sounds: ['nnn', 'uh', 'tuh'], emoji: '🥜' }
+      ]
+    };
+
+    // ==========================================
+    // 2. 50 UNLOCKABLE REWARDS DATABASE
+    // ==========================================
+    const FIFTY_REWARDS = [
+      // 25 Stickers
+      { id: 'r1', name: 'Astro Tiger', icon: '🐯', type: 'sticker', reqStars: 0, unlocked: true },
+      { id: 'r2', name: 'Golden Apple', icon: '🍎', type: 'sticker', reqStars: 1, unlocked: true },
+      { id: 'r3', name: 'Magic Pencil', icon: '✏️', type: 'sticker', reqStars: 2, unlocked: true },
+      { id: 'r4', name: 'Cosmic Kitty', icon: '🐱', type: 'sticker', reqStars: 3, unlocked: false },
+      { id: 'r5', name: 'Super Sun', icon: '☀️', type: 'sticker', reqStars: 4, unlocked: false },
+      { id: 'r6', name: 'Star Rocket', icon: '🚀', type: 'sticker', reqStars: 5, unlocked: false },
+      { id: 'r7', name: 'Baby T-Rex', icon: '🦖', type: 'sticker', reqStars: 6, unlocked: false },
+      { id: 'r8', name: 'Brontosaurus', icon: '🦕', type: 'sticker', reqStars: 7, unlocked: false },
+      { id: 'r9', name: 'Unicorn', icon: '🦄', type: 'sticker', reqStars: 8, unlocked: false },
+      { id: 'r10', name: 'Dolphin', icon: '🐬', type: 'sticker', reqStars: 9, unlocked: false },
+      { id: 'r11', name: 'Panda Cub', icon: '🐼', type: 'sticker', reqStars: 10, unlocked: false },
+      { id: 'r12', name: 'Brave Lion', icon: '🦁', type: 'sticker', reqStars: 11, unlocked: false },
+      { id: 'r13', name: 'Elephant', icon: '🐘', type: 'sticker', reqStars: 12, unlocked: false },
+      { id: 'r14', name: 'Penguin', icon: '🐧', type: 'sticker', reqStars: 13, unlocked: false },
+      { id: 'r15', name: 'Clever Fox', icon: '🦊', type: 'sticker', reqStars: 14, unlocked: false },
+      { id: 'r16', name: 'Tree Frog', icon: '🐸', type: 'sticker', reqStars: 15, unlocked: false },
+      { id: 'r17', name: 'Saturn Planet', icon: '🪐', type: 'sticker', reqStars: 16, unlocked: false },
+      { id: 'r18', name: 'Glowing Moon', icon: '🌕', type: 'sticker', reqStars: 17, unlocked: false },
+      { id: 'r19', name: 'Shooting Star', icon: '🌟', type: 'sticker', reqStars: 18, unlocked: false },
+      { id: 'r20', name: 'Crystal Gem', icon: '💎', type: 'sticker', reqStars: 19, unlocked: false },
+      { id: 'r21', name: 'Rainbow Cloud', icon: '🌈', type: 'sticker', reqStars: 20, unlocked: false },
+      { id: 'r22', name: 'Ice Cream', icon: '🍦', type: 'sticker', reqStars: 21, unlocked: false },
+      { id: 'r23', name: 'Lollipop', icon: '🍭', type: 'sticker', reqStars: 22, unlocked: false },
+      { id: 'r24', name: 'Strawberry', icon: '🍓', type: 'sticker', reqStars: 23, unlocked: false },
+      { id: 'r25', name: 'Star Pizza', icon: '🍕', type: 'sticker', reqStars: 24, unlocked: false },
+
+      // 15 Wearable Accessories
+      { id: 'r26', name: 'Royal Crown', icon: '👑', type: 'wearable', category: 'hat', reqStars: 0, unlocked: true },
+      { id: 'r27', name: 'Magic Top Hat', icon: '🎩', type: 'wearable', category: 'hat', reqStars: 2, unlocked: false },
+      { id: 'r28', name: 'Party Cone', icon: '🥳', type: 'wearable', category: 'hat', reqStars: 5, unlocked: false },
+      { id: 'r29', name: 'Cowboy Hat', icon: '🤠', type: 'wearable', category: 'hat', reqStars: 9, unlocked: false },
+      { id: 'r30', name: 'Space Helmet', icon: '👩‍🚀', type: 'wearable', category: 'hat', reqStars: 14, unlocked: false },
+      { id: 'r31', name: 'Hero Cape', icon: '🦸', type: 'wearable', category: 'cape', reqStars: 0, unlocked: true },
+      { id: 'r32', name: 'Star Cape', icon: '🌌', type: 'wearable', category: 'cape', reqStars: 4, unlocked: false },
+      { id: 'r33', name: 'Rainbow Cloak', icon: '🌈', type: 'wearable', category: 'cape', reqStars: 11, unlocked: false },
+      { id: 'r34', name: 'Bat Wings', icon: '🦇', type: 'wearable', category: 'cape', reqStars: 16, unlocked: false },
+      { id: 'r35', name: 'Star Shades', icon: '⭐', type: 'wearable', category: 'glasses', reqStars: 0, unlocked: true },
+      { id: 'r36', name: 'Cool Shades', icon: '🕶️', type: 'wearable', category: 'glasses', reqStars: 3, unlocked: false },
+      { id: 'r37', name: 'Cyber Visor', icon: '🥽', type: 'wearable', category: 'glasses', reqStars: 8, unlocked: false },
+      { id: 'r38', name: 'Magic Wand', icon: '🪄', type: 'wearable', category: 'item', reqStars: 0, unlocked: true },
+      { id: 'r39', name: 'Party Balloon', icon: '🎈', type: 'wearable', category: 'item', reqStars: 6, unlocked: false },
+      { id: 'r40', name: 'Light Saber', icon: '⚔️', type: 'wearable', category: 'item', reqStars: 13, unlocked: false },
+
+      // 10 Visual FX & Pets
+      { id: 'r41', name: 'Baby Chick Pet', icon: '🐥', type: 'fx', reqStars: 3, unlocked: false },
+      { id: 'r42', name: 'Puppy Companion', icon: '🐶', type: 'fx', reqStars: 7, unlocked: false },
+      { id: 'r43', name: 'Kitten Friend', icon: '🐱', type: 'fx', reqStars: 12, unlocked: false },
+      { id: 'r44', name: 'Bunny Hop', icon: '🐰', type: 'fx', reqStars: 15, unlocked: false },
+      { id: 'r45', name: 'Rainbow Blast', icon: '🎆', type: 'fx', reqStars: 4, unlocked: false },
+      { id: 'r46', name: 'Gold Stardust', icon: '✨', type: 'fx', reqStars: 8, unlocked: false },
+      { id: 'r47', name: 'Megablast Party', icon: '🎉', type: 'fx', reqStars: 10, unlocked: false },
+      { id: 'r48', name: 'Heart Bubbles', icon: '💖', type: 'fx', reqStars: 17, unlocked: false },
+      { id: 'r49', name: 'Lightning Sparks', icon: '⚡', type: 'fx', reqStars: 22, unlocked: false },
+      { id: 'r50', name: 'Grand Trophy', icon: '🏆', type: 'fx', reqStars: 26, unlocked: false }
+    ];
+
+    // ==========================================
+    // 3. AUDIO SYNTHESIS & CONTINUOUS MUSIC
+    // ==========================================
+    class PhonicsAudioEngine {
+      constructor() {
+        this.ctx = null;
+        this.isMuted = false;
+        this.musicEnabled = true;
+        this.speechSynth = window.speechSynthesis || null;
+        this.musicTimer = null;
+        this.musicStep = 0;
+        this.initVoices();
+      }
+
+      initContext() {
+        if (!this.ctx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) this.ctx = new AudioCtx();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+        if (this.musicEnabled && !this.musicTimer) this.startMusicLoop();
+      }
+
+      initVoices() {
+        if (!this.speechSynth) return;
+        const load = () => {
+          const voices = this.speechSynth.getVoices();
+          this.selectedVoice = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Samantha') || v.name.includes('Victoria') || v.name.includes('Karen') || v.name.includes('Natural'))) || voices.find(v => v.lang.startsWith('en')) || voices[0];
+        };
+        load();
+        if (this.speechSynth.onvoiceschanged !== undefined) this.speechSynth.onvoiceschanged = load;
+      }
+
+      toggleMute() {
+        this.isMuted = !this.isMuted;
+        if (this.isMuted && this.speechSynth) this.speechSynth.cancel();
+        return this.isMuted;
+      }
+
+      toggleMusic() {
+        this.musicEnabled = !this.musicEnabled;
+        if (!this.musicEnabled) {
+          if (this.musicTimer) { clearInterval(this.musicTimer); this.musicTimer = null; }
+        } else {
+          this.initContext();
+          this.startMusicLoop();
+        }
+        return this.musicEnabled;
+      }
+
+      startMusicLoop() {
+        if (this.musicTimer) return;
+        const melody = [
+          523.25, 659.25, 783.99, 1046.5, 659.25, 783.99,
+          587.33, 659.25, 783.99, 880.00, 783.99, 659.25,
+          440.00, 523.25, 659.25, 783.99, 659.25, 523.25,
+          392.00, 523.25, 659.25, 783.99, 880.00, 1046.5
+        ];
+
+        this.musicTimer = setInterval(() => {
+          if (this.isMuted || !this.musicEnabled || !this.ctx) return;
+          const freq = melody[this.musicStep % melody.length];
+          this.playMusicNote(freq);
+          this.musicStep++;
+        }, 340);
+      }
+
+      playMusicNote(freq) {
+        try {
+          const t = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine'; osc.frequency.setValueAtTime(freq, t);
+          gain.gain.setValueAtTime(0.001, t);
+          gain.gain.linearRampToValueAtTime(0.04, t + 0.03);
+          gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.45);
+          osc.connect(gain); gain.connect(this.ctx.destination);
+          osc.start(t); osc.stop(t + 0.45);
+        } catch (e) {}
+      }
+
+      playLetterPhoneme(letterChar) {
+        this.initContext();
+        if (this.isMuted || !this.ctx) return;
+        const char = letterChar.toLowerCase();
+        switch (char) {
+          case 'a': this.synthVowel(800, 1650, 0.28, 145); break;
+          case 'b': this.synthVoicedStop(120, 300, 0.15); break;
+          case 'c': case 'k': this.synthUnvoicedBurst(1800, 0.12, 0.8); break;
+          case 'd': this.synthVoicedStop(160, 450, 0.16); break;
+          case 'e': this.synthVowel(550, 1850, 0.26, 150); break;
+          case 'f': this.synthFricative(2600, 0.32, 0.4); break;
+          case 'g': this.synthVoicedStop(110, 220, 0.16); break;
+          case 'h': this.synthFricative(1200, 0.22, 0.3); break;
+          case 'i': this.synthVowel(400, 2000, 0.24, 160); break;
+          case 'j': this.synthUnvoicedBurst(1400, 0.16, 0.7); break;
+          case 'l': this.synthVowel(380, 1100, 0.35, 140); break;
+          case 'm': this.synthVowel(220, 1000, 0.35, 130); break;
+          case 'n': this.synthVowel(280, 1400, 0.35, 145); break;
+          case 'o': this.synthVowel(580, 920, 0.28, 135); break;
+          case 'p': this.synthUnvoicedBurst(700, 0.14, 0.9); break;
+          case 'q': this.synthUnvoicedBurst(1600, 0.15, 0.7); break;
+          case 'r': this.synthVowel(320, 1250, 0.35, 130); break;
+          case 's': this.synthSibilant(5200, 0.38, 0.9); break;
+          case 't': this.synthUnvoicedBurst(3800, 0.12, 1.0); break;
+          case 'u': this.synthVowel(650, 1200, 0.28, 140); break;
+          case 'v': this.synthFricative(2200, 0.3, 0.4); break;
+          case 'w': this.synthVowel(320, 750, 0.32, 135); break;
+          case 'x': this.synthUnvoicedBurst(2200, 0.08, 0.7); setTimeout(() => this.synthSibilant(5000, 0.2, 0.7), 60); break;
+          case 'y': this.synthVowel(300, 2100, 0.3, 150); break;
+          case 'z': this.synthSibilant(4800, 0.32, 0.75); break;
+          default: this.synthVowel(500, 1500, 0.25, 140);
+        }
+      }
+
+      synthVowel(f1, f2, duration = 0.3, fundamental = 140) {
+        const t = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        osc.type = 'sawtooth'; osc.frequency.setValueAtTime(fundamental, t);
+        osc.frequency.exponentialRampToValueAtTime(fundamental * 0.92, t + duration);
+        const filter1 = this.ctx.createBiquadFilter(); filter1.type = 'bandpass'; filter1.frequency.setValueAtTime(f1, t); filter1.Q.setValueAtTime(7.5, t);
+        const filter2 = this.ctx.createBiquadFilter(); filter2.type = 'bandpass'; filter2.frequency.setValueAtTime(f2, t); filter2.Q.setValueAtTime(8.5, t);
+        const gain1 = this.ctx.createGain(); const gain2 = this.ctx.createGain(); const masterGain = this.ctx.createGain();
+        gain1.gain.setValueAtTime(0.7, t); gain2.gain.setValueAtTime(0.5, t);
+        masterGain.gain.setValueAtTime(0.001, t); masterGain.gain.linearRampToValueAtTime(0.45, t + 0.04);
+        masterGain.gain.exponentialRampToValueAtTime(0.001, t + duration);
+        osc.connect(filter1); osc.connect(filter2);
+        filter1.connect(gain1); filter2.connect(gain2);
+        gain1.connect(masterGain); gain2.connect(masterGain);
+        masterGain.connect(this.ctx.destination);
+        osc.start(t); osc.stop(t + duration);
+      }
+
+      synthSibilant(freq = 5200, duration = 0.35, intensity = 0.9) {
+        const t = this.ctx.currentTime;
+        const bufferSize = this.ctx.sampleRate * duration;
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+        const noise = this.ctx.createBufferSource(); noise.buffer = buffer;
+        const filter = this.ctx.createBiquadFilter(); filter.type = 'highpass'; filter.frequency.setValueAtTime(freq, t);
+        const gain = this.ctx.createGain();
+        gain.gain.setValueAtTime(0.001, t); gain.gain.linearRampToValueAtTime(0.4 * intensity, t + 0.03);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + duration);
+        noise.connect(filter); filter.connect(gain); gain.connect(this.ctx.destination);
+        noise.start(t); noise.stop(t + duration);
+      }
+
+      synthUnvoicedBurst(freq = 3200, duration = 0.12, intensity = 0.9) {
+        const t = this.ctx.currentTime;
+        const bufferSize = this.ctx.sampleRate * duration;
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.25));
+        const noise = this.ctx.createBufferSource(); noise.buffer = buffer;
+        const filter = this.ctx.createBiquadFilter(); filter.type = 'bandpass'; filter.frequency.setValueAtTime(freq, t); filter.Q.setValueAtTime(4.0, t);
+        const gain = this.ctx.createGain();
+        gain.gain.setValueAtTime(0.5 * intensity, t); gain.gain.exponentialRampToValueAtTime(0.001, t + duration);
+        noise.connect(filter); filter.connect(gain); gain.connect(this.ctx.destination);
+        noise.start(t); noise.stop(t + duration);
+      }
+
+      synthVoicedStop(freqStart, f2, duration = 0.15) {
+        const t = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator(); osc.type = 'sine'; osc.frequency.setValueAtTime(freqStart, t);
+        osc.frequency.exponentialRampToValueAtTime(80, t + duration);
+        const gain = this.ctx.createGain(); gain.gain.setValueAtTime(0.5, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + duration);
+        osc.connect(gain); gain.connect(this.ctx.destination);
+        osc.start(t); osc.stop(t + duration);
+        this.synthUnvoicedBurst(f2, 0.07, 0.4);
+      }
+
+      synthFricative(freq, duration = 0.3, intensity = 0.3) {
+        const t = this.ctx.currentTime;
+        const bufferSize = this.ctx.sampleRate * duration;
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+        const noise = this.ctx.createBufferSource(); noise.buffer = buffer;
+        const filter = this.ctx.createBiquadFilter(); filter.type = 'bandpass'; filter.frequency.setValueAtTime(freq, t);
+        const gain = this.ctx.createGain(); gain.gain.setValueAtTime(0.35 * intensity, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + duration);
+        noise.connect(filter); filter.connect(gain); gain.connect(this.ctx.destination);
+        noise.start(t); noise.stop(t + duration);
+      }
+
+      speak(text, rate = 0.92, pitch = 1.15) {
+        if (this.isMuted || !this.speechSynth) return;
+        try {
+          this.speechSynth.cancel();
+          const utterance = new SpeechSynthesisUtterance(text);
+          if (this.selectedVoice) utterance.voice = this.selectedVoice;
+          utterance.rate = rate; utterance.pitch = pitch;
+          this.speechSynth.speak(utterance);
+        } catch (e) {}
+      }
+
+      playBubblePop() {
+        this.initContext();
+        if (this.isMuted || !this.ctx) return;
+        const t = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
+        osc.type = 'sine'; osc.frequency.setValueAtTime(420, t); osc.frequency.exponentialRampToValueAtTime(1150, t + 0.12);
+        gain.gain.setValueAtTime(0.35, t); gain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
+        osc.connect(gain); gain.connect(this.ctx.destination);
+        osc.start(t); osc.stop(t + 0.12);
+      }
+
+      playSparkle() {
+        this.initContext();
+        if (this.isMuted || !this.ctx) return;
+        [1046.5, 1318.5, 1567.98, 2093.0].forEach((freq, idx) => {
+          const t = this.ctx.currentTime + idx * 0.06;
+          const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
+          osc.type = 'sine'; osc.frequency.setValueAtTime(freq, t);
+          gain.gain.setValueAtTime(0.2, t); gain.gain.exponentialRampToValueAtTime(0.001, t + 0.25);
+          osc.connect(gain); gain.connect(this.ctx.destination);
+          osc.start(t); osc.stop(t + 0.25);
+        });
+      }
+
+      playStarCollect() {
+        this.initContext();
+        if (this.isMuted || !this.ctx) return;
+        [523.25, 659.25, 783.99, 1046.5, 1318.51].forEach((freq, i) => {
+          const t = this.ctx.currentTime + i * 0.07;
+          const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
+          osc.type = 'triangle'; osc.frequency.setValueAtTime(freq, t);
+          gain.gain.setValueAtTime(0.3, t); gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+          osc.connect(gain); gain.connect(this.ctx.destination);
+          osc.start(t); osc.stop(t + 0.35);
+        });
+      }
+
+      playCelebration() {
+        this.initContext();
+        if (this.isMuted || !this.ctx) return;
+        [{ f: 523.25, d: 0.12, t: 0.0 }, { f: 659.25, d: 0.12, t: 0.12 }, { f: 783.99, d: 0.14, t: 0.24 }, { f: 1046.5, d: 0.45, t: 0.38 }].forEach(note => {
+          const t = this.ctx.currentTime + note.t;
+          const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
+          osc.type = 'triangle'; osc.frequency.setValueAtTime(note.f, t);
+          gain.gain.setValueAtTime(0.35, t); gain.gain.exponentialRampToValueAtTime(0.001, t + note.d);
+          osc.connect(gain); gain.connect(this.ctx.destination);
+          osc.start(t); osc.stop(t + note.d);
+        });
+      }
+
+      playSnap() {
+        this.initContext();
+        if (this.isMuted || !this.ctx) return;
+        const t = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
+        osc.type = 'triangle'; osc.frequency.setValueAtTime(880, t); osc.frequency.exponentialRampToValueAtTime(220, t + 0.08);
+        gain.gain.setValueAtTime(0.3, t); gain.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+        osc.connect(gain); gain.connect(this.ctx.destination);
+        osc.start(t); osc.stop(t + 0.08);
+      }
+
+      playGentleBounce() {
+        this.initContext();
+        if (this.isMuted || !this.ctx) return;
+        const t = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
+        osc.type = 'sine'; osc.frequency.setValueAtTime(240, t); osc.frequency.exponentialRampToValueAtTime(140, t + 0.2);
+        gain.gain.setValueAtTime(0.18, t); gain.gain.exponentialRampToValueAtTime(0.001, t + 0.2);
+        osc.connect(gain); gain.connect(this.ctx.destination);
+        osc.start(t); osc.stop(t + 0.2);
+      }
+
+      playClick() {
+        this.initContext();
+        if (this.isMuted || !this.ctx) return;
+        const t = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
+        osc.type = 'triangle'; osc.frequency.setValueAtTime(680, t);
+        gain.gain.setValueAtTime(0.15, t); gain.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
+        osc.connect(gain); gain.connect(this.ctx.destination);
+        osc.start(t); osc.stop(t + 0.05);
+      }
+    }
+
+    const soundEngine = new PhonicsAudioEngine();
+
+    // ==========================================
+    // 4. PARTICLE SYSTEM
+    // ==========================================
+    class ParticleSystem {
+      constructor() { this.particles = []; }
+
+      update(dt) {
+        for (let i = this.particles.length - 1; i >= 0; i--) {
+          const p = this.particles[i];
+          p.life -= dt;
+          if (p.life <= 0) { this.particles.splice(i, 1); continue; }
+          p.x += p.vx * dt; p.y += p.vy * dt;
+          p.vy += (p.gravity || 0) * dt;
+          p.rotation += (p.vRot || 0) * dt;
+          p.scale = Math.max(0, p.scale + (p.scaleSpeed || 0) * dt);
+          p.alpha = Math.max(0, p.life / p.maxLife);
+        }
+      }
+
+      draw(ctx) {
+        for (const p of this.particles) {
+          ctx.save();
+          ctx.globalAlpha = p.alpha;
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rotation);
+          ctx.scale(p.scale, p.scale);
+
+          if (p.type === 'confetti') {
+            ctx.fillStyle = p.color; ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+          } else if (p.type === 'star') {
+            this.drawStarShape(ctx, 0, 0, 5, p.size, p.size * 0.45, p.color);
+          } else if (p.type === 'sparkle') {
+            ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(0, 0, p.size * 0.5, 0, Math.PI * 2); ctx.fill();
+          } else if (p.type === 'ring') {
+            ctx.strokeStyle = p.color; ctx.lineWidth = 4;
+            ctx.beginPath(); ctx.arc(0, 0, p.size * (1 + (1 - p.alpha) * 1.5), 0, Math.PI * 2); ctx.stroke();
+          }
+          ctx.restore();
+        }
+      }
+
+      drawStarShape(ctx, cx, cy, spikes, outerRadius, innerRadius, color) {
+        let rot = (Math.PI / 2) * 3;
+        let x = cx; let y = cy;
+        const step = Math.PI / spikes;
+        ctx.beginPath(); ctx.moveTo(cx, cy - outerRadius);
+        for (let i = 0; i < spikes; i++) {
+          x = cx + Math.cos(rot) * outerRadius; y = cy + Math.sin(rot) * outerRadius;
+          ctx.lineTo(x, y); rot += step;
+          x = cx + Math.cos(rot) * innerRadius; y = cy + Math.sin(rot) * innerRadius;
+          ctx.lineTo(x, y); rot += step;
+        }
+        ctx.closePath(); ctx.fillStyle = color; ctx.fill();
+      }
+
+      burstConfetti(x, y, count = 55) {
+        const colors = ['#FF1744', '#FFD600', '#00E676', '#00E5FF', '#D500F9', '#FF9100', '#FFFFFF'];
+        for (let i = 0; i < count; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const speed = 190 + Math.random() * 320;
+          this.particles.push({
+            type: 'confetti', x, y,
+            vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed - 120,
+            gravity: 340, rotation: Math.random() * Math.PI * 2, vRot: (Math.random() - 0.5) * 12,
+            size: 9 + Math.random() * 8, scale: 1, color: colors[Math.floor(Math.random() * colors.length)],
+            life: 1.5 + Math.random() * 1.0, maxLife: 2.5
+          });
+        }
+      }
+
+      burstStars(x, y, count = 25, starColor = '#FFE082') {
+        const colors = [starColor, '#FFD54F', '#FFF9C4', '#FFFFFF'];
+        for (let i = 0; i < count; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const speed = 90 + Math.random() * 220;
+          this.particles.push({
+            type: 'star', x, y,
+            vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
+            gravity: 40, rotation: Math.random() * Math.PI, vRot: (Math.random() - 0.5) * 6,
+            size: 11 + Math.random() * 10, scale: 1, scaleSpeed: -0.2,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            life: 0.8 + Math.random() * 0.6, maxLife: 1.4
+          });
+        }
+      }
+
+      emitSparkleTrail(x, y, color = '#69F0AE') {
+        for (let i = 0; i < 3; i++) {
+          this.particles.push({
+            type: 'sparkle', x: x + (Math.random() - 0.5) * 14, y: y + (Math.random() - 0.5) * 14,
+            vx: (Math.random() - 0.5) * 40, vy: (Math.random() - 0.5) * 40 - 15,
+            gravity: -10, rotation: 0, size: 7 + Math.random() * 6, scale: 1,
+            color: color, life: 0.45 + Math.random() * 0.3, maxLife: 0.75
+          });
+        }
+      }
+
+      burstBubble(x, y, color = '#80DEEA') {
+        this.particles.push({ type: 'ring', x, y, vx: 0, vy: 0, rotation: 0, size: 28, scale: 1, color, life: 0.3, maxLife: 0.3 });
+      }
+    }
+
+    // ==========================================
+    // 5. GAME ENGINE
+    // ==========================================
+    class GameEngine {
+      constructor(canvas) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.particles = new ParticleSystem();
+        this.scenes = new Map();
+        this.currentScene = null;
+        this.nextSceneName = null;
+        this.transitionAlpha = 0;
+        this.transitionState = 'none';
+        this.lastTime = 0;
+
+        this.virtualWidth = 1280;
+        this.virtualHeight = 720;
+        this.scale = 1;
+        this.offsetX = 0;
+        this.offsetY = 0;
+
+        this.pointer = { x: 0, y: 0, isDown: false, justPressed: false, justReleased: false };
+        this.keys = {};
+        this.activeTouches = new Map();
+
+        this.initEvents();
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+      }
+
+      registerScene(name, sceneInstance) {
+        sceneInstance.engine = this;
+        sceneInstance.particles = this.particles;
+        sceneInstance.sound = soundEngine;
+        this.scenes.set(name, sceneInstance);
+      }
+
+      switchScene(name, transition = true, initData = null) {
+        if (!this.scenes.has(name)) return;
+        if (!transition || !this.currentScene) {
+          if (this.currentScene && this.currentScene.onExit) this.currentScene.onExit();
+          this.currentScene = this.scenes.get(name);
+          if (this.currentScene.onEnter) this.currentScene.onEnter(initData);
+          this.transitionState = 'none';
+          this.transitionAlpha = 0;
+          return;
+        }
+        this.nextSceneName = name;
+        this.nextSceneInitData = initData;
+        this.transitionState = 'fade_out';
+      }
+
+      resize() {
+        const dpr = window.devicePixelRatio || 1;
+        const clientWidth = window.innerWidth;
+        const clientHeight = window.innerHeight;
+
+        this.canvas.width = clientWidth * dpr;
+        this.canvas.height = clientHeight * dpr;
+        this.ctx.resetTransform();
+        this.ctx.scale(dpr, dpr);
+
+        const aspect = this.virtualWidth / this.virtualHeight;
+        const windowAspect = clientWidth / clientHeight;
+
+        if (windowAspect > aspect) {
+          this.scale = clientHeight / this.virtualHeight;
+          this.offsetX = (clientWidth - this.virtualWidth * this.scale) / 2;
+          this.offsetY = 0;
+        } else {
+          this.scale = clientWidth / this.virtualWidth;
+          this.offsetX = 0;
+          this.offsetY = (clientHeight - this.virtualHeight * this.scale) / 2;
+        }
+      }
+
+      screenToWorld(clientX, clientY) {
+        return {
+          x: (clientX - this.offsetX) / this.scale,
+          y: (clientY - this.offsetY) / this.scale
+        };
+      }
+
+      toggleFullscreen() {
+        if (!document.fullscreenElement) {
+          if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(() => {});
+          else if (document.documentElement.webkitRequestFullscreen) document.documentElement.webkitRequestFullscreen();
+        } else {
+          if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+          else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+        }
+      }
+
+      initEvents() {
+        const unlockAudio = () => soundEngine.initContext();
+        window.addEventListener('pointerdown', unlockAudio, { passive: true });
+        window.addEventListener('touchstart', unlockAudio, { passive: true });
+        window.addEventListener('keydown', unlockAudio, { passive: true });
+
+        const handleTouchStart = (e) => {
+          for (let i = 0; i < e.changedTouches.length; i++) {
+            const t = e.changedTouches[i];
+            this.activeTouches.set(t.identifier, { clientX: t.clientX, clientY: t.clientY });
+            const worldPos = this.screenToWorld(t.clientX, t.clientY);
+            if (this.currentScene && this.currentScene.onPointerDown) this.currentScene.onPointerDown(worldPos.x, worldPos.y, e);
+          }
+          if (e.touches.length > 0) {
+            const worldPos = this.screenToWorld(e.touches[0].clientX, e.touches[0].clientY);
+            this.pointer.x = worldPos.x; this.pointer.y = worldPos.y;
+            this.pointer.isDown = true; this.pointer.justPressed = true;
+          }
+        };
+
+        const handleTouchMove = (e) => {
+          for (let i = 0; i < e.changedTouches.length; i++) {
+            const t = e.changedTouches[i];
+            this.activeTouches.set(t.identifier, { clientX: t.clientX, clientY: t.clientY });
+            const worldPos = this.screenToWorld(t.clientX, t.clientY);
+            if (this.currentScene && this.currentScene.onPointerMove) this.currentScene.onPointerMove(worldPos.x, worldPos.y, e);
+          }
+          if (e.touches.length > 0) {
+            const worldPos = this.screenToWorld(e.touches[0].clientX, e.touches[0].clientY);
+            this.pointer.x = worldPos.x; this.pointer.y = worldPos.y;
+          }
+        };
+
+        const handleTouchEnd = (e) => {
+          for (let i = 0; i < e.changedTouches.length; i++) {
+            const t = e.changedTouches[i];
+            this.activeTouches.delete(t.identifier);
+            const worldPos = this.screenToWorld(t.clientX, t.clientY);
+            if (this.currentScene && this.currentScene.onPointerUp) this.currentScene.onPointerUp(worldPos.x, worldPos.y, e);
+          }
+          if (e.touches.length === 0) {
+            this.pointer.isDown = false;
+            this.pointer.justReleased = true;
+          }
+        };
+
+        window.addEventListener('touchstart', handleTouchStart, { passive: false });
+        window.addEventListener('touchmove', handleTouchMove, { passive: false });
+        window.addEventListener('touchend', handleTouchEnd, { passive: false });
+
+        window.addEventListener('mousedown', (e) => {
+          if (e.button !== 0) return;
+          const worldPos = this.screenToWorld(e.clientX, e.clientY);
+          this.pointer.x = worldPos.x; this.pointer.y = worldPos.y;
+          this.pointer.isDown = true; this.pointer.justPressed = true;
+          if (this.currentScene && this.currentScene.onPointerDown) this.currentScene.onPointerDown(worldPos.x, worldPos.y, e);
+        });
+
+        window.addEventListener('mousemove', (e) => {
+          const worldPos = this.screenToWorld(e.clientX, e.clientY);
+          this.pointer.x = worldPos.x; this.pointer.y = worldPos.y;
+          if (this.currentScene && this.currentScene.onPointerMove) this.currentScene.onPointerMove(worldPos.x, worldPos.y, e);
+        });
+
+        window.addEventListener('mouseup', (e) => {
+          const worldPos = this.screenToWorld(e.clientX, e.clientY);
+          this.pointer.x = worldPos.x; this.pointer.y = worldPos.y;
+          this.pointer.isDown = false; this.pointer.justReleased = true;
+          if (this.currentScene && this.currentScene.onPointerUp) this.currentScene.onPointerUp(worldPos.x, worldPos.y, e);
+        });
+
+        window.addEventListener('keydown', (e) => {
+          this.keys[e.code] = true;
+          if (e.key === 'f' || e.key === 'F') this.toggleFullscreen();
+        });
+        window.addEventListener('keyup', (e) => { this.keys[e.code] = false; });
+      }
+
+      start() {
+        this.lastTime = performance.now();
+        requestAnimationFrame((t) => this.loop(t));
+      }
+
+      loop(currentTime) {
+        const dt = Math.min((currentTime - this.lastTime) / 1000, 0.1);
+        this.lastTime = currentTime;
+        this.update(dt);
+        this.render();
+        this.pointer.justPressed = false;
+        this.pointer.justReleased = false;
+        requestAnimationFrame((t) => this.loop(t));
+      }
+
+      update(dt) {
+        if (this.transitionState === 'fade_out') {
+          this.transitionAlpha += dt * 3.5;
+          if (this.transitionAlpha >= 1) {
+            this.transitionAlpha = 1;
+            if (this.currentScene && this.currentScene.onExit) this.currentScene.onExit();
+            this.currentScene = this.scenes.get(this.nextSceneName);
+            if (this.currentScene.onEnter) this.currentScene.onEnter(this.nextSceneInitData);
+            this.transitionState = 'fade_in';
+          }
+        } else if (this.transitionState === 'fade_in') {
+          this.transitionAlpha -= dt * 3.0;
+          if (this.transitionAlpha <= 0) {
+            this.transitionAlpha = 0;
+            this.transitionState = 'none';
+          }
+        }
+
+        if (this.currentScene && this.currentScene.update) this.currentScene.update(dt);
+        this.particles.update(dt);
+      }
+
+      render() {
+        this.ctx.fillStyle = '#070614';
+        this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+
+        this.ctx.save();
+        this.ctx.beginPath();
+        this.ctx.rect(this.offsetX, this.offsetY, this.virtualWidth * this.scale, this.virtualHeight * this.scale);
+        this.ctx.clip();
+
+        this.ctx.translate(this.offsetX, this.offsetY);
+        this.ctx.scale(this.scale, this.scale);
+
+        if (this.currentScene && this.currentScene.render) this.currentScene.render(this.ctx);
+        this.particles.draw(this.ctx);
+
+        if (this.transitionAlpha > 0) {
+          this.ctx.fillStyle = `rgba(7, 6, 20, ${this.transitionAlpha})`;
+          this.ctx.fillRect(0, 0, this.virtualWidth, this.virtualHeight);
+        }
+        this.ctx.restore();
+      }
+    }
+
+    // ==========================================
+    // 6. ILLUSTRATED TREASURE MAP SCENE
+    // ==========================================
+    class TreasureMapStage {
+      constructor() {
+        this.currentNodeIndex = 0;
+        this.time = 0;
+        this.cameraX = 0;
+        this.targetCameraX = 0;
+        this.isDraggingMap = false;
+        this.dragStartX = 0;
+        this.mapWidth = 3800;
+
+        // Build 26 nodes along an organic winding path across tropical island landmarks
+        this.nodes = [];
+        let curIdx = 0;
+        TREASURE_MAP_ZONES.forEach((zone, zIdx) => {
+          zone.letters.forEach((lKey) => {
+            const letterData = PHONICS_DATA.letters[lKey];
+            const x = 240 + curIdx * 135;
+            // Winding organic island path
+            const y = 390 + Math.sin(curIdx * 0.7) * 150 + (curIdx % 2 === 0 ? -30 : 30);
+            this.nodes.push({
+              index: curIdx,
+              letter: lKey,
+              nodeTitle: letterData.nodeTitle,
+              zone: zone,
+              x: x,
+              y: y,
+              stars: curIdx <= this.currentNodeIndex ? 3 : 0,
+              unlocked: curIdx <= this.currentNodeIndex
+            });
+            curIdx++;
+          });
+        });
+      }
+
+      onEnter() {
+        this.centerOnCurrentNode();
+        setTimeout(() => {
+          if (this.sound) this.sound.speak("Explore the tropical Treasure Map! Tap your glowing letter node to begin!");
+        }, 400);
+      }
+
+      centerOnCurrentNode() {
+        const cur = this.nodes[this.currentNodeIndex] || this.nodes[0];
+        this.targetCameraX = Math.max(0, Math.min(this.mapWidth - 1280, cur.x - 640));
+      }
+
+      update(dt) {
+        this.time += dt;
+        this.cameraX += (this.targetCameraX - this.cameraX) * 8 * dt;
+
+        if (window.gameApp) {
+          this.currentNodeIndex = window.gameApp.unlockedNodeIndex;
+          this.nodes.forEach((n, idx) => {
+            n.unlocked = idx <= this.currentNodeIndex;
+          });
+        }
+      }
+
+      onPointerDown(x, y) {
+        this.isDraggingMap = true;
+        this.dragStartX = x;
+
+        const worldX = x + this.cameraX;
+        for (const n of this.nodes) {
+          // Check click on node circle or title banner
+          if (Math.hypot(worldX - n.x, y - n.y) < 55 || (Math.abs(worldX - n.x) < 110 && Math.abs(y - (n.y + 60)) < 25)) {
+            if (n.unlocked) {
+              this.sound.playStarCollect();
+              this.sound.playLetterPhoneme(n.letter);
+              this.particles.burstStars(n.x - this.cameraX, n.y, 25, n.zone.color);
+
+              if (window.gameApp) {
+                window.gameApp.selectLetter(n.letter);
+              }
+            } else {
+              this.sound.playGentleBounce();
+              this.sound.speak(`Complete the previous letter to unlock ${n.nodeTitle}!`);
+            }
+            return;
+          }
+        }
+      }
+
+      onPointerMove(x, y) {
+        if (!this.isDraggingMap) return;
+        const dx = x - this.dragStartX;
+        this.dragStartX = x;
+        this.targetCameraX = Math.max(0, Math.min(this.mapWidth - 1280, this.targetCameraX - dx * 1.5));
+      }
+
+      onPointerUp() {
+        this.isDraggingMap = false;
+      }
+
+      render(ctx) {
+        ctx.save();
+        ctx.translate(-this.cameraX, 0);
+
+        // ==========================================
+        // 1. RICH ILLUSTRATED BACKGROUND
+        // ==========================================
+        // Sky Gradient with sunbeams
+        const skyGrad = ctx.createLinearGradient(0, 0, 0, 420);
+        skyGrad.addColorStop(0, '#4fc3f7');
+        skyGrad.addColorStop(0.5, '#81d4fa');
+        skyGrad.addColorStop(1, '#b3e5fc');
+        ctx.fillStyle = skyGrad;
+        ctx.fillRect(0, 0, this.mapWidth, 450);
+
+        // Sun & Glowing Sunbeams
+        ctx.fillStyle = '#FFF176';
+        ctx.beginPath(); ctx.arc(380, 80, 55, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+        ctx.beginPath(); ctx.arc(380, 80, 85, 0, Math.PI * 2); ctx.fill();
+
+        // Fluffy Cartoon Floating Clouds
+        for (let i = 0; i < 18; i++) {
+          const cloudX = 120 + i * 220 + Math.sin(this.time * 0.5 + i) * 20;
+          const cloudY = 60 + (i % 3) * 40;
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+          ctx.beginPath();
+          ctx.arc(cloudX, cloudY, 28, 0, Math.PI * 2);
+          ctx.arc(cloudX + 24, cloudY - 12, 34, 0, Math.PI * 2);
+          ctx.arc(cloudX + 54, cloudY, 26, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Rainbow Arc over Island 2
+        ctx.save();
+        ctx.lineWidth = 10;
+        ['#FF5252', '#FFD600', '#00E676', '#00E5FF', '#7C4DFF'].forEach((c, idx) => {
+          ctx.strokeStyle = c + '77';
+          ctx.beginPath();
+          ctx.arc(1500, 450, 320 + idx * 10, Math.PI, 0);
+          ctx.stroke();
+        });
+        ctx.restore();
+
+        // Tropical Ocean with Multi-tone Waves
+        const seaGrad = ctx.createLinearGradient(0, 380, 0, 720);
+        seaGrad.addColorStop(0, '#00b0ff');
+        seaGrad.addColorStop(0.4, '#0091ea');
+        seaGrad.addColorStop(1, '#01579b');
+        ctx.fillStyle = seaGrad;
+        ctx.fillRect(0, 380, this.mapWidth, 340);
+
+        // Animated ocean foam wave crests
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+        ctx.lineWidth = 3;
+        for (let w = 0; w < this.mapWidth; w += 90) {
+          const waveY = 410 + Math.sin(w * 0.05 + this.time * 2) * 8;
+          ctx.beginPath();
+          ctx.arc(w, waveY, 22, 0, Math.PI);
+          ctx.stroke();
+        }
+
+        // 4 Tropical Island Landmasses (Sandy Shores & Lush Greens)
+        TREASURE_MAP_ZONES.forEach((zone, zIdx) => {
+          const zStartX = 120 + zIdx * 900;
+
+          // Sandy Beach Outline
+          ctx.fillStyle = '#FFE082';
+          ctx.beginPath();
+          ctx.roundRect(zStartX, 160, 840, 480, [60, 60, 80, 80]);
+          ctx.fill();
+
+          // Lush Grass Top Layer
+          ctx.fillStyle = zIdx === 0 ? '#66BB6A' : (zIdx === 1 ? '#26A69A' : (zIdx === 2 ? '#FFA726' : '#AB47BC'));
+          ctx.beginPath();
+          ctx.roundRect(zStartX + 20, 180, 800, 440, [50, 50, 70, 70]);
+          ctx.fill();
+
+          // Zone Banner Header
+          ctx.fillStyle = 'rgba(10, 20, 45, 0.9)';
+          ctx.strokeStyle = zone.color; ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.roundRect(zStartX + 220, 120, 400, 48, 24);
+          ctx.fill(); ctx.stroke();
+
+          ctx.fillStyle = zone.color;
+          ctx.font = 'bold 22px "Fredoka", sans-serif';
+          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillText(zone.name, zStartX + 420, 144);
+
+          // Cartoon Tropical Landmark Elements per zone
+          if (zIdx === 0) {
+            // Sunlit Jungle: Waterfall & Palm Trees & Monkey
+            ctx.font = '48px sans-serif';
+            ctx.fillText('🌴', zStartX + 90, 240);
+            ctx.fillText('🌴', zStartX + 750, 260);
+            ctx.fillText('🌊', zStartX + 420, 250);
+            ctx.fillText('🐒', zStartX + 120, 220);
+            ctx.fillText('🦜', zStartX + 730, 230);
+          } else if (zIdx === 1) {
+            // Crystal Pirate Lagoon: Pirate Ship & Treasure Chest
+            ctx.font = '54px sans-serif';
+            ctx.fillText('⛵', zStartX + 100, 240);
+            ctx.fillText('🏴‍☠️', zStartX + 140, 200);
+            ctx.fillText('🪙', zStartX + 720, 250);
+            ctx.fillText('🐬', zStartX + 420, 240);
+          } else if (zIdx === 2) {
+            // Rainbow Volcano: Smoking Volcano & Dinosaurs
+            ctx.font = '54px sans-serif';
+            ctx.fillText('🌋', zStartX + 420, 240);
+            ctx.fillText('🦖', zStartX + 100, 250);
+            ctx.fillText('🦕', zStartX + 740, 250);
+          } else if (zIdx === 3) {
+            // Cosmic Galaxy: Rocket & Stars & Castle
+            ctx.font = '54px sans-serif';
+            ctx.fillText('🚀', zStartX + 110, 240);
+            ctx.fillText('🏰', zStartX + 730, 240);
+            ctx.fillText('🪐', zStartX + 420, 240);
+          }
+        });
+
+        // Winding Golden Dashed Treasure Trail
+        ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+        ctx.strokeStyle = '#FFD600'; ctx.lineWidth = 14;
+        ctx.setLineDash([20, 14]);
+        ctx.beginPath();
+        this.nodes.forEach((n, idx) => {
+          if (idx === 0) ctx.moveTo(n.x, n.y);
+          else {
+            const prev = this.nodes[idx - 1];
+            const midX = (prev.x + n.x) / 2;
+            ctx.quadraticCurveTo(prev.x, prev.y, midX, (prev.y + n.y) / 2);
+          }
+        });
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // ==========================================
+        // 2. 26 NODES & CREATIVE ADVENTURE BANNERS
+        // ==========================================
+        this.nodes.forEach(n => {
+          const isCurrent = n.index === this.currentNodeIndex;
+          ctx.save();
+          ctx.translate(n.x, n.y);
+
+          // Node Base Circle
+          ctx.fillStyle = n.unlocked ? n.zone.color : '#37474F';
+          ctx.strokeStyle = isCurrent ? '#FFFFFF' : (n.unlocked ? '#FFF9C4' : '#263238');
+          ctx.lineWidth = isCurrent ? 6 : 4;
+          ctx.shadowColor = n.unlocked ? n.zone.color : 'transparent';
+          ctx.shadowBlur = isCurrent ? 24 : 8;
+
+          ctx.beginPath(); ctx.arc(0, 0, 42, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+          ctx.shadowBlur = 0;
+
+          // Big Explicit Letter Indicator
+          if (n.unlocked) {
+            ctx.fillStyle = '#08162B';
+            ctx.font = 'bold 38px "Fredoka", sans-serif';
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText(n.letter.toUpperCase(), 0, 3);
+
+            // 3 Small Stars
+            for (let s = -1; s <= 1; s++) {
+              this.particles.drawStarShape(ctx, s * 15, -55, 5, 8, 4, '#FFD600');
+            }
+          } else {
+            ctx.font = '24px sans-serif';
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText('🔒', 0, 0);
+          }
+
+          // HIGH-CONTRAST THEMATIC TITLE BANNER
+          ctx.fillStyle = n.unlocked ? 'rgba(10, 22, 50, 0.95)' : 'rgba(20, 25, 35, 0.85)';
+          ctx.strokeStyle = n.unlocked ? n.zone.color : '#546E7A';
+          ctx.lineWidth = 2.5;
+          ctx.beginPath();
+          ctx.roundRect(-105, 50, 210, 36, 18);
+          ctx.fill(); ctx.stroke();
+
+          ctx.fillStyle = n.unlocked ? '#FFFFFF' : '#90A4AE';
+          ctx.font = 'bold 13px "Fredoka", sans-serif';
+          ctx.fillText(`Node ${n.letter.toUpperCase()}: ${n.nodeTitle}`, 0, 68);
+
+          // ANIMATED "YOU ARE HERE" PIN & BOUNCING ASTRO
+          if (isCurrent) {
+            const bounce = Math.sin(this.time * 6) * 10;
+            ctx.save();
+            ctx.translate(0, -96 + bounce);
+
+            ctx.strokeStyle = 'rgba(255, 214, 0, 0.85)'; ctx.lineWidth = 4;
+            ctx.beginPath(); ctx.arc(0, 40, 20 + Math.sin(this.time * 8) * 6, 0, Math.PI * 2); ctx.stroke();
+
+            ctx.fillStyle = '#FF1744'; ctx.strokeStyle = '#FFFFFF'; ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.roundRect(-85, -45, 170, 36, 18); ctx.fill(); ctx.stroke();
+            ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 15px "Fredoka", sans-serif';
+            ctx.fillText('🚩 YOU ARE HERE!', 0, -26);
+
+            ctx.font = '36px sans-serif';
+            ctx.fillText('🐯', 0, 20);
+            ctx.restore();
+          }
+
+          ctx.restore();
+        });
+
+        ctx.restore();
+
+        // Footer Guidance Banner
+        ctx.fillStyle = 'rgba(15, 25, 55, 0.92)'; ctx.strokeStyle = '#00E5FF'; ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.roundRect(320, 650, 640, 52, 26); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#FFF59D'; ctx.font = 'bold 20px "Fredoka", sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText('👆 Drag map to explore • Tap adventure node banner to play!', 640, 676);
+      }
+    }
+
+    // ==========================================
+    // 7. STAGE 1: LETTER INTRO & SOUNDS
+    // ==========================================
+    class BubblePhonicsStage {
+      constructor() {
+        this.currentLetterKey = 's';
+        this.currentLetterData = PHONICS_DATA.letters['s'];
+        this.bubbles = [];
+        this.bounceScale = 1;
+        this.blinkTimer = 0;
+        this.isBlinking = false;
+        this.time = 0;
+      }
+
+      onEnter(letterKey = 's') {
+        this.loadLetter(letterKey || 's');
+      }
+
+      loadLetter(key) {
+        this.currentLetterKey = key;
+        this.currentLetterData = PHONICS_DATA.letters[key] || PHONICS_DATA.letters['s'];
+        this.bounceScale = 1.35;
+
+        const allKeys = Object.keys(PHONICS_DATA.letters);
+        const distractors = allKeys.filter(l => l !== key).sort(() => Math.random() - 0.5).slice(0, 2);
+        const options = [key, ...distractors].sort(() => Math.random() - 0.5);
+
+        const positions = [{ x: 380, y: 530 }, { x: 640, y: 530 }, { x: 900, y: 530 }];
+
+        this.bubbles = options.map((letter, i) => {
+          const lData = PHONICS_DATA.letters[letter] || { color: '#00E5FF', glow: '#80DEEA' };
+          return {
+            letter, x: positions[i].x, y: positions[i].y, baseX: positions[i].x, baseY: positions[i].y,
+            radius: 54, scale: 1, color: lData.color, glow: lData.glow, phase: Math.random() * Math.PI * 2,
+            isCorrect: letter === key
+          };
+        });
+
+        setTimeout(() => {
+          if (this.sound) {
+            this.sound.playLetterPhoneme(this.currentLetterKey);
+            this.particles.burstStars(640, 290, 20, this.currentLetterData.glow);
+            setTimeout(() => {
+              this.sound.speak(`Tap the matching sound ${this.currentLetterData.phoneme}!`);
+            }, 450);
+          }
+        }, 300);
+      }
+
+      update(dt) {
+        this.time += dt;
+        this.bounceScale += (1.0 - this.bounceScale) * 8 * dt;
+
+        this.blinkTimer += dt;
+        if (this.blinkTimer > 3.2) {
+          this.isBlinking = true;
+          if (this.blinkTimer > 3.4) {
+            this.isBlinking = false;
+            this.blinkTimer = 0;
+          }
+        }
+
+        for (const b of this.bubbles) {
+          b.phase += dt * 2;
+          b.y = b.baseY + Math.sin(b.phase) * 10;
+        }
+      }
+
+      onPointerDown(x, y) {
+        if (Math.hypot(x - 640, y - 290) < 110) {
+          this.bounceScale = 1.35;
+          this.sound.playLetterPhoneme(this.currentLetterKey);
+          this.particles.emitSparkleTrail(640, 290, this.currentLetterData.glow);
+          return;
+        }
+
+        for (const b of this.bubbles) {
+          if (Math.hypot(x - b.x, y - b.y) < b.radius * 1.1) {
+            this.sound.playLetterPhoneme(b.letter);
+            this.sound.playBubblePop();
+            this.particles.burstBubble(b.x, b.y, b.glow);
+
+            if (b.isCorrect) {
+              this.particles.burstStars(b.x, b.y, 35, '#FFD54F');
+              this.particles.burstConfetti(640, 290, 50);
+              this.sound.playStarCollect();
+              this.sound.playCelebration();
+              this.bounceScale = 1.4;
+
+              const praise = ["Super Star!", "You Did It!", "Amazing Job!", "Fantastic!"][Math.floor(Math.random() * 4)];
+              setTimeout(() => this.sound.speak(praise), 300);
+
+              if (window.gameApp) {
+                window.gameApp.addStar(1);
+                window.gameApp.advanceNode();
+              }
+
+              setTimeout(() => {
+                this.engine.switchScene('letterTracing', true, this.currentLetterKey);
+              }, 1600);
+            } else {
+              this.sound.playGentleBounce();
+              this.sound.speak(`Listen closely! Find ${this.currentLetterData.phoneme}!`);
+            }
+            break;
+          }
+        }
+      }
+
+      render(ctx) {
+        const grad = ctx.createLinearGradient(0, 0, 0, 720);
+        grad.addColorStop(0, '#100c2a'); grad.addColorStop(1, '#0e2b34');
+        ctx.fillStyle = grad; ctx.fillRect(0, 0, 1280, 720);
+
+        // Header Title Box
+        ctx.fillStyle = 'rgba(15, 25, 55, 0.88)'; ctx.strokeStyle = '#00E5FF'; ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.roundRect(320, 20, 640, 68, 34); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 28px "Fredoka", sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(`Listen to Sound:  ${this.currentLetterData.phoneme}  (${this.currentLetterData.sampleWord})`, 640, 54);
+
+        // Center Stage: Big Bouncy Lowercase Letter + Emoji
+        ctx.save();
+        ctx.translate(640, 290);
+        ctx.scale(this.bounceScale, this.bounceScale);
+
+        ctx.fillStyle = this.currentLetterData.color;
+        ctx.shadowColor = this.currentLetterData.glow; ctx.shadowBlur = 28;
+        ctx.beginPath(); ctx.arc(0, 0, 95, 0, Math.PI * 2); ctx.fill();
+        ctx.shadowBlur = 0;
+
+        ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 105px "Fredoka", sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(this.currentLetterKey, -32, 10);
+
+        ctx.font = '74px sans-serif';
+        ctx.fillText(this.currentLetterData.icon, 45, 6);
+
+        if (!this.isBlinking) {
+          ctx.fillStyle = '#1A237E';
+          ctx.beginPath(); ctx.arc(-14, -48, 5, 0, Math.PI * 2); ctx.arc(14, -48, 5, 0, Math.PI * 2); ctx.fill();
+        } else {
+          ctx.strokeStyle = '#1A237E'; ctx.lineWidth = 3;
+          ctx.beginPath(); ctx.moveTo(-18, -48); ctx.lineTo(-10, -48); ctx.moveTo(10, -48); ctx.lineTo(18, -48); ctx.stroke();
+        }
+        ctx.restore();
+
+        ctx.fillStyle = '#FFF59D'; ctx.font = 'bold 24px "Fredoka", sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(`Tap the matching sound bubble below! 🔊`, 640, 430);
+
+        for (const b of this.bubbles) {
+          ctx.save();
+          ctx.translate(b.x, b.y);
+          ctx.fillStyle = b.color + 'dd'; ctx.strokeStyle = b.glow; ctx.lineWidth = 4;
+          ctx.beginPath(); ctx.arc(0, 0, b.radius, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+
+          ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 56px "Fredoka", sans-serif';
+          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillText(b.letter, 0, 4);
+          ctx.restore();
+        }
+      }
+    }
+
+    // ==========================================
+    // 8. STAGE 2: GUIDED LETTER TRACING
+    // ==========================================
+    class LetterTracingStage {
+      constructor() {
+        this.currentLetterKey = 's';
+        this.currentLetterData = PHONICS_DATA.letters['s'];
+        this.board = { x: 640, y: 395, width: 560, height: 480 };
+        this.scaleFactor = 1.4;
+        this.currentStrokeIdx = 0;
+        this.completedStrokes = [];
+        this.currentCheckpointIdx = 0;
+        this.currentDrawnPoints = [];
+        this.isTracing = false;
+        this.isLetterComplete = false;
+        this.celebrateTimer = 0;
+        this.starPhase = 0;
+      }
+
+      onEnter(letterKey = 's') {
+        this.loadLetter(letterKey || 's');
+      }
+
+      loadLetter(key) {
+        this.currentLetterKey = key;
+        this.currentLetterData = PHONICS_DATA.letters[key] || PHONICS_DATA.letters['s'];
+        this.currentStrokeIdx = 0;
+        this.completedStrokes = [];
+        this.currentCheckpointIdx = 0;
+        this.currentDrawnPoints = [];
+        this.isTracing = false;
+        this.isLetterComplete = false;
+        this.celebrateTimer = 0;
+
+        setTimeout(() => {
+          if (this.sound) {
+            this.sound.playLetterPhoneme(this.currentLetterKey);
+            setTimeout(() => this.sound.speak(`Trace lowercase letter ${this.currentLetterKey}! Follow the glowing star!`), 400);
+          }
+        }, 300);
+      }
+
+      toBoardCoords(pt) {
+        const originX = this.board.x - (150 * this.scaleFactor);
+        const originY = this.board.y - (150 * this.scaleFactor) + 10;
+        return { x: originX + pt.x * this.scaleFactor, y: originY + pt.y * this.scaleFactor };
+      }
+
+      update(dt) {
+        this.starPhase += dt * 4;
+        if (this.isLetterComplete) {
+          this.celebrateTimer += dt;
+          if (this.celebrateTimer >= 2.4) {
+            this.engine.switchScene('treasureMap');
+          }
+        }
+      }
+
+      onPointerDown(x, y) {
+        if (this.isLetterComplete) return;
+        const stroke = this.currentLetterData.tracing.strokes[this.currentStrokeIdx];
+        if (!stroke) return;
+        const target = this.toBoardCoords(stroke.points[this.currentCheckpointIdx]);
+        if (Math.hypot(x - target.x, y - target.y) < 65) {
+          this.isTracing = true;
+          this.currentDrawnPoints = [{ x, y }];
+          this.sound.playSparkle();
+        }
+      }
+
+      onPointerMove(x, y) {
+        if (!this.isTracing || this.isLetterComplete) return;
+        this.currentDrawnPoints.push({ x, y });
+        this.particles.emitSparkleTrail(x, y, '#00E676');
+
+        const stroke = this.currentLetterData.tracing.strokes[this.currentStrokeIdx];
+        if (!stroke) return;
+        const nextPt = stroke.points[this.currentCheckpointIdx + 1];
+        if (nextPt) {
+          const target = this.toBoardCoords(nextPt);
+          if (Math.hypot(x - target.x, y - target.y) < 60) {
+            this.currentCheckpointIdx++;
+            this.sound.playSparkle();
+            if (this.currentCheckpointIdx >= stroke.points.length - 1) {
+              this.completedStrokes.push(this.currentStrokeIdx);
+              this.currentStrokeIdx++;
+              this.currentCheckpointIdx = 0;
+              this.currentDrawnPoints = [];
+
+              if (this.currentStrokeIdx >= this.currentLetterData.tracing.strokes.length) {
+                this.isLetterComplete = true;
+                this.sound.playStarCollect();
+                this.sound.playCelebration();
+                this.particles.burstConfetti(this.board.x, this.board.y, 55);
+                this.sound.playLetterPhoneme(this.currentLetterKey);
+
+                const praise = ["Super Writer!", "You Did It!", "Amazing Tracing!"][Math.floor(Math.random() * 3)];
+                setTimeout(() => this.sound.speak(`${praise} ${this.currentLetterKey} is for ${this.currentLetterData.sampleWord}!`), 450);
+
+                if (window.gameApp) {
+                  window.gameApp.addStar(1);
+                }
+              }
+            }
+          }
+        }
+      }
+
+      onPointerUp() {
+        this.isTracing = false;
+        this.currentDrawnPoints = [];
+      }
+
+      render(ctx) {
+        const grad = ctx.createLinearGradient(0, 0, 0, 720);
+        grad.addColorStop(0, '#100c28'); grad.addColorStop(1, '#0e2b3d');
+        ctx.fillStyle = grad; ctx.fillRect(0, 0, 1280, 720);
+
+        ctx.fillStyle = 'rgba(15, 25, 55, 0.88)'; ctx.strokeStyle = '#00E5FF'; ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.roundRect(320, 20, 640, 68, 34); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 28px "Fredoka", sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(`Trace lowercase:  ${this.currentLetterKey}  ${this.currentLetterData.phoneme}`, 640, 54);
+
+        ctx.fillStyle = '#161c38'; ctx.strokeStyle = this.currentLetterData.color; ctx.lineWidth = 6;
+        ctx.beginPath();
+        ctx.roundRect(this.board.x - this.board.width / 2, this.board.y - this.board.height / 2, this.board.width, this.board.height, 28);
+        ctx.fill(); ctx.stroke();
+
+        ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+        this.currentLetterData.tracing.strokes.forEach(stroke => {
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)'; ctx.lineWidth = 40;
+          ctx.setLineDash([14, 12]);
+          ctx.beginPath();
+          stroke.points.forEach((pt, idx) => {
+            const w = this.toBoardCoords(pt);
+            if (idx === 0) ctx.moveTo(w.x, w.y); else ctx.lineTo(w.x, w.y);
+          });
+          ctx.stroke();
+        });
+        ctx.setLineDash([]);
+
+        this.completedStrokes.forEach(sIdx => {
+          const stroke = this.currentLetterData.tracing.strokes[sIdx];
+          ctx.strokeStyle = '#00E676'; ctx.lineWidth = 38;
+          ctx.beginPath();
+          stroke.points.forEach((pt, idx) => {
+            const w = this.toBoardCoords(pt);
+            if (idx === 0) ctx.moveTo(w.x, w.y); else ctx.lineTo(w.x, w.y);
+          });
+          ctx.stroke();
+        });
+
+        if (this.currentStrokeIdx < this.currentLetterData.tracing.strokes.length && !this.isLetterComplete) {
+          const stroke = this.currentLetterData.tracing.strokes[this.currentStrokeIdx];
+          if (this.currentCheckpointIdx > 0) {
+            ctx.strokeStyle = '#00E676'; ctx.lineWidth = 38;
+            ctx.beginPath();
+            for (let i = 0; i <= this.currentCheckpointIdx; i++) {
+              const w = this.toBoardCoords(stroke.points[i]);
+              if (i === 0) ctx.moveTo(w.x, w.y); else ctx.lineTo(w.x, w.y);
+            }
+            ctx.stroke();
+          }
+
+          if (stroke.points[this.currentCheckpointIdx]) {
+            const target = this.toBoardCoords(stroke.points[this.currentCheckpointIdx]);
+            this.particles.drawStarShape(ctx, target.x, target.y + Math.sin(this.starPhase) * 6, 5, 24, 10, '#FFD600');
+          }
+        }
+      }
+    }
+
+    // ==========================================
+    // 9. STAGE 3: DRAG-TO-BLEND WORD READING
+    // ==========================================
+    class CVCFactoryStage {
+      constructor() {
+        this.words = PHONICS_DATA.blendingWords;
+        this.wordIndex = 0;
+        this.currentWord = null;
+        this.blocks = [];
+        this.slots = [];
+        this.draggingBlock = null;
+        this.dragOffset = { x: 0, y: 0 };
+        this.isBlended = false;
+        this.celebrateTimer = 0;
+        this.time = 0;
+      }
+
+      onEnter() { this.loadWord(this.wordIndex); }
+
+      loadWord(index) {
+        this.wordIndex = index % this.words.length;
+        this.currentWord = this.words[this.wordIndex];
+        this.isBlended = false;
+        this.celebrateTimer = 0;
+        this.draggingBlock = null;
+
+        const slotStartX = 480;
+        this.slots = [0, 1, 2].map(i => ({
+          id: i, x: slotStartX + i * 160, y: 450, width: 100, height: 100, filledBlock: null
+        }));
+
+        const blockStartX = 400;
+        this.blocks = this.currentWord.letters.map((letter, i) => ({
+          id: i, letter: letter, sound: this.currentWord.sounds[i],
+          x: blockStartX + i * 240, y: 240, baseX: blockStartX + i * 240, baseY: 240,
+          width: 90, height: 90, scale: 1,
+          color: i === 0 ? '#FF9800' : (i === 1 ? '#00E676' : '#00E5FF'),
+          inSlot: null
+        }));
+
+        setTimeout(() => {
+          if (this.sound) this.sound.speak(`Tap each sound, then drag letters together into the boxes!`);
+        }, 400);
+      }
+
+      update(dt) {
+        this.time += dt;
+        for (const b of this.blocks) {
+          if (b !== this.draggingBlock && !b.inSlot) {
+            b.x += (b.baseX - b.x) * 6 * dt;
+            b.y += (b.baseY - b.y) * 6 * dt;
+          }
+        }
+
+        if (this.isBlended) {
+          this.celebrateTimer += dt;
+          if (this.celebrateTimer >= 3.2) {
+            this.wordIndex = (this.wordIndex + 1) % this.words.length;
+            this.loadWord(this.wordIndex);
+          }
+        }
+      }
+
+      onPointerDown(x, y) {
+        if (this.isBlended) return;
+        for (let i = this.blocks.length - 1; i >= 0; i--) {
+          const b = this.blocks[i];
+          if (Math.abs(x - b.x) < 55 && Math.abs(y - b.y) < 55) {
+            this.draggingBlock = b;
+            this.dragOffset.x = x - b.x;
+            this.dragOffset.y = y - b.y;
+            b.scale = 1.18;
+
+            if (b.inSlot) {
+              b.inSlot.filledBlock = null;
+              b.inSlot = null;
+            }
+
+            this.sound.playLetterPhoneme(b.letter);
+            this.sound.playBubblePop();
+            this.particles.emitSparkleTrail(b.x, b.y, b.color);
+            break;
+          }
+        }
+      }
+
+      onPointerMove(x, y) {
+        if (!this.draggingBlock) return;
+        this.draggingBlock.x = x - this.dragOffset.x;
+        this.draggingBlock.y = y - this.dragOffset.y;
+        this.particles.emitSparkleTrail(this.draggingBlock.x, this.draggingBlock.y, this.draggingBlock.color);
+      }
+
+      onPointerUp() {
+        if (!this.draggingBlock) return;
+        const b = this.draggingBlock;
+        this.draggingBlock = null;
+        b.scale = 1.0;
+
+        let snapped = false;
+        for (const slot of this.slots) {
+          if (!slot.filledBlock && Math.hypot(b.x - slot.x, b.y - slot.y) < 80) {
+            slot.filledBlock = b;
+            b.inSlot = slot;
+            b.x = slot.x;
+            b.y = slot.y;
+            snapped = true;
+            this.sound.playSnap();
+            this.particles.burstStars(slot.x, slot.y, 12, b.color);
+            break;
+          }
+        }
+
+        if (!snapped) this.sound.playGentleBounce();
+
+        const filled = this.slots.filter(s => s.filledBlock !== null);
+        if (filled.length === 3) {
+          const spelled = this.slots.map(s => s.filledBlock.letter).join('');
+          if (spelled === this.currentWord.word) {
+            this.isBlended = true;
+            this.sound.playStarCollect();
+            this.sound.playCelebration();
+            this.particles.burstConfetti(640, 360, 60);
+
+            setTimeout(() => {
+              this.sound.speak(`${this.currentWord.word.toUpperCase()}! You blended the word! Fantastic!`);
+            }, 300);
+
+            if (window.gameApp) {
+              window.gameApp.addStar(2);
+            }
+          }
+        }
+      }
+
+      render(ctx) {
+        const grad = ctx.createLinearGradient(0, 0, 0, 720);
+        grad.addColorStop(0, '#191136'); grad.addColorStop(1, '#0e2b34');
+        ctx.fillStyle = grad; ctx.fillRect(0, 0, 1280, 720);
+
+        ctx.fillStyle = 'rgba(15, 25, 55, 0.88)'; ctx.strokeStyle = '#00E5FF'; ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.roundRect(320, 24, 640, 76, 38); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 30px "Fredoka", sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(`Blend Sounds to Read:  ${this.currentWord.letters.join(' - ')}`, 640, 62);
+
+        ctx.fillStyle = '#FFF59D'; ctx.font = 'bold 24px "Fredoka", sans-serif';
+        ctx.fillText('Tap sounds, then drag blocks into the slots below! 👇', 640, 150);
+
+        for (const slot of this.slots) {
+          ctx.save();
+          ctx.translate(slot.x, slot.y);
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+          ctx.strokeStyle = '#00E5FF'; ctx.lineWidth = 4;
+          ctx.setLineDash([10, 8]);
+          ctx.beginPath(); ctx.roundRect(-50, -50, 100, 100, 20); ctx.fill(); ctx.stroke();
+          ctx.setLineDash([]);
+          ctx.restore();
+        }
+
+        for (const b of this.blocks) {
+          ctx.save();
+          ctx.translate(b.x, b.y);
+          ctx.scale(b.scale, b.scale);
+          ctx.fillStyle = b.color; ctx.strokeStyle = '#FFFFFF'; ctx.lineWidth = 4;
+          ctx.beginPath(); ctx.roundRect(-45, -45, 90, 90, 20); ctx.fill(); ctx.stroke();
+          ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 56px "Fredoka", sans-serif';
+          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillText(b.letter, 0, 4);
+          ctx.restore();
+        }
+
+        if (this.isBlended) {
+          ctx.save();
+          ctx.translate(640, 240);
+          ctx.fillStyle = 'rgba(10, 25, 55, 0.95)'; ctx.strokeStyle = '#FFD600'; ctx.lineWidth = 5;
+          ctx.beginPath(); ctx.roundRect(-140, -110, 280, 220, 30); ctx.fill(); ctx.stroke();
+          ctx.font = '74px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillText(this.currentWord.emoji, 0, -30);
+          ctx.fillStyle = '#00E676'; ctx.font = 'bold 44px "Fredoka", sans-serif';
+          ctx.fillText(this.currentWord.word.toUpperCase(), 0, 50);
+          ctx.restore();
+        }
+      }
+    }
+
+    // ==========================================
+    // 10. APP COORDINATOR & 50 REWARD MANAGER
+    // ==========================================
+    class PhonicsGameApp {
+      constructor() {
+        this.canvas = document.getElementById('game-canvas');
+        this.engine = new GameEngine(this.canvas);
+        this.stars = 0;
+        this.unlockedNodeIndex = 0;
+        this.rewards = JSON.parse(JSON.stringify(FIFTY_REWARDS));
+        this.equipped = { hat: 'r26', cape: 'r31', glasses: 'r35', item: 'r38' };
+
+        this.engine.registerScene('treasureMap', new TreasureMapStage());
+        this.engine.registerScene('bubblePhonics', new BubblePhonicsStage());
+        this.engine.registerScene('letterTracing', new LetterTracingStage());
+        this.engine.registerScene('cvcFactory', new CVCFactoryStage());
+
+        this.bindDOM();
+      }
+
+      addStar(amount = 1) {
+        this.stars += amount;
+        document.getElementById('star-count').textContent = this.stars.toString();
+        const badge = document.querySelector('.star-counter-badge');
+        if (badge) {
+          badge.classList.add('star-bump');
+          setTimeout(() => badge.classList.remove('star-bump'), 400);
+        }
+        this.checkRewardUnlocks();
+      }
+
+      advanceNode() {
+        if (this.unlockedNodeIndex < 25) {
+          this.unlockedNodeIndex++;
+        }
+      }
+
+      selectLetter(letterKey) {
+        this.engine.switchScene('bubblePhonics', true, letterKey);
+        this.highlightDock('bubblePhonics');
+      }
+
+      checkRewardUnlocks() {
+        let newlyUnlocked = [];
+        this.rewards.forEach(r => {
+          if (!r.unlocked && this.stars >= r.reqStars) {
+            r.unlocked = true;
+            newlyUnlocked.push(r);
+          }
+        });
+
+        if (newlyUnlocked.length > 0) {
+          const item = newlyUnlocked[0];
+          this.showRewardNotification(`🎁 New Treasure Unlocked: ${item.icon} ${item.name}!`);
+          soundEngine.speak(`Awesome! You unlocked the ${item.name}!`);
+        }
+      }
+
+      showRewardNotification(msg) {
+        const bubble = document.getElementById('companion-speech');
+        if (bubble) {
+          bubble.textContent = msg;
+          bubble.classList.remove('hidden');
+          setTimeout(() => bubble.classList.add('hidden'), 4000);
+        }
+      }
+
+      bindDOM() {
+        document.getElementById('btn-start-adventure').addEventListener('click', () => {
+          soundEngine.initContext();
+          soundEngine.playCelebration();
+          document.getElementById('welcome-modal').classList.add('hidden');
+          this.engine.switchScene('treasureMap', false);
+          this.highlightDock('treasureMap');
+        });
+
+        document.getElementById('btn-map').addEventListener('click', () => {
+          soundEngine.playClick();
+          this.engine.switchScene('treasureMap');
+          this.highlightDock('treasureMap');
+        });
+
+        document.getElementById('btn-music').addEventListener('click', () => {
+          const isPlaying = soundEngine.toggleMusic();
+          document.getElementById('btn-music').textContent = isPlaying ? '🎵 Music' : '🔇 Music Off';
+        });
+
+        document.getElementById('btn-fullscreen').addEventListener('click', () => {
+          soundEngine.playClick();
+          this.engine.toggleFullscreen();
+        });
+
+        document.getElementById('btn-mute').addEventListener('click', (e) => {
+          const isMuted = soundEngine.toggleMute();
+          e.target.textContent = isMuted ? '🔇' : '🔊';
+        });
+
+        document.getElementById('btn-treasure-chest').addEventListener('click', () => {
+          soundEngine.playClick();
+          this.renderTreasureGrid('all');
+          document.getElementById('treasure-modal').classList.remove('hidden');
+        });
+
+        document.getElementById('btn-close-treasure').addEventListener('click', () => {
+          soundEngine.playClick();
+          document.getElementById('treasure-modal').classList.add('hidden');
+        });
+
+        document.querySelectorAll('.treasure-tab-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            soundEngine.playClick();
+            document.querySelectorAll('.treasure-tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            this.renderTreasureGrid(btn.getAttribute('data-tab'));
+          });
+        });
+
+        document.querySelectorAll('[data-stage]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const stage = btn.getAttribute('data-stage');
+            soundEngine.playClick();
+            this.engine.switchScene(stage);
+            this.highlightDock(stage);
+          });
+        });
+
+        document.getElementById('companion-avatar').addEventListener('click', () => {
+          soundEngine.playAlienGiggle();
+          soundEngine.speak("I'm Astro! Tap on the Treasure Map to learn new letters!");
+        });
+      }
+
+      renderTreasureGrid(tab) {
+        const grid = document.getElementById('treasure-grid');
+        grid.innerHTML = '';
+
+        const list = this.rewards.filter(r => {
+          if (tab === 'all') return true;
+          return r.type === tab;
+        });
+
+        list.forEach(r => {
+          const card = document.createElement('div');
+          const isEquipped = r.type === 'wearable' && this.equipped[r.category] === r.id;
+          card.className = `reward-card ${r.unlocked ? 'unlocked' : 'locked'} ${isEquipped ? 'equipped' : ''}`;
+          card.innerHTML = `
+            <div class="reward-icon">${r.unlocked ? r.icon : '❓'}</div>
+            <div class="reward-name">${r.unlocked ? r.name : 'Locked Item'}</div>
+            <div class="reward-type">${r.unlocked ? r.type.toUpperCase() : `⭐ ${r.reqStars} Stars`}</div>
+          `;
+
+          if (r.unlocked && r.type === 'wearable') {
+            card.addEventListener('click', () => {
+              soundEngine.playClick();
+              soundEngine.playSparkle();
+              this.equipped[r.category] = r.id;
+              this.renderTreasureGrid(tab);
+            });
+          }
+          grid.appendChild(card);
+        });
+      }
+
+      highlightDock(stage) {
+        document.querySelectorAll('[data-stage]').forEach(b => b.classList.toggle('active', b.getAttribute('data-stage') === stage));
+      }
+
+      start() {
+        this.engine.start();
+        this.engine.switchScene('treasureMap', false);
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      window.gameApp = new PhonicsGameApp();
+      window.gameApp.start();
+    });
+  </script>
+</body>
+</html>

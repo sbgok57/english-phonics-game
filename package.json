@@ -1,0 +1,21 @@
+{
+  "name": "phonics-galaxy-adventure",
+  "version": "1.0.0",
+  "description": "Educational 2D platformer and phonics minigame collection for 6-year-olds learning English phonics, letter tracing, and reading.",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "keywords": [
+    "phonics",
+    "education",
+    "reading",
+    "letter-tracing",
+    "minigames",
+    "platformer",
+    "html5-game",
+    "web-audio"
+  ],
+  "author": "Antigravity Team",
+  "license": "MIT"
+}
