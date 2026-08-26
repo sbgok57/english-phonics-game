@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Phonics Learning Hub & Treasure Island - 1st Grade 12s Audio Suite</title>
+  <title>Phonics Galaxy & Treasure Island - 1st Grade Phonics Learning Suite</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@700;900&display=swap');
 
@@ -449,11 +449,11 @@
     <div id="ui-overlay">
       <div class="top-hud">
         <div class="hud-group-left">
-          <button id="btn-learning-hub" class="hud-btn" title="Open Phonics Learning Hub">
-            <span>📖</span> Learning Hub
+          <button id="btn-learning-hub" class="hud-btn" title="Open Pre-Map Learning Phase">
+            <span>📖</span> 1. Learn Sound
           </button>
           <button id="btn-map" class="hud-btn gold" title="Open Phonics Treasure Map">
-            <span>🗺️</span> Treasure Map
+            <span>🗺️</span> 2. Treasure Map
           </button>
           <div class="star-counter-badge" title="Collected Stars">
             <span class="star-icon">⭐</span>
@@ -463,7 +463,7 @@
 
         <div class="stage-dock">
           <button class="dock-item active" data-stage="introLearning">
-            <span>📖</span> 1. Learning Hub
+            <span>📖</span> 1. Learn Sound
           </button>
           <button class="dock-item" data-stage="treasureMap">
             <span>🗺️</span> 2. Treasure Map
@@ -500,7 +500,7 @@
           🐯
         </div>
         <div id="companion-speech" class="companion-speech-bubble">
-          Listen to the 12-second slow sounds in the Learning Hub first, then unlock the Treasure Map! ⭐
+          Listen to the 5-10 second slow sound and example words first, then explore the Treasure Map! ⭐
         </div>
       </div>
     </div>
@@ -508,42 +508,42 @@
     <!-- WELCOME MODAL -->
     <div id="welcome-modal" class="modal-backdrop">
       <div class="modal-window">
-        <h1 class="modal-title">⭐ Phonics Learning Hub & Treasure Island ⭐</h1>
-        <p class="modal-subtitle">Designed for 1st Graders with 12-Second Extended Sound Articulation & Prerequisite Learning Hub!</p>
+        <h1 class="modal-title">⭐ Phonics Galaxy & Treasure Island ⭐</h1>
+        <p class="modal-subtitle">1st-Grade Phonics Suite with 5-10s Slow Articulated Sounds & Pre-Map Learning!</p>
 
         <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px; text-align: left;">
           <div style="background:rgba(255,255,255,0.08); border:2px solid rgba(0,229,255,0.3); border-radius:16px; padding:10px 14px; display:flex; align-items:center; gap:10px;">
             <span style="font-size:1.8rem;">📢</span>
             <div>
-              <strong>12-Second Elongated Sounds</strong>
-              <div style="font-size:0.8rem; color:#80DEEA;">Slow, articulated phonemes & syllables</div>
+              <strong>5-10s Slow Phonetic Sounds</strong>
+              <div style="font-size:0.8rem; color:#80DEEA;">Artificially elongated for 1st-grade auditory processing</div>
             </div>
           </div>
           <div style="background:rgba(255,255,255,0.08); border:2px solid rgba(0,229,255,0.3); border-radius:16px; padding:10px 14px; display:flex; align-items:center; gap:10px;">
             <span style="font-size:1.8rem;">📖</span>
             <div>
-              <strong>Phonics Learning Hub</strong>
-              <div style="font-size:0.8rem; color:#80DEEA;">Prerequisite letter & 3 example words</div>
+              <strong>Pre-Map Learning Phase</strong>
+              <div style="font-size:0.8rem; color:#80DEEA;">Distraction-free letter & 3 visual example words</div>
             </div>
           </div>
           <div style="background:rgba(255,255,255,0.08); border:2px solid rgba(0,229,255,0.3); border-radius:16px; padding:10px 14px; display:flex; align-items:center; gap:10px;">
             <span style="font-size:1.8rem;">🗺️</span>
             <div>
-              <strong>Treasure Map Application</strong>
-              <div style="font-size:0.8rem; color:#80DEEA;">Apply slow sounds in tracing and blending</div>
+              <strong>Treasure Map Practice</strong>
+              <div style="font-size:0.8rem; color:#80DEEA;">Reinforce example words in tracing & blending</div>
             </div>
           </div>
           <div style="background:rgba(255,255,255,0.08); border:2px solid rgba(0,229,255,0.3); border-radius:16px; padding:10px 14px; display:flex; align-items:center; gap:10px;">
             <span style="font-size:1.8rem;">🎁</span>
             <div>
-              <strong>50 Daily Rewards</strong>
-              <div style="font-size:0.8rem; color:#80DEEA;">Stickers, capes, hats, wands & pets</div>
+              <strong>50 Unlockable Rewards</strong>
+              <div style="font-size:0.8rem; color:#80DEEA;">Stickers, capes, hats, wands & companions</div>
             </div>
           </div>
         </div>
 
         <button id="btn-start-adventure" class="btn-primary-big">
-          <span>🚀</span> ENTER PHONICS HUB!
+          <span>🚀</span> START PRE-MAP LEARNING!
         </button>
       </div>
     </div>
@@ -569,7 +569,7 @@
 
   <script>
     // ==========================================
-    // 1. DATA: 26 LETTERS WITH 3 EXAMPLE WORDS
+    // 1. DATA: 26 LETTERS WITH 3 VISUAL EXAMPLE WORDS
     // ==========================================
     const TREASURE_MAP_ZONES = [
       { id: 'zone1', name: '🌴 Sunlit Jungle Archipelago', color: '#00E676', letters: ['s', 'a', 't', 'p', 'i', 'n'] },
@@ -581,7 +581,7 @@
     const PHONICS_DATA = {
       letters: {
         's': {
-          letter: 's', nodeTitle: 'Snake Safari Park 🐍', phoneme: '/ssssssssssssssssssssssss/', soundDesc: 'sssss',
+          letter: 's', nodeTitle: 'Snake Safari Park 🐍', phoneme: '/ssssssssssssssss/', soundDesc: 'sssss',
           examples: [
             { word: 'Sun', emoji: '☀️', breakdown: 'Sssss... uuuu... nnnn... Sun! ☀️' },
             { word: 'Snake', emoji: '🐍', breakdown: 'Sssss... nnnn... ayyy... kkk... Snake! 🐍' },
@@ -591,7 +591,7 @@
           tracing: { strokes: [{ points: [{x:195,y:135},{x:150,y:110},{x:115,y:140},{x:150,y:175},{x:185,y:210},{x:150,y:245},{x:105,y:220}] }] }
         },
         'a': {
-          letter: 'a', nodeTitle: 'Apple Adventure Island 🍎', phoneme: '/aaaaaaaaaaaaaaaaaaaaaaaa/', soundDesc: 'aaaaa',
+          letter: 'a', nodeTitle: 'Apple Adventure Island 🍎', phoneme: '/aaaaaaaaaaaaaaaa/', soundDesc: 'aaaaa',
           examples: [
             { word: 'Apple', emoji: '🍎', breakdown: 'Aaaaah... puh... lll... Apple! 🍎' },
             { word: 'Ant', emoji: '🐜', breakdown: 'Aaaaah... nnn... tuh... Ant! 🐜' },
@@ -601,7 +601,7 @@
           tracing: { strokes: [{ points: [{x:200,y:140},{x:150,y:110},{x:100,y:150},{x:100,y:200},{x:150,y:240},{x:200,y:210},{x:200,y:140}] }, { points: [{x:200,y:130},{x:200,y:190},{x:200,y:240},{x:215,y:245}] }] }
         },
         't': {
-          letter: 't', nodeTitle: 'Turtle Treasure Cove 🐢', phoneme: '/t-t-t-t-t-t-t-t-t-tuh/', soundDesc: 'tuh',
+          letter: 't', nodeTitle: 'Turtle Treasure Cove 🐢', phoneme: '/t-t-t-t-t-t-tuh/', soundDesc: 'tuh',
           examples: [
             { word: 'Turtle', emoji: '🐢', breakdown: 'Tttt... errr... tuh... lll... Turtle! 🐢' },
             { word: 'Tiger', emoji: '🐯', breakdown: 'Tttt... eye... gerrr... Tiger! 🐯' },
@@ -611,7 +611,7 @@
           tracing: { strokes: [{ points: [{x:150,y:70},{x:150,y:200},{x:155,y:235},{x:190,y:235}] }, { points: [{x:110,y:130},{x:190,y:130}] }] }
         },
         'p': {
-          letter: 'p', nodeTitle: 'Pirate Piggy Port 🐷', phoneme: '/p-p-p-p-p-p-p-p-p-puh/', soundDesc: 'puh',
+          letter: 'p', nodeTitle: 'Pirate Piggy Port 🐷', phoneme: '/p-p-p-p-p-p-puh/', soundDesc: 'puh',
           examples: [
             { word: 'Pig', emoji: '🐷', breakdown: 'Pppp... ihhh... guhh... Pig! 🐷' },
             { word: 'Penguin', emoji: '🐧', breakdown: 'Pppp... en... guin... Penguin! 🐧' },
@@ -621,7 +621,7 @@
           tracing: { strokes: [{ points: [{x:115,y:125},{x:115,y:210},{x:115,y:275}] }, { points: [{x:115,y:135},{x:155,y:120},{x:195,y:160},{x:155,y:205},{x:115,y:205}] }] }
         },
         'i': {
-          letter: 'i', nodeTitle: 'Igloo Ice Cavern 🧊', phoneme: '/iiiiiiiiiiiiiiiiiiiiiiii/', soundDesc: 'ihhh',
+          letter: 'i', nodeTitle: 'Igloo Ice Cavern 🧊', phoneme: '/iiiiiiiiiiiiiiii/', soundDesc: 'ihhh',
           examples: [
             { word: 'Igloo', emoji: '🧊', breakdown: 'Ihhh... gluuu... Igloo! 🧊' },
             { word: 'Iguana', emoji: '🦎', breakdown: 'Ihhh... gu... ah... na... Iguana! 🦎' },
@@ -631,7 +631,7 @@
           tracing: { strokes: [{ points: [{x:150,y:130},{x:150,y:190},{x:150,y:245}] }, { points: [{x:150,y:80},{x:150,y:85}] }] }
         },
         'n': {
-          letter: 'n', nodeTitle: 'Nutty Monkey Jungle 🥜', phoneme: '/nnnnnnnnnnnnnnnnnnnnnnnn/', soundDesc: 'nnnn',
+          letter: 'n', nodeTitle: 'Nutty Monkey Jungle 🥜', phoneme: '/nnnnnnnnnnnnnnnn/', soundDesc: 'nnnn',
           examples: [
             { word: 'Nut', emoji: '🥜', breakdown: 'Nnnn... uhhh... tuh... Nut! 🥜' },
             { word: 'Nest', emoji: '🪺', breakdown: 'Nnnn... ehhh... sst... Nest! 🪺' },
@@ -641,7 +641,7 @@
           tracing: { strokes: [{ points: [{x:105,y:130},{x:105,y:245}] }, { points: [{x:105,y:150},{x:150,y:130},{x:190,y:160},{x:190,y:245}] }] }
         },
         'm': {
-          letter: 'm', nodeTitle: 'Moonlit Magic Mountain 🌙', phoneme: '/mmmmmmmmmmmmmmmmmmmmmmmm/', soundDesc: 'mmmm',
+          letter: 'm', nodeTitle: 'Moonlit Magic Mountain 🌙', phoneme: '/mmmmmmmmmmmmmmmm/', soundDesc: 'mmmm',
           examples: [
             { word: 'Moon', emoji: '🌙', breakdown: 'Mmmm... ooo... nnn... Moon! 🌙' },
             { word: 'Monkey', emoji: '🐒', breakdown: 'Mmmm... un... key... Monkey! 🐒' },
@@ -651,7 +651,7 @@
           tracing: { strokes: [{ points: [{x:80,y:130},{x:80,y:245}] }, { points: [{x:80,y:150},{x:120,y:130},{x:145,y:155},{x:145,y:245}] }, { points: [{x:145,y:150},{x:185,y:130},{x:215,y:155},{x:215,y:245}] }] }
         },
         'd': {
-          letter: 'd', nodeTitle: 'Dinosaur Dog Dunes 🐶', phoneme: '/d-d-d-d-d-d-d-d-d-duh/', soundDesc: 'duh',
+          letter: 'd', nodeTitle: 'Dinosaur Dog Dunes 🐶', phoneme: '/d-d-d-d-d-d-duh/', soundDesc: 'duh',
           examples: [
             { word: 'Dog', emoji: '🐶', breakdown: 'Dddd... off... guhh... Dog! 🐶' },
             { word: 'Duck', emoji: '🦆', breakdown: 'Dddd... uhh... kuhh... Duck! 🦆' },
@@ -661,7 +661,7 @@
           tracing: { strokes: [{ points: [{x:190,y:140},{x:145,y:115},{x:100,y:160},{x:100,y:200},{x:145,y:240},{x:190,y:210},{x:190,y:140}] }, { points: [{x:190,y:60},{x:190,y:150},{x:190,y:245}] }] }
         },
         'g': {
-          letter: 'g', nodeTitle: 'Golden Gift Lagoon 🎁', phoneme: '/g-g-g-g-g-g-g-g-g-guh/', soundDesc: 'guh',
+          letter: 'g', nodeTitle: 'Golden Gift Lagoon 🎁', phoneme: '/g-g-g-g-g-g-guh/', soundDesc: 'guh',
           examples: [
             { word: 'Gift', emoji: '🎁', breakdown: 'Gggg... ihh... ftt... Gift! 🎁' },
             { word: 'Goat', emoji: '🐐', breakdown: 'Gggg... ooo... tuh... Goat! 🐐' },
@@ -671,7 +671,7 @@
           tracing: { strokes: [{ points: [{x:190,y:130},{x:145,y:105},{x:100,y:150},{x:100,y:185},{x:145,y:215},{x:190,y:190},{x:190,y:130}] }, { points: [{x:190,y:130},{x:190,y:235},{x:170,y:270},{x:120,y:270}] }] }
         },
         'o': {
-          letter: 'o', nodeTitle: 'Orange Octopus Ocean 🍊', phoneme: '/oooooooooooooooooooooooo/', soundDesc: 'offf',
+          letter: 'o', nodeTitle: 'Orange Octopus Ocean 🍊', phoneme: '/oooooooooooooooo/', soundDesc: 'offf',
           examples: [
             { word: 'Orange', emoji: '🍊', breakdown: 'Offf... rannnge... Orange! 🍊' },
             { word: 'Octopus', emoji: '🐙', breakdown: 'Offf... cto... pus... Octopus! 🐙' },
@@ -681,7 +681,7 @@
           tracing: { strokes: [{ points: [{x:150,y:110},{x:100,y:150},{x:100,y:200},{x:150,y:245},{x:200,y:200},{x:200,y:150},{x:150,y:110}] }] }
         },
         'c': {
-          letter: 'c', nodeTitle: 'Cat Castle Quest 🐱', phoneme: '/k-k-k-k-k-k-k-k-k-kuh/', soundDesc: 'kuh',
+          letter: 'c', nodeTitle: 'Cat Castle Quest 🐱', phoneme: '/k-k-k-k-k-k-kuh/', soundDesc: 'kuh',
           examples: [
             { word: 'Cat', emoji: '🐱', breakdown: 'Kkkk... ahhh... tuhh... Cat! 🐱' },
             { word: 'Car', emoji: '🚗', breakdown: 'Kkkk... arrr... Car! 🚗' },
@@ -691,7 +691,7 @@
           tracing: { strokes: [{ points: [{x:210,y:135},{x:160,y:110},{x:100,y:160},{x:100,y:200},{x:155,y:245},{x:210,y:220}] }] }
         },
         'k': {
-          letter: 'k', nodeTitle: 'Flying Kite Kingdom 🪁', phoneme: '/k-k-k-k-k-k-k-k-k-kuh/', soundDesc: 'kuh',
+          letter: 'k', nodeTitle: 'Flying Kite Kingdom 🪁', phoneme: '/k-k-k-k-k-k-kuh/', soundDesc: 'kuh',
           examples: [
             { word: 'Kite', emoji: '🪁', breakdown: 'Kkkk... eye... tuh... Kite! 🪁' },
             { word: 'Kangaroo', emoji: '🦘', breakdown: 'Kkkk... an... ga... roo... Kangaroo! 🦘' },
@@ -701,7 +701,7 @@
           tracing: { strokes: [{ points: [{x:110,y:60},{x:110,y:245}] }, { points: [{x:185,y:135},{x:115,y:185},{x:190,y:245}] }] }
         },
         'e': {
-          letter: 'e', nodeTitle: 'Egg Explorer Valley 🥚', phoneme: '/eeeeeeeeeeeeeeeeeeeeeeee/', soundDesc: 'ehhh',
+          letter: 'e', nodeTitle: 'Egg Explorer Valley 🥚', phoneme: '/eeeeeeeeeeeeeeee/', soundDesc: 'ehhh',
           examples: [
             { word: 'Egg', emoji: '🥚', breakdown: 'Ehhh... guhh... Egg! 🥚' },
             { word: 'Elephant', emoji: '🐘', breakdown: 'Ehhh... le... phant... Elephant! 🐘' },
@@ -711,7 +711,7 @@
           tracing: { strokes: [{ points: [{x:100,y:180},{x:200,y:180},{x:180,y:125},{x:130,y:125},{x:95,y:175},{x:130,y:240},{x:195,y:230}] }] }
         },
         'u': {
-          letter: 'u', nodeTitle: 'Umbrella Unicorn Oasis ☂️', phoneme: '/uuuuuuuuuuuuuuuuuuuuuuuu/', soundDesc: 'uhhh',
+          letter: 'u', nodeTitle: 'Umbrella Unicorn Oasis ☂️', phoneme: '/uuuuuuuuuuuuuuuu/', soundDesc: 'uhhh',
           examples: [
             { word: 'Umbrella', emoji: '☂️', breakdown: 'Uhhh... m... brel... la... Umbrella! ☂️' },
             { word: 'Unicorn', emoji: '🦄', breakdown: 'Uhhh... ni... corn... Unicorn! 🦄' },
@@ -721,7 +721,7 @@
           tracing: { strokes: [{ points: [{x:105,y:130},{x:105,y:200},{x:150,y:240},{x:195,y:200},{x:195,y:130}] }, { points: [{x:195,y:130},{x:195,y:245}] }] }
         },
         'r': {
-          letter: 'r', nodeTitle: 'Rainbow Rocket Reef 🚀', phoneme: '/rrrrrrrrrrrrrrrrrrrrrrrr/', soundDesc: 'rrrr',
+          letter: 'r', nodeTitle: 'Rainbow Rocket Reef 🚀', phoneme: '/rrrrrrrrrrrrrrrr/', soundDesc: 'rrrr',
           examples: [
             { word: 'Rocket', emoji: '🚀', breakdown: 'Rrrr... ock... et... Rocket! 🚀' },
             { word: 'Rainbow', emoji: '🌈', breakdown: 'Rrrr... ain... bow... Rainbow! 🌈' },
@@ -731,7 +731,7 @@
           tracing: { strokes: [{ points: [{x:120,y:130},{x:120,y:245}] }, { points: [{x:120,y:160},{x:155,y:130},{x:190,y:140}] }] }
         },
         'h': {
-          letter: 'h', nodeTitle: 'Happy Hat Hideout 🎩', phoneme: '/hhhhhhhhhhhhhhhhhhhhhhhh/', soundDesc: 'hhhh',
+          letter: 'h', nodeTitle: 'Happy Hat Hideout 🎩', phoneme: '/hhhhhhhhhhhhhhhh/', soundDesc: 'hhhh',
           examples: [
             { word: 'Hat', emoji: '🎩', breakdown: 'Hhhh... ahh... tuh... Hat! 🎩' },
             { word: 'House', emoji: '🏠', breakdown: 'Hhhh... ow... sss... House! 🏠' },
@@ -741,7 +741,7 @@
           tracing: { strokes: [{ points: [{x:110,y:60},{x:110,y:150},{x:110,y:245}] }, { points: [{x:110,y:160},{x:150,y:135},{x:190,y:165},{x:190,y:245}] }] }
         },
         'b': {
-          letter: 'b', nodeTitle: 'Bear Beach Party 🚌', phoneme: '/b-b-b-b-b-b-b-b-b-buh/', soundDesc: 'buh',
+          letter: 'b', nodeTitle: 'Bear Beach Party 🚌', phoneme: '/b-b-b-b-b-b-buh/', soundDesc: 'buh',
           examples: [
             { word: 'Bus', emoji: '🚌', breakdown: 'Bbbb... uhh... sss... Bus! 🚌' },
             { word: 'Bear', emoji: '🐻', breakdown: 'Bbbb... airrr... Bear! 🐻' },
@@ -751,7 +751,7 @@
           tracing: { strokes: [{ points: [{x:110,y:60},{x:110,y:150},{x:110,y:240}] }, { points: [{x:110,y:150},{x:155,y:135},{x:200,y:180},{x:155,y:235},{x:110,y:235}] }] }
         },
         'f': {
-          letter: 'f', nodeTitle: 'Friendly Fish Falls 🐠', phoneme: '/ffffffffffffffffffffffff/', soundDesc: 'ffff',
+          letter: 'f', nodeTitle: 'Friendly Fish Falls 🐠', phoneme: '/ffffffffffffffff/', soundDesc: 'ffff',
           examples: [
             { word: 'Fish', emoji: '🐠', breakdown: 'Ffff... ihh... shhh... Fish! 🐠' },
             { word: 'Frog', emoji: '🐸', breakdown: 'Ffff... raw... guh... Frog! 🐸' },
@@ -761,7 +761,7 @@
           tracing: { strokes: [{ points: [{x:190,y:80},{x:150,y:60},{x:130,y:95},{x:130,y:245}] }, { points: [{x:100,y:145},{x:170,y:145}] }] }
         },
         'l': {
-          letter: 'l', nodeTitle: 'Lion Lagoon Lookout 🦁', phoneme: '/llllllllllllllllllllllll/', soundDesc: 'llll',
+          letter: 'l', nodeTitle: 'Lion Lagoon Lookout 🦁', phoneme: '/llllllllllllllll/', soundDesc: 'llll',
           examples: [
             { word: 'Lion', emoji: '🦁', breakdown: 'Llll... eye... on... Lion! 🦁' },
             { word: 'Lemon', emoji: '🍋', breakdown: 'Llll... em... on... Lemon! 🍋' },
@@ -771,7 +771,7 @@
           tracing: { strokes: [{ points: [{x:150,y:60},{x:150,y:245}] }] }
         },
         'j': {
-          letter: 'j', nodeTitle: 'Jungle Jet Junction ✈️', phoneme: '/j-j-j-j-j-j-j-j-j-juh/', soundDesc: 'juh',
+          letter: 'j', nodeTitle: 'Jungle Jet Junction ✈️', phoneme: '/j-j-j-j-j-j-juh/', soundDesc: 'juh',
           examples: [
             { word: 'Jet', emoji: '✈️', breakdown: 'Jjjj... ehh... tuh... Jet! ✈️' },
             { word: 'Jellyfish', emoji: '🪼', breakdown: 'Jjjj... el... ly... fish... Jellyfish! 🪼' },
@@ -781,7 +781,7 @@
           tracing: { strokes: [{ points: [{x:170,y:130},{x:170,y:240},{x:140,y:270},{x:100,y:260}] }, { points: [{x:170,y:80},{x:170,y:85}] }] }
         },
         'v': {
-          letter: 'v', nodeTitle: 'Volcano Van Valley 🚐', phoneme: '/vvvvvvvvvvvvvvvvvvvvvvvv/', soundDesc: 'vvvv',
+          letter: 'v', nodeTitle: 'Volcano Van Valley 🚐', phoneme: '/vvvvvvvvvvvvvvvv/', soundDesc: 'vvvv',
           examples: [
             { word: 'Van', emoji: '🚐', breakdown: 'Vvvv... ahh... nnn... Van! 🚐' },
             { word: 'Volcano', emoji: '🌋', breakdown: 'Vvvv... ol... ca... no... Volcano! 🌋' },
@@ -791,7 +791,7 @@
           tracing: { strokes: [{ points: [{x:110,y:130},{x:150,y:245},{x:190,y:130}] }] }
         },
         'w': {
-          letter: 'w', nodeTitle: 'Wizard Wand Wonderland 🪄', phoneme: '/wwwwwwwwwwwwwwwwwwwwwwww/', soundDesc: 'wuh',
+          letter: 'w', nodeTitle: 'Wizard Wand Wonderland 🪄', phoneme: '/wwwwwwwwwwwwwwww/', soundDesc: 'wuh',
           examples: [
             { word: 'Wand', emoji: '🪄', breakdown: 'Wwww... ahh... nnd... Wand! 🪄' },
             { word: 'Whale', emoji: '🐋', breakdown: 'Wwww... ayy... lll... Whale! 🐋' },
@@ -801,7 +801,7 @@
           tracing: { strokes: [{ points: [{x:90,y:130},{x:120,y:245},{x:150,y:160},{x:180,y:245},{x:210,y:130}] }] }
         },
         'x': {
-          letter: 'x', nodeTitle: 'Mystery Box Crossroads 📦', phoneme: '/ksssssssssssssssssssssss/', soundDesc: 'ksss',
+          letter: 'x', nodeTitle: 'Mystery Box Crossroads 📦', phoneme: '/ksssssssssssssss/', soundDesc: 'ksss',
           examples: [
             { word: 'Fox', emoji: '🦊', breakdown: 'Fff... off... ksss... Fox! 🦊' },
             { word: 'Box', emoji: '📦', breakdown: 'Bbb... off... ksss... Box! 📦' },
@@ -811,7 +811,7 @@
           tracing: { strokes: [{ points: [{x:110,y:130},{x:190,y:245}] }, { points: [{x:190,y:130},{x:110,y:245}] }] }
         },
         'y': {
-          letter: 'y', nodeTitle: 'Yellow Yo-Yo Yard 🪀', phoneme: '/yyyyyyyyyyyyyyyyyyyyyyyy/', soundDesc: 'yuh',
+          letter: 'y', nodeTitle: 'Yellow Yo-Yo Yard 🪀', phoneme: '/yyyyyyyyyyyyyyyy/', soundDesc: 'yuh',
           examples: [
             { word: 'Yo-yo', emoji: '🪀', breakdown: 'Yyyy... oh... yo... Yo-yo! 🪀' },
             { word: 'Yacht', emoji: '⛵', breakdown: 'Yyyy... ah... tuh... Yacht! ⛵' },
@@ -821,7 +821,7 @@
           tracing: { strokes: [{ points: [{x:110,y:130},{x:150,y:195}] }, { points: [{x:190,y:130},{x:110,y:275}] }] }
         },
         'z': {
-          letter: 'z', nodeTitle: 'Zebra Zigzag Zoo 🦓', phoneme: '/zzzzzzzzzzzzzzzzzzzzzzzz/', soundDesc: 'zzzz',
+          letter: 'z', nodeTitle: 'Zebra Zigzag Zoo 🦓', phoneme: '/zzzzzzzzzzzzzzzz/', soundDesc: 'zzzz',
           examples: [
             { word: 'Zebra', emoji: '🦓', breakdown: 'Zzzz... e... bra... Zebra! 🦓' },
             { word: 'Zip', emoji: '🤐', breakdown: 'Zzzz... ihh... puh... Zip! 🤐' },
@@ -914,7 +914,7 @@
     ];
 
     // ==========================================
-    // 3. 12-SECOND EXTENDED AUDIO SYNTHESIS
+    // 3. STRICT 5-10 SECOND AUDIO SYNTHESIZER
     // ==========================================
     class PhonicsAudioEngine {
       constructor() {
@@ -994,32 +994,32 @@
         } catch (e) {}
       }
 
-      // 12-SECOND EXTENDED PHONETIC SOUNDS FOR 1ST GRADERS
-      playLetterPhoneme(letterChar, duration = 12.0) {
+      // STRICT 5-10 SECOND (DEFAULT 7.5s) ARTIFICIALLY ELONGATED PHONEME SOUNDS
+      playLetterPhoneme(letterChar, duration = 7.5) {
         this.initContext();
         if (this.isMuted || !this.ctx) return;
         const char = letterChar.toLowerCase();
 
         switch (char) {
           case 'a': this.synthElongatedVowel(800, 1650, duration, 145); break;
-          case 'b': this.synthElongatedStops(120, 300, duration, 6); break;
-          case 'c': case 'k': this.synthElongatedStops(1800, 400, duration, 6); break;
-          case 'd': this.synthElongatedStops(160, 450, duration, 6); break;
+          case 'b': this.synthElongatedStops(120, 300, duration, 5); break;
+          case 'c': case 'k': this.synthElongatedStops(1800, 400, duration, 5); break;
+          case 'd': this.synthElongatedStops(160, 450, duration, 5); break;
           case 'e': this.synthElongatedVowel(550, 1850, duration, 150); break;
           case 'f': this.synthElongatedSibilant(2600, duration, 0.45); break;
-          case 'g': this.synthElongatedStops(110, 220, duration, 6); break;
+          case 'g': this.synthElongatedStops(110, 220, duration, 5); break;
           case 'h': this.synthElongatedSibilant(1200, duration, 0.4); break;
           case 'i': this.synthElongatedVowel(400, 2000, duration, 160); break;
-          case 'j': this.synthElongatedStops(1400, 300, duration, 6); break;
+          case 'j': this.synthElongatedStops(1400, 300, duration, 5); break;
           case 'l': this.synthElongatedVowel(380, 1100, duration, 140); break;
           case 'm': this.synthElongatedVowel(220, 1000, duration, 130); break;
           case 'n': this.synthElongatedVowel(280, 1400, duration, 145); break;
           case 'o': this.synthElongatedVowel(580, 920, duration, 135); break;
-          case 'p': this.synthElongatedStops(700, 200, duration, 6); break;
-          case 'q': this.synthElongatedStops(1600, 500, duration, 6); break;
+          case 'p': this.synthElongatedStops(700, 200, duration, 5); break;
+          case 'q': this.synthElongatedStops(1600, 500, duration, 5); break;
           case 'r': this.synthElongatedVowel(320, 1250, duration, 130); break;
           case 's': this.synthElongatedSibilant(5200, duration, 0.85); break;
-          case 't': this.synthElongatedStops(3800, 500, duration, 6); break;
+          case 't': this.synthElongatedStops(3800, 500, duration, 5); break;
           case 'u': this.synthElongatedVowel(650, 1200, duration, 140); break;
           case 'v': this.synthElongatedSibilant(2200, duration, 0.5); break;
           case 'w': this.synthElongatedVowel(320, 750, duration, 135); break;
@@ -1030,7 +1030,7 @@
         }
       }
 
-      synthElongatedVowel(f1, f2, duration = 12.0, fundamental = 140) {
+      synthElongatedVowel(f1, f2, duration = 7.5, fundamental = 140) {
         const t = this.ctx.currentTime;
         const osc = this.ctx.createOscillator();
         osc.type = 'sawtooth';
@@ -1049,8 +1049,8 @@
         const gain1 = this.ctx.createGain(); const gain2 = this.ctx.createGain(); const masterGain = this.ctx.createGain();
         gain1.gain.setValueAtTime(0.65, t); gain2.gain.setValueAtTime(0.5, t);
         masterGain.gain.setValueAtTime(0.001, t);
-        masterGain.gain.linearRampToValueAtTime(0.42, t + 0.2);
-        masterGain.gain.setValueAtTime(0.42, t + duration - 0.6);
+        masterGain.gain.linearRampToValueAtTime(0.42, t + 0.15);
+        masterGain.gain.setValueAtTime(0.42, t + duration - 0.5);
         masterGain.gain.exponentialRampToValueAtTime(0.001, t + duration);
 
         osc.connect(filter1); osc.connect(filter2);
@@ -1060,7 +1060,7 @@
         osc.start(t); osc.stop(t + duration);
       }
 
-      synthElongatedSibilant(freq = 5200, duration = 12.0, intensity = 0.8) {
+      synthElongatedSibilant(freq = 5200, duration = 7.5, intensity = 0.8) {
         const t = this.ctx.currentTime;
         const bufferSize = this.ctx.sampleRate * duration;
         const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
@@ -1071,15 +1071,15 @@
         const filter = this.ctx.createBiquadFilter(); filter.type = 'highpass'; filter.frequency.setValueAtTime(freq, t);
         const gain = this.ctx.createGain();
         gain.gain.setValueAtTime(0.001, t);
-        gain.gain.linearRampToValueAtTime(0.38 * intensity, t + 0.15);
-        gain.gain.setValueAtTime(0.38 * intensity, t + duration - 0.5);
+        gain.gain.linearRampToValueAtTime(0.38 * intensity, t + 0.12);
+        gain.gain.setValueAtTime(0.38 * intensity, t + duration - 0.45);
         gain.gain.exponentialRampToValueAtTime(0.001, t + duration);
 
         noise.connect(filter); filter.connect(gain); gain.connect(this.ctx.destination);
         noise.start(t); noise.stop(t + duration);
       }
 
-      synthElongatedStops(freq, f2, totalDuration = 12.0, count = 6) {
+      synthElongatedStops(freq, f2, totalDuration = 7.5, count = 5) {
         const interval = totalDuration / count;
         for (let i = 0; i < count; i++) {
           setTimeout(() => {
@@ -1087,16 +1087,16 @@
             const t = this.ctx.currentTime;
             const osc = this.ctx.createOscillator();
             osc.type = 'triangle'; osc.frequency.setValueAtTime(freq * 0.4, t);
-            osc.frequency.exponentialRampToValueAtTime(70, t + 0.25);
+            osc.frequency.exponentialRampToValueAtTime(70, t + 0.24);
             const gain = this.ctx.createGain();
-            gain.gain.setValueAtTime(0.5, t); gain.gain.exponentialRampToValueAtTime(0.001, t + 0.28);
+            gain.gain.setValueAtTime(0.5, t); gain.gain.exponentialRampToValueAtTime(0.001, t + 0.26);
             osc.connect(gain); gain.connect(this.ctx.destination);
-            osc.start(t); osc.stop(t + 0.28);
+            osc.start(t); osc.stop(t + 0.26);
           }, i * (interval * 1000));
         }
       }
 
-      // SLOW, ARTICULATED SPEECH (Rate 0.45 for 1st Graders)
+      // SLOW, ARTICULATED SPEECH (Rate 0.48 for 5-10s duration per word breakdown)
       speakSlow(text, onEndCallback = null) {
         if (this.isMuted || !this.speechSynth) return;
         try {
@@ -1530,14 +1530,14 @@
     }
 
     // ==========================================
-    // 6. PREREQUISITE: THE PHONICS LEARNING HUB
+    // 6. PRE-MAP LEARNING PHASE (DISTRACTION-FREE)
     // ==========================================
     class PreMapLearningStage {
       constructor() {
         this.currentLetterKey = 's';
         this.currentLetterData = PHONICS_DATA.letters['s'];
         this.soundPlayingProgress = 0;
-        this.soundDuration = 12.0; // 12-Second Extended Sound
+        this.soundDuration = 7.5; // Strictly 5-10 Seconds
         this.isPlayingSound = false;
         this.hasListened = false;
         this.time = 0;
@@ -1555,19 +1555,19 @@
         this.isPlayingSound = true;
         this.soundPlayingProgress = 0;
 
-        // 1. Play 12-second elongated sound
+        // 1. Play 7.5-second slow phonetic sound
         soundEngine.playLetterPhoneme(this.currentLetterKey, this.soundDuration);
         this.particles.burstStars(640, 220, 35, this.currentLetterData.glow);
 
-        // 2. Slow phoneme breakdown of example words
+        // 2. Slow phoneme pronunciation of 3 visual example words
         setTimeout(() => {
           const ex = this.currentLetterData.examples;
-          const slowIntro = `This is letter ${this.currentLetterKey.toUpperCase()}... It makes the long, slow sound: ${this.currentLetterData.soundDesc}... Let's learn three words! First... ${ex[0].breakdown}... Second... ${ex[1].breakdown}... and Third... ${ex[2].breakdown}!`;
+          const slowIntro = `This is letter ${this.currentLetterKey.toUpperCase()}... Listen to the slow sound: ${this.currentLetterData.soundDesc}... Let's learn 3 example words! First... ${ex[0].breakdown}... Second... ${ex[1].breakdown}... and Third... ${ex[2].breakdown}!`;
           soundEngine.speakSlow(slowIntro, () => {
             this.isPlayingSound = false;
             this.hasListened = true;
           });
-        }, 1500);
+        }, 1200);
       }
 
       update(dt) {
@@ -1578,7 +1578,7 @@
       }
 
       onPointerDown(x, y) {
-        // Tap big letter to replay 12s sound
+        // Tap big letter to replay 7.5s sound
         if (Math.hypot(x - 640, y - 220) < 105) {
           soundEngine.playLetterPhoneme(this.currentLetterKey, this.soundDuration);
           this.particles.burstStars(640, 220, 25, this.currentLetterData.glow);
@@ -1587,7 +1587,7 @@
           return;
         }
 
-        // Tap any of the 3 example word cards to hear slow phoneme breakdown
+        // Tap any of the 3 example word cards to hear 7.5s slow breakdown
         const cardStartX = 330;
         const cardSpacing = 310;
         for (let i = 0; i < 3; i++) {
@@ -1604,7 +1604,7 @@
           }
         }
 
-        // Tap "UNLOCK & EXPLORE ON TREASURE MAP" Button
+        // Tap "START TREASURE MAP ACTIVITY" Button
         if (Math.abs(x - 640) < 240 && Math.abs(y - 630) < 38) {
           soundEngine.playCelebration();
           this.engine.switchScene('treasureMap', true);
@@ -1621,7 +1621,7 @@
         ctx.beginPath(); ctx.roundRect(260, 16, 760, 68, 34); ctx.fill(); ctx.stroke();
         ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 28px "Fredoka", sans-serif';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-        ctx.fillText(`The Phonics Learning Hub:  Letter ${this.currentLetterKey.toUpperCase()}  ${this.currentLetterData.phoneme}`, 640, 50);
+        ctx.fillText(`Pre-Map Learning Phase:  Letter ${this.currentLetterKey.toUpperCase()}  ${this.currentLetterData.phoneme}`, 640, 50);
 
         // Center: Big Bouncy Lowercase Letter
         ctx.save();
@@ -1639,14 +1639,14 @@
         ctx.fillText(this.currentLetterData.icon, 45, 6);
         ctx.restore();
 
-        // 12-Second Sound Articulation Progress Bar
+        // 5-10s Sound Articulation Progress Bar
         ctx.fillStyle = 'rgba(255, 255, 255, 0.12)';
         ctx.beginPath(); ctx.roundRect(420, 325, 440, 16, 8); ctx.fill();
         ctx.fillStyle = '#00E676';
         ctx.beginPath(); ctx.roundRect(420, 325, 440 * this.soundPlayingProgress, 16, 8); ctx.fill();
 
         ctx.fillStyle = '#FFF59D'; ctx.font = 'bold 20px "Fredoka", sans-serif';
-        ctx.fillText('🔊 12-Second Artificially Elongated Sound Stream', 640, 360);
+        ctx.fillText('🔊 5-10s Slow Phonetic Sound Articulation', 640, 360);
 
         // 3 Visual Example Word Cards with breakdown hints
         const cardStartX = 330;
@@ -1666,14 +1666,14 @@
           ctx.fillText(ex.word, cx, cy + 30);
 
           ctx.fillStyle = '#80DEEA'; ctx.font = 'bold 13px "Fredoka", sans-serif';
-          ctx.fillText('Tap to hear 12s breakdown', cx, cy + 52);
+          ctx.fillText('Tap to hear slow pronunciation', cx, cy + 52);
         });
 
         // "UNLOCK & PLAY ON TREASURE MAP" Button
         ctx.fillStyle = '#00E676'; ctx.strokeStyle = '#FFFFFF'; ctx.lineWidth = 4;
         ctx.beginPath(); ctx.roundRect(390, 595, 500, 72, 36); ctx.fill(); ctx.stroke();
         ctx.fillStyle = '#08162B'; ctx.font = 'bold 25px "Fredoka", sans-serif';
-        ctx.fillText('UNLOCK & EXPLORE ON TREASURE MAP 🗺️ ➔', 640, 631);
+        ctx.fillText('GO TO TREASURE MAP ACTIVITY 🗺️ ➔', 640, 631);
       }
     }
 
@@ -1745,7 +1745,7 @@
           if (Math.hypot(worldX - n.x, y - n.y) < 55 || (Math.abs(worldX - n.x) < 110 && Math.abs(y - (n.y + 60)) < 25)) {
             if (n.unlocked) {
               this.sound.playStarCollect();
-              this.sound.playLetterPhoneme(n.letter, 12.0);
+              this.sound.playLetterPhoneme(n.letter, 7.5);
               this.particles.burstStars(n.x - this.cameraX, n.y, 25, n.zone.color);
 
               if (window.gameApp) {
@@ -1924,7 +1924,7 @@
     }
 
     // ==========================================
-    // 8. STAGE 1: SOUND RECOGNITION (12s SLOW PACED)
+    // 8. STAGE 1: SOUND RECOGNITION (5-10s PACING)
     // ==========================================
     class BubblePhonicsStage {
       constructor() {
@@ -1963,10 +1963,10 @@
 
         setTimeout(() => {
           if (this.sound) {
-            this.sound.playLetterPhoneme(this.currentLetterKey, 12.0);
+            this.sound.playLetterPhoneme(this.currentLetterKey, 7.5);
             this.particles.burstStars(640, 290, 20, this.currentLetterData.glow);
             setTimeout(() => {
-              this.sound.speakSlow(`Listen to the 12-second sound: ${this.currentLetterData.soundDesc}! Find the matching bubble!`);
+              this.sound.speakSlow(`Listen to the slow sound: ${this.currentLetterData.soundDesc}! Find the matching letter for ${this.currentLetterData.examples[0].word}!`);
             }, 650);
           }
         }, 300);
@@ -1994,14 +1994,14 @@
       onPointerDown(x, y) {
         if (Math.hypot(x - 640, y - 290) < 110) {
           this.bounceScale = 1.35;
-          this.sound.playLetterPhoneme(this.currentLetterKey, 12.0);
+          this.sound.playLetterPhoneme(this.currentLetterKey, 7.5);
           this.particles.emitSparkleTrail(640, 290, this.currentLetterData.glow);
           return;
         }
 
         for (const b of this.bubbles) {
           if (Math.hypot(x - b.x, y - b.y) < b.radius * 1.1) {
-            this.sound.playLetterPhoneme(b.letter, 8.0);
+            this.sound.playLetterPhoneme(b.letter, 6.0);
             this.sound.playBubblePop();
             this.particles.burstBubble(b.x, b.y, b.glow);
 
@@ -2070,7 +2070,7 @@
 
         ctx.fillStyle = '#FFF59D'; ctx.font = 'bold 24px "Fredoka", sans-serif';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-        ctx.fillText(`Tap matching sound bubble below! 🔊`, 640, 430);
+        ctx.fillText(`Tap matching sound bubble below for ${this.currentLetterData.examples[0].word}! 🔊`, 640, 430);
 
         for (const b of this.bubbles) {
           ctx.save();
@@ -2087,7 +2087,7 @@
     }
 
     // ==========================================
-    // 9. STAGE 2: GUIDED LETTER TRACING
+    // 9. STAGE 2: GUIDED LETTER TRACING (WITH EXAMPLE WORDS)
     // ==========================================
     class LetterTracingStage {
       constructor() {
@@ -2122,8 +2122,8 @@
 
         setTimeout(() => {
           if (this.sound) {
-            this.sound.playLetterPhoneme(this.currentLetterKey, 10.0);
-            setTimeout(() => this.sound.speakSlow(`Trace lowercase letter ${this.currentLetterKey}! Follow the glowing star!`), 400);
+            this.sound.playLetterPhoneme(this.currentLetterKey, 7.5);
+            setTimeout(() => this.sound.speakSlow(`Trace lowercase letter ${this.currentLetterKey}! ${this.currentLetterKey} is for ${this.currentLetterData.examples[0].word}!`), 400);
           }
         }, 300);
       }
@@ -2180,7 +2180,7 @@
                 this.sound.playStarCollect();
                 this.sound.playCelebration();
                 this.particles.burstConfetti(this.board.x, this.board.y, 55);
-                this.sound.playLetterPhoneme(this.currentLetterKey, 8.0);
+                this.sound.playLetterPhoneme(this.currentLetterKey, 7.5);
 
                 const praise = ["Super Writer!", "You Did It!", "Amazing Tracing!"][Math.floor(Math.random() * 3)];
                 setTimeout(() => this.sound.speakSlow(`${praise} ${this.currentLetterData.examples[0].breakdown}`), 450);
@@ -2205,10 +2205,10 @@
         ctx.fillStyle = grad; ctx.fillRect(0, 0, 1280, 720);
 
         ctx.fillStyle = 'rgba(15, 25, 55, 0.88)'; ctx.strokeStyle = '#00E5FF'; ctx.lineWidth = 3;
-        ctx.beginPath(); ctx.roundRect(320, 20, 640, 68, 34); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.roundRect(280, 20, 720, 68, 34); ctx.fill(); ctx.stroke();
         ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 28px "Fredoka", sans-serif';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-        ctx.fillText(`Trace lowercase:  ${this.currentLetterKey}  ${this.currentLetterData.phoneme}`, 640, 54);
+        ctx.fillText(`Trace lowercase:  ${this.currentLetterKey}  •  ${this.currentLetterData.examples[0].emoji} ${this.currentLetterData.examples[0].word}`, 640, 54);
 
         ctx.fillStyle = '#161c38'; ctx.strokeStyle = this.currentLetterData.color; ctx.lineWidth = 6;
         ctx.beginPath();
@@ -2300,7 +2300,7 @@
         }));
 
         setTimeout(() => {
-          if (this.sound) this.sound.speakSlow(`Tap each sound slowly, then drag letters together into the boxes!`);
+          if (this.sound) this.sound.speakSlow(`Tap each slow sound, then drag letters into the boxes to read!`);
         }, 400);
       }
 
@@ -2337,7 +2337,7 @@
               b.inSlot = null;
             }
 
-            this.sound.playLetterPhoneme(b.letter, 6.0);
+            this.sound.playLetterPhoneme(b.letter, 5.0);
             this.sound.playBubblePop();
             this.particles.emitSparkleTrail(b.x, b.y, b.color);
             break;
@@ -2484,7 +2484,7 @@
       }
 
       selectLetter(letterKey) {
-        // Prerequisite: ALWAYS launch The Phonics Learning Hub first!
+        // Enforce Pre-Map Learning Phase first!
         this.engine.switchScene('introLearning', true, letterKey);
         this.highlightDock('introLearning');
       }
@@ -2580,7 +2580,7 @@
         });
 
         document.getElementById('companion-avatar').addEventListener('click', () => {
-          soundEngine.speakSlow("I'm Astro! Listen closely to the 12-second long sounds and repeat them!");
+          soundEngine.speakSlow("I'm Astro! Listen closely to the 5-10 second sounds and repeat them!");
         });
       }
 
