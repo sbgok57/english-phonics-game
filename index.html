@@ -152,62 +152,34 @@
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
     }
 
-    /* TOP VISUAL PROGRESS INDICATOR: LEARN -> MATCH -> TRACE -> BLEND */
-    .step-progress-container {
+    /* CURRENT ACTIVITY HEADER AT TOP OF SCREEN */
+    .top-activity-header {
       position: absolute;
       top: 8px;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
       align-items: center;
-      background: rgba(12, 18, 42, 0.94);
-      border: 3px solid rgba(0, 229, 255, 0.6);
+      background: rgba(12, 18, 42, 0.95);
+      border: 3px solid #00E5FF;
       border-radius: 32px;
-      padding: 4px 10px;
-      gap: clamp(4px, 0.8vw, 8px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+      padding: 4px 16px;
+      box-shadow: 0 8px 24px rgba(0, 229, 255, 0.45);
       backdrop-filter: blur(8px);
       pointer-events: auto;
-      max-width: 82vw;
-      overflow-x: auto;
-    }
-
-    .step-pill {
-      background: rgba(255, 255, 255, 0.08);
-      border: 2px solid transparent;
-      border-radius: 20px;
-      padding: clamp(3px, 0.5vw, 5px) clamp(8px, 1vw, 14px);
-      color: #90A4AE;
-      font-family: 'Fredoka', 'Comic Sans MS', sans-serif;
-      font-size: clamp(0.72rem, 1vw, 0.88rem);
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      transition: all 0.2s ease;
+      max-width: 60vw;
+      overflow: hidden;
       white-space: nowrap;
-      cursor: pointer;
     }
 
-    .step-pill.active {
-      background: linear-gradient(180deg, #00E5FF 0%, #00B0FF 100%);
-      color: #08162B;
-      border-color: #FFFFFF;
-      box-shadow: 0 4px 14px rgba(0, 229, 255, 0.65);
-      transform: scale(1.04);
-    }
-
-    .step-pill.completed {
-      background: rgba(0, 230, 118, 0.2);
-      border-color: #00E676;
-      color: #B9F6CA;
-    }
-
-    .step-arrow {
-      color: #00E5FF;
-      font-size: 0.8rem;
-      font-weight: bold;
-      opacity: 0.7;
+    #activity-title-text {
+      color: #FFFFFF;
+      font-family: 'Fredoka', 'Comic Sans MS', sans-serif;
+      font-size: clamp(0.85rem, 1.3vw, 1.05rem);
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
 
     /* COMPANION ASSISTANT */
@@ -460,14 +432,13 @@
     }
 
     @media (max-width: 860px) {
-      .step-progress-container {
+      .top-activity-header {
         top: auto;
         bottom: 8px;
-        padding: 3px 6px;
+        padding: 3px 10px;
       }
-      .step-pill {
-        padding: 3px 6px;
-        font-size: 0.7rem;
+      #activity-title-text {
+        font-size: 0.76rem;
       }
       .companion-wrapper {
         display: none;
@@ -492,23 +463,9 @@
           </div>
         </div>
 
-        <!-- PROGRESS INDICATOR AT TOP OF SCREEN -->
-        <div class="step-progress-container" id="step-progress-bar">
-          <div class="step-pill" data-step-id="introLearning" title="Step 1: Learn Letter & Word">
-            <span>📖</span> 1. Learn
-          </div>
-          <span class="step-arrow">➔</span>
-          <div class="step-pill" data-step-id="bubblePhonics" title="Step 2: Match Sound">
-            <span>🍎</span> 2. Match
-          </div>
-          <span class="step-arrow">➔</span>
-          <div class="step-pill" data-step-id="letterTracing" title="Step 3: Tracing">
-            <span>✏️</span> 3. Trace
-          </div>
-          <span class="step-arrow">➔</span>
-          <div class="step-pill" data-step-id="cvcFactory" title="Step 4: Blending">
-            <span>🧩</span> 4. Blend
-          </div>
+        <!-- CURRENT ACTIVITY TITLE AT TOP OF SCREEN -->
+        <div class="top-activity-header" id="top-activity-header">
+          <span id="activity-title-text">🗺️ Treasure Map</span>
         </div>
 
         <div class="hud-group-right">
@@ -541,7 +498,7 @@
     <div id="welcome-modal" class="modal-backdrop">
       <div class="modal-window">
         <h1 class="modal-title">⭐ Phonics Galaxy & Treasure Island ⭐</h1>
-        <p class="modal-subtitle">1st-Grade Phonics Suite • 4-Step Progression • Short Crisp Sounds (0.5–1s)</p>
+        <p class="modal-subtitle">1st-Grade Phonics Suite • 4-Step Sequence • Short 0.5–1s Sounds</p>
 
         <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; text-align: left;">
           <div style="background:rgba(255,255,255,0.08); border:2px solid rgba(0,229,255,0.3); border-radius:14px; padding:8px 12px; display:flex; align-items:center; gap:8px;">
@@ -554,21 +511,21 @@
           <div style="background:rgba(255,255,255,0.08); border:2px solid rgba(0,229,255,0.3); border-radius:14px; padding:8px 12px; display:flex; align-items:center; gap:8px;">
             <span style="font-size:1.6rem;">📖</span>
             <div>
-              <strong>Step 1: Learn Phase</strong>
-              <div style="font-size:0.75rem; color:#80DEEA;">Click letter & word to hear 0.5-1s sound</div>
+              <strong>Step 1: Learn the Sound</strong>
+              <div style="font-size:0.75rem; color:#80DEEA;">Click letter & word (0.5–1s sound)</div>
             </div>
           </div>
           <div style="background:rgba(255,255,255,0.08); border:2px solid rgba(0,229,255,0.3); border-radius:14px; padding:8px 12px; display:flex; align-items:center; gap:8px;">
             <span style="font-size:1.6rem;">🍎</span>
             <div>
               <strong>Step 2 & 3: Match & Trace</strong>
-              <div style="font-size:0.75rem; color:#80DEEA;">Identify phoneme & trace stroke path</div>
+              <div style="font-size:0.75rem; color:#80DEEA;">Match sound bubble & trace letter</div>
             </div>
           </div>
           <div style="background:rgba(255,255,255,0.08); border:2px solid rgba(0,229,255,0.3); border-radius:14px; padding:8px 12px; display:flex; align-items:center; gap:8px;">
             <span style="font-size:1.6rem;">🧩</span>
             <div>
-              <strong>Step 4: Blend Full Circle</strong>
+              <strong>Step 4: Word Blending</strong>
               <div style="font-size:0.75rem; color:#80DEEA;">Blend the exact same example word!</div>
             </div>
           </div>
@@ -1217,6 +1174,7 @@
         this.particles = new ParticleSystem();
         this.scenes = new Map();
         this.currentScene = null;
+        this.currentSceneName = 'treasureMap';
         this.nextSceneName = null;
         this.transitionAlpha = 0;
         this.transitionState = 'none';
@@ -1248,11 +1206,12 @@
         if (!this.scenes.has(name)) return;
         if (!transition || !this.currentScene) {
           if (this.currentScene && this.currentScene.onExit) this.currentScene.onExit();
+          this.currentSceneName = name;
           this.currentScene = this.scenes.get(name);
           if (this.currentScene.onEnter) this.currentScene.onEnter(initData);
           this.transitionState = 'none';
           this.transitionAlpha = 0;
-          this.updateHUDStep(name);
+          this.updateActivityHeader(name);
           return;
         }
         this.nextSceneName = name;
@@ -1260,22 +1219,30 @@
         this.transitionState = 'fade_out';
       }
 
-      updateHUDStep(sceneName) {
-        const tracker = document.getElementById('step-progress-bar');
-        if (!tracker) return;
+      updateActivityHeader(sceneName) {
+        const titleElem = document.getElementById('activity-title-text');
+        if (!titleElem) return;
 
-        if (sceneName === 'treasureMap') {
-          tracker.style.display = 'none';
-        } else {
-          tracker.style.display = 'flex';
-          const pills = tracker.querySelectorAll('.step-pill');
-          const stepOrder = ['introLearning', 'bubblePhonics', 'letterTracing', 'cvcFactory'];
-          const curIndex = stepOrder.indexOf(sceneName);
+        const currentLetter = window.gameApp ? window.gameApp.currentSelectedLetter.toUpperCase() : 'S';
 
-          pills.forEach((p, idx) => {
-            p.classList.toggle('active', p.getAttribute('data-step-id') === sceneName);
-            p.classList.toggle('completed', idx < curIndex);
-          });
+        switch (sceneName) {
+          case 'treasureMap':
+            titleElem.textContent = '🗺️ Treasure Map';
+            break;
+          case 'introLearning':
+            titleElem.textContent = `📖 Learn the Sound • Letter ${currentLetter}`;
+            break;
+          case 'bubblePhonics':
+            titleElem.textContent = `🍎 Match Sound • Letter ${currentLetter}`;
+            break;
+          case 'letterTracing':
+            titleElem.textContent = `✏️ Tracing • Letter ${currentLetter}`;
+            break;
+          case 'cvcFactory':
+            titleElem.textContent = `🧩 Blending • Letter ${currentLetter}`;
+            break;
+          default:
+            titleElem.textContent = '⭐ Phonics Galaxy';
         }
       }
 
@@ -1419,9 +1386,10 @@
           if (this.transitionAlpha >= 1) {
             this.transitionAlpha = 1;
             if (this.currentScene && this.currentScene.onExit) this.currentScene.onExit();
+            this.currentSceneName = this.nextSceneName;
             this.currentScene = this.scenes.get(this.nextSceneName);
             if (this.currentScene.onEnter) this.currentScene.onEnter(this.nextSceneInitData);
-            this.updateHUDStep(this.nextSceneName);
+            this.updateActivityHeader(this.nextSceneName);
             this.transitionState = 'fade_in';
           }
         } else if (this.transitionState === 'fade_in') {
@@ -1460,7 +1428,7 @@
     }
 
     // ==========================================
-    // 6. STEP 1: INTRODUCTION (LEARN PHASE)
+    // 6. STEP 1: LEARN THE SOUND (INTRODUCTION)
     // ==========================================
     class PreMapLearningStage {
       constructor() {
@@ -1491,7 +1459,7 @@
           return;
         }
 
-        // 2. Click Picture/Word Card -> 0.5-1.0s short pronunciation
+        // 2. Click Word Card -> 0.5-1.0s short pronunciation
         if (Math.abs(x - 810) < 160 && Math.abs(y - 320) < 110) {
           this.hasClickedWord = true;
           soundEngine.playSparkle();
@@ -1500,7 +1468,7 @@
           return;
         }
 
-        // 3. Clear "Next" Button -> Proceeds to Step 2: Match Sound Activity
+        // 3. Clear Visible "NEXT" Button -> Manual proceed to Step 2: Match Sound
         if (Math.abs(x - 640) < 240 && Math.abs(y - 590) < 40) {
           soundEngine.playCelebration();
           this.engine.switchScene('bubblePhonics', true, this.currentLetterKey);
@@ -1518,7 +1486,7 @@
         ctx.beginPath(); ctx.roundRect(240, 24, 800, 68, 34); ctx.fill(); ctx.stroke();
         ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 28px "Fredoka", sans-serif';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-        ctx.fillText(`Step 1: Learn Phase • Letter ${this.currentLetterKey.toUpperCase()}  ${this.currentLetterData.phoneme}`, 640, 58);
+        ctx.fillText(`Step 1: Learn the Sound • Letter ${this.currentLetterKey.toUpperCase()}  ${this.currentLetterData.phoneme}`, 640, 58);
 
         // Left Side: Big Bouncy Lowercase Letter
         ctx.save();
@@ -1540,7 +1508,7 @@
           ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 26px sans-serif'; ctx.fillText('✓', 80, -80);
         }
 
-        // STRICT REQUIREMENT: Only display "Click to hear" under the clickable items
+        // STRICT REQUIREMENT: Only display "Click to hear" below items
         ctx.fillStyle = '#FFF59D'; ctx.font = 'bold 20px "Fredoka", sans-serif';
         ctx.fillText('Click to hear', 0, 140);
         ctx.restore();
@@ -1566,12 +1534,12 @@
           ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 26px sans-serif'; ctx.fillText('✓', 130, -85);
         }
 
-        // STRICT REQUIREMENT: Only display "Click to hear" under the clickable items
+        // STRICT REQUIREMENT: Only display "Click to hear" below items
         ctx.fillStyle = '#80DEEA'; ctx.font = 'bold 20px "Fredoka", sans-serif';
         ctx.fillText('Click to hear', 0, 80);
         ctx.restore();
 
-        // CLEAR "NEXT" BUTTON TO PROCEED TO ACTIVITIES
+        // HIGHLY VISIBLE "NEXT" BUTTON TO PROCEED
         const isReady = this.hasClickedLetter && this.hasClickedWord;
         ctx.fillStyle = isReady ? '#00E676' : '#00B0FF';
         ctx.strokeStyle = '#FFFFFF'; ctx.lineWidth = 4;
@@ -1579,7 +1547,7 @@
 
         ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 26px "Fredoka", sans-serif';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-        ctx.fillText('NEXT: START ACTIVITIES 🗺️ ➔', 640, 590);
+        ctx.fillText('NEXT: MATCH SOUND ➔', 640, 590);
       }
     }
 
@@ -1667,7 +1635,7 @@
                 soundEngine.playLetterPhoneme(n.letter, 0.65);
                 this.particles.burstStars(n.x - this.cameraX, n.y, 25, n.zone.color);
 
-                // Start 4-step sequence with Step 1: Learn Phase
+                // Start 4-step sequence with Step 1: Learn the Sound
                 if (window.gameApp) {
                   window.gameApp.selectLetter(n.letter);
                 }
@@ -1834,7 +1802,7 @@
     }
 
     // ==========================================
-    // 8. STEP 2: MATCH SOUND ACTIVITY
+    // 8. STEP 2: MATCH SOUND ACTIVITY (WITH MANUAL NEXT BUTTON)
     // ==========================================
     class BubblePhonicsStage {
       constructor() {
@@ -1844,6 +1812,7 @@
         this.bounceScale = 1;
         this.blinkTimer = 0;
         this.isBlinking = false;
+        this.isCompleted = false;
         this.time = 0;
       }
 
@@ -1855,12 +1824,13 @@
         this.currentLetterKey = key;
         this.currentLetterData = PHONICS_DATA.letters[key] || PHONICS_DATA.letters['s'];
         this.bounceScale = 1.35;
+        this.isCompleted = false;
 
         const allKeys = Object.keys(PHONICS_DATA.letters);
         const distractors = allKeys.filter(l => l !== key).sort(() => Math.random() - 0.5).slice(0, 2);
         const options = [key, ...distractors].sort(() => Math.random() - 0.5);
 
-        const positions = [{ x: 380, y: 530 }, { x: 640, y: 530 }, { x: 900, y: 530 }];
+        const positions = [{ x: 380, y: 510 }, { x: 640, y: 510 }, { x: 900, y: 510 }];
 
         this.bubbles = options.map((letter, i) => {
           const lData = PHONICS_DATA.letters[letter] || { color: '#00E5FF', glow: '#80DEEA' };
@@ -1892,11 +1862,20 @@
       }
 
       onPointerDown(x, y) {
+        // Manual NEXT button click when completed
+        if (this.isCompleted) {
+          if (Math.abs(x - 640) < 220 && Math.abs(y - 620) < 38) {
+            soundEngine.playCelebration();
+            this.engine.switchScene('letterTracing', true, this.currentLetterKey);
+            return;
+          }
+        }
+
         // Center Letter: 0.5-1.0s sound
-        if (Math.hypot(x - 640, y - 290) < 110) {
+        if (Math.hypot(x - 640, y - 270) < 100) {
           this.bounceScale = 1.35;
           soundEngine.playLetterPhoneme(this.currentLetterKey, 0.65);
-          this.particles.emitSparkleTrail(640, 290, this.currentLetterData.glow);
+          this.particles.emitSparkleTrail(640, 270, this.currentLetterData.glow);
           return;
         }
 
@@ -1908,8 +1887,9 @@
             this.particles.burstBubble(b.x, b.y, b.glow);
 
             if (b.isCorrect) {
+              this.isCompleted = true;
               this.particles.burstStars(b.x, b.y, 35, '#FFD54F');
-              this.particles.burstConfetti(640, 290, 50);
+              this.particles.burstConfetti(640, 270, 50);
               soundEngine.playStarCollect();
               soundEngine.playCelebration();
               this.bounceScale = 1.4;
@@ -1920,11 +1900,6 @@
               if (window.gameApp) {
                 window.gameApp.addStar(1);
               }
-
-              // Proceed to Step 3: Tracing Activity
-              setTimeout(() => {
-                this.engine.switchScene('letterTracing', true, this.currentLetterKey);
-              }, 1600);
             } else {
               soundEngine.playGentleBounce();
               soundEngine.speakWord(`Try again! Find ${this.currentLetterData.soundDesc}!`, 0.95);
@@ -1946,36 +1921,37 @@
         ctx.fillText(`Step 2: Match Sound • ${this.currentLetterData.phoneme} • ${this.currentLetterData.example.emoji} ${this.currentLetterData.example.word.toUpperCase()}`, 640, 54);
 
         ctx.save();
-        ctx.translate(640, 290);
+        ctx.translate(640, 270);
         ctx.scale(this.bounceScale, this.bounceScale);
 
         ctx.fillStyle = this.currentLetterData.color;
         ctx.shadowColor = this.currentLetterData.glow; ctx.shadowBlur = 28;
-        ctx.beginPath(); ctx.arc(0, 0, 95, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(0, 0, 90, 0, Math.PI * 2); ctx.fill();
         ctx.shadowBlur = 0;
 
-        ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 105px "Fredoka", sans-serif';
+        ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 95px "Fredoka", sans-serif';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-        ctx.fillText(this.currentLetterKey, -32, 10);
+        ctx.fillText(this.currentLetterKey, -30, 10);
 
-        ctx.font = '74px sans-serif';
-        ctx.fillText(this.currentLetterData.icon, 45, 6);
+        ctx.font = '68px sans-serif';
+        ctx.fillText(this.currentLetterData.icon, 42, 6);
 
         if (!this.isBlinking) {
           ctx.fillStyle = '#1A237E';
-          ctx.beginPath(); ctx.arc(-14, -48, 5, 0, Math.PI * 2); ctx.arc(14, -48, 5, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath(); ctx.arc(-14, -44, 5, 0, Math.PI * 2); ctx.arc(14, -44, 5, 0, Math.PI * 2); ctx.fill();
         } else {
           ctx.strokeStyle = '#1A237E'; ctx.lineWidth = 3;
-          ctx.beginPath(); ctx.moveTo(-18, -48); ctx.lineTo(-10, -48); ctx.moveTo(10, -48); ctx.lineTo(18, -48); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(-18, -44); ctx.lineTo(-10, -44); ctx.moveTo(10, -44); ctx.lineTo(18, -44); ctx.stroke();
         }
         ctx.restore();
 
-        ctx.fillStyle = '#FFF59D'; ctx.font = 'bold 20px "Fredoka", sans-serif';
+        // Static "Click to hear" text label below letter
+        ctx.fillStyle = '#FFF59D'; ctx.font = 'bold 18px "Fredoka", sans-serif';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-        ctx.fillText('Click to hear', 640, 405);
+        ctx.fillText('Click to hear', 640, 385);
 
-        ctx.fillStyle = '#80DEEA'; ctx.font = 'bold 22px "Fredoka", sans-serif';
-        ctx.fillText('Tap the matching sound bubble below! 🔊', 640, 440);
+        ctx.fillStyle = '#80DEEA'; ctx.font = 'bold 20px "Fredoka", sans-serif';
+        ctx.fillText('Tap the matching sound bubble below! 🔊', 640, 415);
 
         for (const b of this.bubbles) {
           ctx.save();
@@ -1983,30 +1959,38 @@
           ctx.fillStyle = b.color + 'dd'; ctx.strokeStyle = b.glow; ctx.lineWidth = 4;
           ctx.beginPath(); ctx.arc(0, 0, b.radius, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
 
-          ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 56px "Fredoka", sans-serif';
+          ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 54px "Fredoka", sans-serif';
           ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
           ctx.fillText(b.letter, 0, 4);
           ctx.restore();
+        }
+
+        // HIGHLY VISIBLE "NEXT" BUTTON ON COMPLETION (NO AUTOPLAY)
+        if (this.isCompleted) {
+          ctx.fillStyle = '#00E676'; ctx.strokeStyle = '#FFFFFF'; ctx.lineWidth = 4;
+          ctx.beginPath(); ctx.roundRect(420, 588, 440, 64, 32); ctx.fill(); ctx.stroke();
+          ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 25px "Fredoka", sans-serif';
+          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillText('NEXT: GO TO TRACING ➔', 640, 620);
         }
       }
     }
 
     // ==========================================
-    // 9. STEP 3: TRACING ACTIVITY
+    // 9. STEP 3: TRACING ACTIVITY (WITH MANUAL NEXT BUTTON)
     // ==========================================
     class LetterTracingStage {
       constructor() {
         this.currentLetterKey = 's';
         this.currentLetterData = PHONICS_DATA.letters['s'];
-        this.board = { x: 640, y: 395, width: 560, height: 480 };
-        this.scaleFactor = 1.4;
+        this.board = { x: 640, y: 380, width: 540, height: 440 };
+        this.scaleFactor = 1.35;
         this.currentStrokeIdx = 0;
         this.completedStrokes = [];
         this.currentCheckpointIdx = 0;
         this.currentDrawnPoints = [];
         this.isTracing = false;
         this.isLetterComplete = false;
-        this.celebrateTimer = 0;
         this.starPhase = 0;
       }
 
@@ -2023,7 +2007,6 @@
         this.currentDrawnPoints = [];
         this.isTracing = false;
         this.isLetterComplete = false;
-        this.celebrateTimer = 0;
       }
 
       toBoardCoords(pt) {
@@ -2034,17 +2017,18 @@
 
       update(dt) {
         this.starPhase += dt * 4;
-        if (this.isLetterComplete) {
-          this.celebrateTimer += dt;
-          if (this.celebrateTimer >= 1.8) {
-            // Proceed to Step 4: Blending Activity!
-            this.engine.switchScene('cvcFactory', true, this.currentLetterKey);
-          }
-        }
       }
 
       onPointerDown(x, y) {
-        if (this.isLetterComplete) return;
+        // Manual NEXT button click when tracing completed
+        if (this.isLetterComplete) {
+          if (Math.abs(x - 640) < 220 && Math.abs(y - 645) < 36) {
+            soundEngine.playCelebration();
+            this.engine.switchScene('cvcFactory', true, this.currentLetterKey);
+            return;
+          }
+        }
+
         const stroke = this.currentLetterData.tracing.strokes[this.currentStrokeIdx];
         if (!stroke) return;
         const target = this.toBoardCoords(stroke.points[this.currentCheckpointIdx]);
@@ -2117,7 +2101,7 @@
 
         ctx.lineCap = 'round'; ctx.lineJoin = 'round';
         this.currentLetterData.tracing.strokes.forEach(stroke => {
-          ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)'; ctx.lineWidth = 40;
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)'; ctx.lineWidth = 38;
           ctx.setLineDash([14, 12]);
           ctx.beginPath();
           stroke.points.forEach((pt, idx) => {
@@ -2130,7 +2114,7 @@
 
         this.completedStrokes.forEach(sIdx => {
           const stroke = this.currentLetterData.tracing.strokes[sIdx];
-          ctx.strokeStyle = '#00E676'; ctx.lineWidth = 38;
+          ctx.strokeStyle = '#00E676'; ctx.lineWidth = 36;
           ctx.beginPath();
           stroke.points.forEach((pt, idx) => {
             const w = this.toBoardCoords(pt);
@@ -2142,7 +2126,7 @@
         if (this.currentStrokeIdx < this.currentLetterData.tracing.strokes.length && !this.isLetterComplete) {
           const stroke = this.currentLetterData.tracing.strokes[this.currentStrokeIdx];
           if (this.currentCheckpointIdx > 0) {
-            ctx.strokeStyle = '#00E676'; ctx.lineWidth = 38;
+            ctx.strokeStyle = '#00E676'; ctx.lineWidth = 36;
             ctx.beginPath();
             for (let i = 0; i <= this.currentCheckpointIdx; i++) {
               const w = this.toBoardCoords(stroke.points[i]);
@@ -2153,14 +2137,23 @@
 
           if (stroke.points[this.currentCheckpointIdx]) {
             const target = this.toBoardCoords(stroke.points[this.currentCheckpointIdx]);
-            this.particles.drawStarShape(ctx, target.x, target.y + Math.sin(this.starPhase) * 6, 5, 24, 10, '#FFD600');
+            this.particles.drawStarShape(ctx, target.x, target.y + Math.sin(this.starPhase) * 6, 5, 22, 10, '#FFD600');
           }
+        }
+
+        // HIGHLY VISIBLE "NEXT" BUTTON ON COMPLETION (NO AUTOPLAY)
+        if (this.isLetterComplete) {
+          ctx.fillStyle = '#00E676'; ctx.strokeStyle = '#FFFFFF'; ctx.lineWidth = 4;
+          ctx.beginPath(); ctx.roundRect(420, 615, 440, 60, 30); ctx.fill(); ctx.stroke();
+          ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 25px "Fredoka", sans-serif';
+          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillText('NEXT: GO TO BLENDING ➔', 640, 645);
         }
       }
     }
 
     // ==========================================
-    // 10. STEP 4: BLENDING ACTIVITY (FULL CIRCLE - EXACT SAME WORD)
+    // 10. STEP 4: WORD BLENDING (EXACT SAME WORD & MANUAL NEXT BUTTON)
     // ==========================================
     class CVCFactoryStage {
       constructor() {
@@ -2172,7 +2165,6 @@
         this.draggingBlock = null;
         this.dragOffset = { x: 0, y: 0 };
         this.isBlended = false;
-        this.celebrateTimer = 0;
         this.time = 0;
       }
 
@@ -2185,7 +2177,6 @@
 
       loadWord() {
         this.isBlended = false;
-        this.celebrateTimer = 0;
         this.draggingBlock = null;
 
         const letters = this.currentWordData.letters;
@@ -2194,7 +2185,7 @@
         const slotStartX = 640 - totalSlotWidth / 2 + 60;
 
         this.slots = letters.map((l, i) => ({
-          id: i, letter: l, x: slotStartX + i * 140, y: 460, width: 105, height: 105, filledBlock: null
+          id: i, letter: l, x: slotStartX + i * 140, y: 450, width: 105, height: 105, filledBlock: null
         }));
 
         const shuffledLetters = [...letters].sort(() => Math.random() - 0.5);
@@ -2205,7 +2196,7 @@
 
         this.blocks = shuffledLetters.map((letter, i) => ({
           id: i, letter: letter,
-          x: blockStartX + i * 150, y: 240, baseX: blockStartX + i * 150, baseY: 240,
+          x: blockStartX + i * 150, y: 235, baseX: blockStartX + i * 150, baseY: 235,
           width: 95, height: 95, scale: 1,
           color: colors[i % colors.length],
           inSlot: null
@@ -2220,21 +2211,21 @@
             b.y += (b.baseY - b.y) * 6 * dt;
           }
         }
+      }
 
+      onPointerDown(x, y) {
+        // Manual NEXT button click when blending completed
         if (this.isBlended) {
-          this.celebrateTimer += dt;
-          if (this.celebrateTimer >= 2.4) {
-            // Full Circle completed! Advance node and return to Treasure Map
+          if (Math.abs(x - 640) < 250 && Math.abs(y - 620) < 38) {
+            soundEngine.playCelebration();
             if (window.gameApp) {
               window.gameApp.advanceNode();
             }
             this.engine.switchScene('treasureMap');
+            return;
           }
         }
-      }
 
-      onPointerDown(x, y) {
-        if (this.isBlended) return;
         for (let i = this.blocks.length - 1; i >= 0; i--) {
           const b = this.blocks[i];
           if (Math.abs(x - b.x) < 55 && Math.abs(y - b.y) < 55) {
@@ -2248,7 +2239,7 @@
               b.inSlot = null;
             }
 
-            // 0.5-1.0s short sound
+            // Short 0.5-1.0s sound
             soundEngine.playLetterPhoneme(b.letter, 0.65);
             soundEngine.playBubblePop();
             this.particles.emitSparkleTrail(b.x, b.y, b.color);
@@ -2316,7 +2307,7 @@
         ctx.beginPath(); ctx.roundRect(300, 20, 680, 68, 34); ctx.fill(); ctx.stroke();
         ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 28px "Fredoka", sans-serif';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-        ctx.fillText(`Step 4: Blending Activity • Blend '${this.currentWordData.word.toUpperCase()}' • ${this.currentWordData.emoji}`, 640, 54);
+        ctx.fillText(`Step 4: Word Blending • Blend '${this.currentWordData.word.toUpperCase()}' • ${this.currentWordData.emoji}`, 640, 54);
 
         ctx.fillStyle = '#FFF59D'; ctx.font = 'bold 20px "Fredoka", sans-serif';
         ctx.fillText('Click to hear letters, then drag into slots below! 👇', 640, 140);
@@ -2346,7 +2337,7 @@
 
         if (this.isBlended) {
           ctx.save();
-          ctx.translate(640, 240);
+          ctx.translate(640, 235);
           ctx.fillStyle = 'rgba(10, 25, 55, 0.95)'; ctx.strokeStyle = '#FFD600'; ctx.lineWidth = 5;
           ctx.beginPath(); ctx.roundRect(-150, -110, 300, 220, 30); ctx.fill(); ctx.stroke();
           ctx.font = '74px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
@@ -2354,6 +2345,13 @@
           ctx.fillStyle = '#00E676'; ctx.font = 'bold 44px "Fredoka", sans-serif';
           ctx.fillText(this.currentWordData.word.toUpperCase(), 0, 50);
           ctx.restore();
+
+          // HIGHLY VISIBLE "NEXT" BUTTON ON COMPLETION (NO AUTOPLAY)
+          ctx.fillStyle = '#00E676'; ctx.strokeStyle = '#FFFFFF'; ctx.lineWidth = 4;
+          ctx.beginPath(); ctx.roundRect(390, 588, 500, 64, 32); ctx.fill(); ctx.stroke();
+          ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 24px "Fredoka", sans-serif';
+          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillText('NEXT: BACK TO TREASURE MAP 🗺️ ➔', 640, 620);
         }
       }
     }
@@ -2399,7 +2397,7 @@
 
       selectLetter(letterKey) {
         this.currentSelectedLetter = letterKey;
-        // STEP 1: Introduction (Learn Phase)
+        // STEP 1: Learn the Sound (Introduction)
         this.engine.switchScene('introLearning', true, letterKey);
       }
 
@@ -2474,15 +2472,6 @@
             document.querySelectorAll('.treasure-tab-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             this.renderTreasureGrid(btn.getAttribute('data-tab'));
-          });
-        });
-
-        // Top Step Progress Tracker Clicks
-        document.querySelectorAll('.step-pill').forEach(btn => {
-          btn.addEventListener('click', () => {
-            const stepId = btn.getAttribute('data-step-id');
-            soundEngine.playClick();
-            this.engine.switchScene(stepId, true, this.currentSelectedLetter);
           });
         });
 
