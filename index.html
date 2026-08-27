@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Phonics Treasure Island - 1st Grade Reading Adventure</title>
+  <title>Phonics Treasure Island - 1st Grade Reading Board Game</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;800&family=Nunito:wght@700;900&display=swap');
 
     :root {
       --font-main: 'Fredoka', 'Nunito', 'Comic Sans MS', 'Chalkboard SE', system-ui, -apple-system, sans-serif;
-      --bg-deep: #081226;
+      --bg-deep: #061126;
       --ocean-blue: #0288D1;
       --gold: #FFD600;
       --gold-dark: #FF9100;
@@ -47,23 +47,25 @@
       height: 100vh;
       display: flex;
       flex-direction: column;
-      background: radial-gradient(circle at center, #132448 0%, #081020 100%);
+      background: #0b1736;
       overflow: hidden;
     }
 
-    /* TOP GLOBAL HUD */
+    /* ==========================================================================
+       TOP GLOBAL HUD - ALWAYS VISIBLE, ZERO OVERFLOW, STRICT VISUAL ORDER
+       ========================================================================== */
     #top-hud {
       position: relative;
       width: 100%;
-      height: clamp(56px, 8vh, 68px);
+      height: clamp(50px, 6.8vh, 62px);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 clamp(8px, 2vw, 20px);
-      z-index: 80;
-      background: rgba(6, 14, 34, 0.96);
+      padding: 0 clamp(8px, 1.8vw, 20px);
+      z-index: 100;
+      background: rgba(5, 12, 30, 0.96);
       border-bottom: 3px solid var(--cyan);
-      box-shadow: 0 4px 20px rgba(0, 229, 255, 0.25);
+      box-shadow: 0 4px 18px rgba(0, 229, 255, 0.3);
       flex-shrink: 0;
       gap: 6px;
     }
@@ -79,7 +81,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: clamp(6px, 1.5vw, 14px);
+      gap: clamp(6px, 1.2vw, 14px);
       flex: 1;
       min-width: 0;
       overflow: hidden;
@@ -91,16 +93,15 @@
       border-radius: 18px;
       color: #FFFFFF;
       font-family: var(--font-main);
-      font-size: clamp(0.75rem, 1.2vw, 0.95rem);
+      font-size: clamp(0.72rem, 1.1vw, 0.9rem);
       font-weight: 700;
-      padding: clamp(4px, 0.8vh, 8px) clamp(8px, 1.2vw, 14px);
+      padding: clamp(3px, 0.6vh, 6px) clamp(8px, 1.2vw, 14px);
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 5px;
       transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
       white-space: nowrap;
-      pointer-events: auto;
     }
 
     .hud-btn:hover {
@@ -138,10 +139,10 @@
       background: linear-gradient(180deg, #FFD600 0%, #FF9100 100%);
       border: 2px solid #FFF9C4;
       border-radius: 18px;
-      padding: clamp(3px, 0.6vh, 6px) clamp(8px, 1vw, 12px);
+      padding: clamp(2px, 0.5vh, 5px) clamp(8px, 1vw, 12px);
       color: #1A237E;
       font-weight: 900;
-      font-size: clamp(0.8rem, 1.2vw, 1rem);
+      font-size: clamp(0.75rem, 1.1vw, 0.92rem);
       display: flex;
       align-items: center;
       gap: 4px;
@@ -152,23 +153,25 @@
     #activity-title-badge {
       color: var(--cyan);
       font-weight: 800;
-      font-size: clamp(0.8rem, 1.5vw, 1.15rem);
-      letter-spacing: 0.3px;
+      font-size: clamp(0.78rem, 1.3vw, 1.05rem);
+      letter-spacing: 0.2px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
 
-    /* 4-STAR PROGRESSION BAR (100% WHITE INITIAL) */
+    /* ==========================================================================
+       STRICT 4-STAR PROGRESSION BAR (100% PURE WHITE ON SCREEN LOAD)
+       ========================================================================== */
     .star-progress-bar {
       display: none;
       align-items: center;
-      gap: clamp(4px, 0.8vw, 8px);
+      gap: clamp(3px, 0.6vw, 6px);
       background: rgba(0, 0, 0, 0.65);
       border: 2px solid rgba(255, 255, 255, 0.35);
       border-radius: 20px;
-      padding: 3px clamp(6px, 1vw, 12px);
+      padding: 2px clamp(6px, 0.8vw, 10px);
       flex-shrink: 0;
     }
 
@@ -176,10 +179,10 @@
       display: inline-flex;
       justify-content: center;
       align-items: center;
-      width: clamp(24px, 3.5vw, 32px);
-      height: clamp(24px, 3.5vw, 32px);
+      width: clamp(22px, 3vw, 28px);
+      height: clamp(22px, 3vw, 28px);
       border-radius: 50%;
-      font-size: clamp(14px, 2vw, 19px);
+      font-size: clamp(13px, 1.8vw, 17px);
       font-weight: 900;
       transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
@@ -207,20 +210,22 @@
       100% { transform: scale(1.0) rotate(0deg); }
     }
 
-    /* GAME SCREENS */
+    /* ==========================================================================
+       GAME SCREENS - RESPONSIVE & CONFINED
+       ========================================================================== */
     .game-screen {
       position: absolute;
-      top: clamp(56px, 8vh, 68px);
+      top: clamp(50px, 6.8vh, 62px);
       left: 0;
       width: 100%;
-      height: calc(100% - clamp(56px, 8vh, 68px));
+      height: calc(100% - clamp(50px, 6.8vh, 62px));
       display: none;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
       overflow-y: auto;
       overflow-x: hidden;
-      padding: clamp(12px, 2.5vh, 24px) clamp(10px, 2vw, 20px);
+      padding: clamp(10px, 2vh, 20px) clamp(8px, 1.8vw, 18px);
       z-index: 10;
       pointer-events: auto;
     }
@@ -230,7 +235,7 @@
     }
 
     .screen-header-title {
-      font-size: clamp(1.4rem, 3.2vw, 2.2rem);
+      font-size: clamp(1.3rem, 2.8vw, 2rem);
       font-weight: 900;
       text-align: center;
       margin-bottom: 4px;
@@ -240,23 +245,23 @@
 
     .screen-subtitle {
       color: #80DEEA;
-      font-size: clamp(0.9rem, 1.6vw, 1.15rem);
+      font-size: clamp(0.82rem, 1.4vw, 1.05rem);
       text-align: center;
-      margin-bottom: clamp(10px, 2vh, 18px);
+      margin-bottom: clamp(8px, 1.5vh, 16px);
       max-width: 650px;
-      line-height: 1.35;
+      line-height: 1.3;
     }
 
-    /* LARGE NEXT BUTTON - MANUAL ONLY */
+    /* LARGE, HIGHLY VISIBLE "NEXT" BUTTON (ONLY REVEALED ON TASK COMPLETION) */
     .btn-next-action {
       background: linear-gradient(180deg, #00E676 0%, #00B248 100%);
       border: 4px solid #FFFFFF;
       border-radius: 36px;
       color: #FFFFFF;
       font-family: var(--font-main);
-      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      font-size: clamp(1rem, 1.8vw, 1.35rem);
       font-weight: 900;
-      padding: clamp(10px, 1.6vh, 16px) clamp(24px, 3.5vw, 42px);
+      padding: clamp(9px, 1.4vh, 14px) clamp(22px, 3.2vw, 38px);
       cursor: pointer;
       box-shadow: 0 8px 25px rgba(0, 230, 118, 0.6), inset 0 2px 4px rgba(255,255,255,0.7);
       transition: transform 0.18s ease, box-shadow 0.18s ease;
@@ -265,8 +270,8 @@
       gap: 10px;
       white-space: nowrap;
       animation: nextBtnPulse 1.4s infinite alternate ease-in-out;
-      margin-top: clamp(8px, 1.5vh, 16px);
-      z-index: 20;
+      margin-top: clamp(6px, 1.2vh, 14px);
+      z-index: 30;
     }
 
     .btn-next-action:hover {
@@ -287,27 +292,35 @@
       background: rgba(0, 0, 0, 0.45);
       border: 2px solid var(--gold);
       border-radius: 14px;
-      padding: 4px 12px;
-      font-size: clamp(0.75rem, 1.1vw, 0.9rem);
+      padding: 3px 10px;
+      font-size: clamp(0.7rem, 1vw, 0.85rem);
       font-weight: 800;
       color: #FFF59D;
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
       pointer-events: none;
       box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     }
 
-    /* SCREEN 1: TREASURE MAP */
+    /* ==========================================================================
+       1. THE TREASURE MAP: FULL-SCREEN BOARD GAME LAYOUT (ALL 26 NODES VISIBLE)
+       ========================================================================== */
     #screen-map {
       padding: 0;
-      background: linear-gradient(180deg, #38bdf8 0%, #7dd3fc 35%, #0284c7 36%, #0369a1 70%, #075985 100%);
-      overflow-x: auto;
-      overflow-y: hidden;
+      overflow: hidden;
       position: relative;
+      background: #0284c7;
     }
 
-    .map-scenery-bg {
+    .boardgame-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .board-bg-svg {
       position: absolute;
       top: 0;
       left: 0;
@@ -315,82 +328,39 @@
       height: 100%;
       pointer-events: none;
       z-index: 1;
-      opacity: 0.85;
     }
 
-    .map-controls-bar {
+    .board-nodes-layer {
       position: absolute;
-      top: 12px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(8, 18, 40, 0.88);
-      border: 2px solid var(--gold);
-      border-radius: 24px;
-      padding: 6px 18px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      z-index: 40;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-    }
-
-    .map-nav-arrow-btn {
-      background: #0288D1;
-      border: 2px solid #FFFFFF;
-      border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      color: #FFFFFF;
-      font-size: 1rem;
-      font-weight: 900;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.15s ease;
-    }
-
-    .map-nav-arrow-btn:hover {
-      transform: scale(1.15);
-      background: #03A9F4;
-    }
-
-    .map-track {
-      display: inline-flex;
-      align-items: center;
-      gap: clamp(28px, 4vw, 44px);
+      top: 0;
+      left: 0;
+      width: 100%;
       height: 100%;
-      padding: clamp(40px, 8vh, 70px) 70px clamp(30px, 6vh, 60px) 70px;
-      min-width: max-content;
-      position: relative;
       z-index: 10;
+      pointer-events: auto;
     }
 
-    .map-track::before {
-      content: '';
+    /* Individual Node on Board Game Path */
+    .board-node {
       position: absolute;
-      top: 48%;
-      left: 50px;
-      right: 50px;
-      height: 8px;
-      border-top: 6px dashed rgba(255, 255, 255, 0.7);
-      z-index: -1;
-    }
-
-    .map-node-card {
+      transform: translate(-50%, -50%);
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
-      flex-shrink: 0;
-      position: relative;
+      justify-content: center;
+      gap: 2px;
+      z-index: 15;
     }
 
-    .node-circle-btn {
-      width: clamp(90px, 12vw, 115px);
-      height: clamp(90px, 12vw, 115px);
+    .board-node.active-node {
+      z-index: 25;
+    }
+
+    .node-bubble-btn {
+      width: clamp(42px, 5.4vw, 68px);
+      height: clamp(42px, 5.4vw, 68px);
       border-radius: 50%;
-      border: 5px solid #FFFFFF;
+      border: clamp(2px, 0.4vw, 4px) solid #FFFFFF;
       background: linear-gradient(180deg, #FFA000 0%, #E65100 100%);
       color: #FFFFFF;
       cursor: pointer;
@@ -398,138 +368,141 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.4), inset 0 2px 6px rgba(255,255,255,0.7);
-      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.7);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
       position: relative;
     }
 
-    .node-circle-btn:hover {
-      transform: translateY(-5px) scale(1.08);
-      box-shadow: 0 14px 32px rgba(255, 214, 0, 0.7);
+    .node-bubble-btn:hover {
+      transform: scale(1.15);
       border-color: var(--gold);
+      box-shadow: 0 6px 20px rgba(255, 214, 0, 0.7);
     }
 
-    .node-circle-btn:active {
-      transform: translateY(2px) scale(0.96);
+    .node-bubble-btn:active {
+      transform: scale(0.94);
     }
 
-    .node-circle-btn.locked {
-      background: #455A64;
-      border-color: #78909C;
+    .node-bubble-btn.locked {
+      background: #475569;
+      border-color: #94a3b8;
       cursor: not-allowed;
-      opacity: 0.65;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      opacity: 0.72;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
     }
 
-    .node-circle-btn.locked:hover {
+    .node-bubble-btn.locked:hover {
       transform: none;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
 
-    .node-circle-btn.completed {
+    .node-bubble-btn.completed {
       background: linear-gradient(180deg, #00E676 0%, #00897B 100%);
       border-color: #FFF59D;
+      box-shadow: 0 4px 12px rgba(0, 230, 118, 0.5);
     }
 
-    .btn-letter-char {
-      font-size: clamp(2.4rem, 4vw, 3.2rem);
+    .node-letter-char {
+      font-size: clamp(1.2rem, 2.4vw, 2.1rem);
       font-weight: 900;
       line-height: 1;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.45);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.4);
     }
 
-    .btn-letter-word-preview {
-      font-size: 0.75rem;
-      font-weight: 800;
-      background: rgba(0,0,0,0.35);
-      border-radius: 8px;
+    .node-word-emoji {
+      font-size: clamp(0.55rem, 0.9vw, 0.85rem);
+      line-height: 1;
+      margin-top: 1px;
+    }
+
+    .node-title-badge {
+      background: rgba(6, 16, 38, 0.92);
+      border: 1.5px solid var(--cyan);
+      border-radius: 10px;
       padding: 1px 6px;
-      margin-top: 2px;
-    }
-
-    .btn-here-badge {
-      position: absolute;
-      top: -38px;
-      background: linear-gradient(180deg, #FF1744 0%, #D50000 100%);
-      border: 2px solid #FFFFFF;
-      border-radius: 16px;
-      padding: 4px 10px;
-      font-size: 0.75rem;
-      font-weight: 900;
-      color: #FFFFFF;
-      white-space: nowrap;
-      box-shadow: 0 4px 12px rgba(255, 23, 68, 0.6);
-      animation: hereFloat 0.9s infinite alternate ease-in-out;
-      pointer-events: none;
-    }
-
-    @keyframes hereFloat {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(-7px); }
-    }
-
-    .node-title-label {
-      background: rgba(8, 20, 48, 0.96);
-      border: 2px solid var(--cyan);
-      border-radius: 14px;
-      padding: 4px 10px;
-      font-size: clamp(0.72rem, 1vw, 0.82rem);
+      font-size: clamp(0.58rem, 0.85vw, 0.74rem);
       font-weight: 800;
       color: #FFFFFF;
       white-space: nowrap;
       text-align: center;
-      max-width: 170px;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+      max-width: clamp(75px, 11vw, 130px);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
     }
 
-    .node-play-btn {
+    /* DEDICATED "play" BUTTON DIRECTLY UNDER EVERY LETTER NODE */
+    .node-play-action-btn {
       background: linear-gradient(180deg, #00E676 0%, #00B248 100%);
-      border: 2px solid #FFFFFF;
-      border-radius: 16px;
+      border: 1.5px solid #FFFFFF;
+      border-radius: 12px;
       color: #FFFFFF;
       font-family: var(--font-main);
-      font-size: 0.9rem;
+      font-size: clamp(0.64rem, 0.92vw, 0.82rem);
       font-weight: 900;
       text-transform: lowercase;
-      padding: 4px 20px;
+      padding: 1px clamp(8px, 1.2vw, 14px);
       cursor: pointer;
-      box-shadow: 0 4px 14px rgba(0, 230, 118, 0.6);
+      box-shadow: 0 2px 8px rgba(0, 230, 118, 0.6);
       transition: transform 0.15s ease, background 0.15s ease;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
     }
 
-    .node-play-btn:hover {
+    .node-play-action-btn:hover {
       transform: scale(1.12);
       background: linear-gradient(180deg, #69F0AE 0%, #00C853 100%);
     }
 
-    .node-play-btn:active {
-      transform: scale(0.95);
+    .node-play-action-btn:active {
+      transform: scale(0.94);
     }
 
-    .node-play-btn.locked {
-      background: #455A64;
-      border-color: #78909C;
+    .node-play-action-btn.locked {
+      background: #475569;
+      border-color: #94a3b8;
       cursor: not-allowed;
-      opacity: 0.65;
+      opacity: 0.72;
       box-shadow: none;
     }
 
-    /* TIGER MASCOT COMPANION */
+    /* "YOU ARE HERE" FLOATING POINTER */
+    .node-here-pin {
+      position: absolute;
+      top: clamp(-28px, -4vh, -36px);
+      background: linear-gradient(180deg, #FF1744 0%, #D50000 100%);
+      border: 2px solid #FFFFFF;
+      border-radius: 12px;
+      padding: 2px 7px;
+      font-size: clamp(0.6rem, 0.8vw, 0.72rem);
+      font-weight: 900;
+      color: #FFFFFF;
+      white-space: nowrap;
+      box-shadow: 0 3px 10px rgba(255, 23, 68, 0.7);
+      animation: pinBounce 0.85s infinite alternate ease-in-out;
+      pointer-events: none;
+    }
+
+    @keyframes pinBounce {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-6px); }
+    }
+
+    /* ==========================================================================
+       TIGER MASCOT COMPANION - SPEECH BUBBLE STRICTLY HIDDEN (OPACITY: 0) ON LOAD
+       ========================================================================== */
     .tiger-companion-wrap {
       position: absolute;
-      bottom: clamp(10px, 2vh, 18px);
-      left: clamp(10px, 2vw, 18px);
+      bottom: clamp(8px, 1.6vh, 16px);
+      left: clamp(8px, 1.6vw, 16px);
       display: flex;
       align-items: flex-end;
-      gap: 12px;
-      z-index: 90;
+      gap: 10px;
+      z-index: 95;
       pointer-events: auto;
     }
 
     .tiger-mascot-btn {
-      width: clamp(56px, 7vw, 72px);
-      height: clamp(56px, 7vw, 72px);
+      width: clamp(50px, 6.2vw, 68px);
+      height: clamp(50px, 6.2vw, 68px);
       background: linear-gradient(180deg, #FFA000 0%, #E65100 100%);
       border: 3px solid var(--gold);
       border-radius: 50%;
@@ -537,7 +510,7 @@
       justify-content: center;
       align-items: center;
       cursor: pointer;
-      box-shadow: 0 6px 18px rgba(255, 152, 0, 0.55), inset 0 2px 4px rgba(255,255,255,0.7);
+      box-shadow: 0 6px 16px rgba(255, 152, 0, 0.55), inset 0 2px 4px rgba(255,255,255,0.7);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
       padding: 4px;
     }
@@ -556,14 +529,14 @@
       opacity: 0;
       background: #FFFFFF;
       border: 3px solid var(--gold);
-      border-radius: 20px 20px 20px 4px;
+      border-radius: 18px 18px 18px 4px;
       color: #0d1e3a;
-      font-size: clamp(0.85rem, 1.2vw, 0.98rem);
+      font-size: clamp(0.78rem, 1.1vw, 0.92rem);
       font-weight: 800;
-      padding: 10px 16px;
-      box-shadow: 0 10px 28px rgba(0,0,0,0.5);
-      max-width: clamp(240px, 35vw, 360px);
-      line-height: 1.35;
+      padding: 8px 14px;
+      box-shadow: 0 10px 26px rgba(0,0,0,0.5);
+      max-width: clamp(220px, 32vw, 340px);
+      line-height: 1.3;
       position: relative;
       transition: opacity 0.25s ease;
     }
@@ -571,7 +544,7 @@
     .tiger-speech-bubble.visible {
       display: block !important;
       opacity: 1 !important;
-      animation: popBubbleIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      animation: popBubbleIn 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     @keyframes popBubbleIn {
@@ -579,44 +552,46 @@
       100% { transform: scale(1) translateY(0); opacity: 1; }
     }
 
-    /* STEP 1: LEARN THE SOUND */
+    /* ==========================================================================
+       SCREEN 2: STEP 1 - LEARN THE SOUND
+       ========================================================================== */
     #screen-learn {
       background: radial-gradient(circle, #1a2c5a 0%, #081024 100%);
       text-align: center;
       justify-content: center;
-      gap: clamp(10px, 2vh, 18px);
+      gap: clamp(8px, 1.6vh, 16px);
     }
 
     .learn-cards-row {
       display: flex;
       justify-content: center;
       align-items: stretch;
-      gap: clamp(16px, 3.5vw, 48px);
+      gap: clamp(14px, 3vw, 40px);
       flex-wrap: wrap;
-      margin: clamp(8px, 1.5vh, 18px) 0;
-      max-width: 900px;
+      margin: clamp(6px, 1.2vh, 14px) 0;
+      max-width: 860px;
     }
 
     .big-sound-card {
       background: rgba(255, 255, 255, 0.07);
       border: 4px solid var(--cyan);
-      border-radius: 28px;
-      padding: clamp(16px, 2.5vh, 28px) clamp(20px, 3vw, 38px);
+      border-radius: 26px;
+      padding: clamp(14px, 2.2vh, 24px) clamp(18px, 2.6vw, 34px);
       cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      box-shadow: 0 10px 30px rgba(0, 229, 255, 0.25);
+      box-shadow: 0 10px 28px rgba(0, 229, 255, 0.25);
       transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-      min-width: clamp(200px, 30vw, 280px);
+      min-width: clamp(180px, 28vw, 260px);
       flex: 1;
     }
 
     .big-sound-card:hover {
       transform: translateY(-4px) scale(1.04);
       border-color: var(--gold);
-      box-shadow: 0 14px 36px rgba(255, 214, 0, 0.4);
+      box-shadow: 0 14px 34px rgba(255, 214, 0, 0.4);
     }
 
     .big-sound-card:active {
@@ -626,11 +601,11 @@
     .big-sound-card.clicked {
       border-color: var(--green);
       background: rgba(0, 230, 118, 0.16);
-      box-shadow: 0 10px 30px rgba(0, 230, 118, 0.35);
+      box-shadow: 0 10px 28px rgba(0, 230, 118, 0.35);
     }
 
     .card-char-big {
-      font-size: clamp(5rem, 10vw, 7.5rem);
+      font-size: clamp(4.5rem, 9vw, 7rem);
       font-weight: 900;
       color: var(--gold);
       line-height: 1;
@@ -639,13 +614,13 @@
     }
 
     .card-emoji-big {
-      font-size: clamp(4rem, 8vw, 5.8rem);
+      font-size: clamp(3.8rem, 7.5vw, 5.4rem);
       margin-bottom: 4px;
       filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4));
     }
 
     .card-label-word {
-      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-size: clamp(1.4rem, 2.8vw, 2.2rem);
       font-weight: 900;
       color: #FFFFFF;
       letter-spacing: 1px;
@@ -653,15 +628,17 @@
 
     #learn-next-container {
       display: none;
-      margin-top: 6px;
+      margin-top: 4px;
     }
 
-    /* STEP 2: MATCH SOUND */
+    /* ==========================================================================
+       SCREEN 3: STEP 2 - MATCH THE SOUND
+       ========================================================================== */
     #screen-match {
       background: radial-gradient(circle, #102d4d 0%, #061222 100%);
       text-align: center;
       justify-content: center;
-      gap: clamp(10px, 2vh, 18px);
+      gap: clamp(8px, 1.6vh, 16px);
     }
 
     .target-sound-card {
@@ -671,11 +648,11 @@
       align-items: center;
       background: rgba(255, 255, 255, 0.08);
       border: 4px solid var(--gold);
-      border-radius: 26px;
-      padding: clamp(12px, 2vh, 22px) clamp(24px, 4vw, 48px);
-      box-shadow: 0 10px 30px rgba(255, 214, 0, 0.3);
+      border-radius: 24px;
+      padding: clamp(10px, 1.8vh, 20px) clamp(22px, 3.5vw, 44px);
+      box-shadow: 0 10px 28px rgba(255, 214, 0, 0.3);
       transition: transform 0.2s ease;
-      margin-bottom: clamp(6px, 1.5vh, 14px);
+      margin-bottom: clamp(6px, 1.2vh, 12px);
     }
 
     .target-sound-card:hover {
@@ -687,7 +664,7 @@
     }
 
     .target-sound-char {
-      font-size: clamp(4.2rem, 8.5vw, 6.2rem);
+      font-size: clamp(3.8rem, 7.8vw, 5.8rem);
       font-weight: 900;
       color: var(--gold);
       line-height: 1;
@@ -697,26 +674,26 @@
     .bubble-row {
       display: flex;
       justify-content: center;
-      gap: clamp(14px, 3vw, 32px);
+      gap: clamp(12px, 2.6vw, 28px);
       flex-wrap: wrap;
-      margin-bottom: clamp(6px, 1.5vh, 14px);
+      margin-bottom: clamp(6px, 1.2vh, 12px);
     }
 
     .match-bubble-btn {
-      width: clamp(84px, 13vw, 120px);
-      height: clamp(84px, 13vw, 120px);
+      width: clamp(76px, 11vw, 110px);
+      height: clamp(76px, 11vw, 110px);
       border-radius: 50%;
       border: 4px solid var(--cyan);
       background: linear-gradient(180deg, #0288D1 0%, #01579B 100%);
       color: #FFFFFF;
-      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-size: clamp(2.2rem, 4.4vw, 3.4rem);
       font-weight: 900;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      box-shadow: 0 8px 24px rgba(0, 229, 255, 0.35);
+      box-shadow: 0 8px 22px rgba(0, 229, 255, 0.35);
       transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
     }
 
@@ -753,22 +730,24 @@
       margin-top: 4px;
     }
 
-    /* STEP 3: TRACING */
+    /* ==========================================================================
+       SCREEN 4: STEP 3 - LETTER TRACING
+       ========================================================================== */
     #screen-trace {
       background: radial-gradient(circle, #2a1645 0%, #0b0716 100%);
       text-align: center;
       justify-content: center;
-      gap: clamp(8px, 1.5vh, 14px);
+      gap: clamp(6px, 1.2vh, 12px);
     }
 
     #trace-canvas-wrap {
       position: relative;
-      width: min(520px, 92vw);
-      height: min(360px, 48vh);
+      width: min(500px, 90vw);
+      height: min(340px, 46vh);
       background: #141a36;
       border: 4px solid var(--gold);
-      border-radius: 26px;
-      box-shadow: 0 12px 34px rgba(0,0,0,0.6);
+      border-radius: 24px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.6);
       overflow: hidden;
       margin: 0 auto;
     }
@@ -793,43 +772,45 @@
       margin-top: 4px;
     }
 
-    /* STEP 4: WORD BLENDING */
+    /* ==========================================================================
+       SCREEN 5: STEP 4 - WORD BLENDING (CLICKABLE PHONETICS + DRAG/TAP)
+       ========================================================================== */
     #screen-blend {
       background: radial-gradient(circle, #331548 0%, #0e051c 100%);
       text-align: center;
       justify-content: center;
-      gap: clamp(10px, 1.8vh, 16px);
+      gap: clamp(8px, 1.5vh, 14px);
     }
 
     .blend-target-box {
       background: rgba(255,255,255,0.06);
       border: 3px solid var(--cyan);
-      border-radius: 22px;
-      padding: clamp(8px, 1.5vh, 14px) clamp(16px, 3vw, 28px);
+      border-radius: 20px;
+      padding: clamp(6px, 1.2vh, 12px) clamp(14px, 2.5vw, 24px);
       display: inline-flex;
       align-items: center;
-      gap: 16px;
-      margin-bottom: 4px;
+      gap: 14px;
+      margin-bottom: 2px;
     }
 
     .blend-slots-row {
       display: flex;
       justify-content: center;
-      gap: clamp(10px, 2vw, 18px);
-      margin: clamp(4px, 1vh, 10px) 0;
+      gap: clamp(8px, 1.8vw, 16px);
+      margin: clamp(4px, 0.8vh, 8px) 0;
     }
 
     .blend-slot-box {
-      width: clamp(76px, 12vw, 100px);
-      height: clamp(76px, 12vw, 100px);
+      width: clamp(70px, 11vw, 92px);
+      height: clamp(70px, 11vw, 92px);
       border: 3px dashed var(--cyan);
-      border-radius: 20px;
+      border-radius: 18px;
       background: rgba(255, 255, 255, 0.05);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      font-size: clamp(2.4rem, 4.5vw, 3.4rem);
+      font-size: clamp(2.2rem, 4vw, 3.1rem);
       font-weight: 900;
       color: var(--green);
       transition: all 0.2s ease;
@@ -846,7 +827,7 @@
     }
 
     .blend-slot-sub {
-      font-size: 0.62rem;
+      font-size: 0.6rem;
       color: #80DEEA;
       font-weight: 700;
     }
@@ -854,8 +835,8 @@
     .blend-tiles-row {
       display: flex;
       justify-content: center;
-      gap: clamp(10px, 2vw, 18px);
-      margin: clamp(6px, 1.2vh, 12px) 0;
+      gap: clamp(8px, 1.8vw, 16px);
+      margin: clamp(4px, 1vh, 10px) 0;
       flex-wrap: wrap;
     }
 
@@ -863,32 +844,32 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
     }
 
     .blend-tile-btn {
-      width: clamp(76px, 12vw, 100px);
-      height: clamp(76px, 12vw, 100px);
-      border-radius: 20px;
+      width: clamp(70px, 11vw, 92px);
+      height: clamp(70px, 11vw, 92px);
+      border-radius: 18px;
       border: 3px solid #FFFFFF;
       background: linear-gradient(180deg, #FFA000 0%, #E65100 100%);
       color: #FFFFFF;
-      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-size: clamp(2rem, 3.8vw, 2.9rem);
       font-weight: 900;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.7);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.7);
       transition: transform 0.18s ease, opacity 0.18s ease, border-color 0.18s ease;
       position: relative;
     }
 
     .blend-tile-btn:hover {
-      transform: translateY(-4px) scale(1.08);
+      transform: translateY(-3px) scale(1.06);
       border-color: var(--gold);
-      box-shadow: 0 12px 28px rgba(255, 152, 0, 0.6);
+      box-shadow: 0 12px 26px rgba(255, 152, 0, 0.6);
     }
 
     .blend-tile-btn:active {
@@ -903,14 +884,14 @@
     }
 
     .tile-hear-sound-btn {
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.65);
       border: 1.5px solid var(--gold);
       border-radius: 12px;
       color: #FFF59D;
       font-family: var(--font-main);
-      font-size: clamp(0.68rem, 1vw, 0.8rem);
+      font-size: clamp(0.65rem, 0.9vw, 0.78rem);
       font-weight: 800;
-      padding: 3px 8px;
+      padding: 2px 7px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -920,16 +901,18 @@
     }
 
     .tile-hear-sound-btn:hover {
-      transform: scale(1.1);
+      transform: scale(1.08);
       background: rgba(255, 214, 0, 0.25);
     }
 
     #blend-next-container {
       display: none;
-      margin-top: 8px;
+      margin-top: 6px;
     }
 
-    /* MODAL WINDOWS */
+    /* ==========================================================================
+       MODAL WINDOWS & CELEBRATION REWARD POP-UP (100 ITEMS)
+       ========================================================================== */
     .modal-backdrop {
       position: absolute;
       top: 0;
@@ -941,8 +924,8 @@
       display: none;
       justify-content: center;
       align-items: center;
-      z-index: 100;
-      padding: clamp(12px, 2vw, 24px);
+      z-index: 120;
+      padding: clamp(10px, 2vw, 20px);
     }
 
     .modal-backdrop.active {
@@ -958,9 +941,9 @@
     .modal-box {
       background: linear-gradient(180deg, #182554 0%, #0b1028 100%);
       border: 4px solid var(--gold);
-      border-radius: 28px;
-      padding: clamp(18px, 3vh, 32px) clamp(20px, 3.5vw, 36px);
-      max-width: 600px;
+      border-radius: 26px;
+      padding: clamp(16px, 2.8vh, 30px) clamp(18px, 3vw, 34px);
+      max-width: 580px;
       width: 100%;
       text-align: center;
       box-shadow: 0 16px 50px rgba(255, 214, 0, 0.35);
@@ -978,15 +961,15 @@
     }
 
     .modal-box h2 {
-      font-size: clamp(1.6rem, 3.5vw, 2.3rem);
+      font-size: clamp(1.5rem, 3.2vw, 2.2rem);
       color: var(--gold);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       text-shadow: 0 2px 8px rgba(0,0,0,0.5);
     }
 
     .reward-icon-huge {
-      font-size: clamp(4.5rem, 10vw, 6.5rem);
-      margin: 8px 0;
+      font-size: clamp(4.2rem, 9vw, 6.2rem);
+      margin: 6px 0;
       filter: drop-shadow(0 6px 18px rgba(255, 214, 0, 0.6));
       animation: rewardFloat 1.2s infinite alternate ease-in-out;
     }
@@ -997,21 +980,21 @@
     }
 
     .reward-item-name {
-      font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+      font-size: clamp(1.3rem, 2.4vw, 1.8rem);
       font-weight: 900;
       color: #FFFFFF;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .reward-category-tag {
       background: var(--purple);
       color: #FFFFFF;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       font-weight: 900;
       padding: 3px 12px;
       border-radius: 12px;
       display: inline-block;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       text-transform: uppercase;
     }
 
@@ -1019,25 +1002,25 @@
       display: inline-block;
       background: var(--cyan);
       color: #061324;
-      font-size: clamp(0.78rem, 1.2vw, 0.9rem);
+      font-size: clamp(0.75rem, 1.1vw, 0.88rem);
       font-weight: 900;
-      padding: 6px 16px;
+      padding: 5px 14px;
       border-radius: 14px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       max-width: 90%;
     }
 
     .btn-close-x {
       position: absolute;
-      top: 14px;
-      right: 16px;
+      top: 12px;
+      right: 14px;
       background: rgba(255, 255, 255, 0.12);
       border: 2px solid #FFFFFF;
       border-radius: 50%;
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
       color: #FFFFFF;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: bold;
       cursor: pointer;
       display: flex;
@@ -1052,13 +1035,13 @@
       border-color: #FF8A80;
     }
 
-    /* 100-ITEM CHEST */
+    /* 100-ITEM CHEST MODAL SPECIFICS */
     .chest-filter-bar {
       display: flex;
       justify-content: center;
       gap: 6px;
       flex-wrap: wrap;
-      margin: 10px 0 14px 0;
+      margin: 8px 0 12px 0;
       width: 100%;
     }
 
@@ -1066,10 +1049,10 @@
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.3);
       border-radius: 16px;
-      padding: 4px 12px;
+      padding: 3px 10px;
       color: #FFFFFF;
       font-family: var(--font-main);
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.15s ease;
@@ -1084,29 +1067,29 @@
 
     .chest-progress-counter {
       color: var(--cyan);
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 800;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .treasure-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
-      gap: 8px;
+      grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+      gap: 7px;
       width: 100%;
-      max-height: clamp(240px, 45vh, 380px);
+      max-height: clamp(220px, 42vh, 360px);
       overflow-y: auto;
       padding: 8px;
       background: rgba(0, 0, 0, 0.3);
-      border-radius: 18px;
+      border-radius: 16px;
       border: 2px solid rgba(255, 255, 255, 0.15);
     }
 
     .chest-card {
       background: rgba(255, 255, 255, 0.06);
       border: 2px solid rgba(255, 255, 255, 0.15);
-      border-radius: 14px;
-      padding: 8px 4px;
+      border-radius: 12px;
+      padding: 6px 3px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1126,25 +1109,25 @@
     }
 
     .chest-card-icon {
-      font-size: 1.8rem;
+      font-size: 1.7rem;
       line-height: 1.1;
     }
 
     .chest-card-name {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 800;
       color: #FFFFFF;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 85px;
+      max-width: 82px;
     }
 
     .chest-card-cond {
-      font-size: 0.6rem;
+      font-size: 0.58rem;
       color: var(--gold);
       line-height: 1.1;
-      max-width: 85px;
+      max-width: 82px;
       overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
@@ -1152,6 +1135,7 @@
       -webkit-box-orient: vertical;
     }
 
+    /* CONFETTI CANVAS OVERLAY */
     #confetti-canvas {
       position: absolute;
       top: 0;
@@ -1159,7 +1143,7 @@
       width: 100%;
       height: 100%;
       pointer-events: none;
-      z-index: 120;
+      z-index: 150;
     }
   </style>
 </head>
@@ -1180,7 +1164,7 @@
       </div>
 
       <div class="hud-center">
-        <span id="activity-title-badge">🗺️ Treasure Map</span>
+        <span id="activity-title-badge">🗺️ Treasure Map • Full Alphabet Quest</span>
         <!-- STRICT 4-STAR PROGRESSION BAR (100% PURE WHITE ON SCREEN LOAD) -->
         <div id="star-bar" class="star-progress-bar">
           <span id="star-slot-1" class="hud-star white" title="Step 1 Star">☆</span>
@@ -1203,36 +1187,249 @@
       </div>
     </header>
 
-    <!-- SCREEN 1: THE TREASURE MAP (26 ALPHABETICAL NODES A TO Z) -->
+    <!-- ==========================================================================
+         SCREEN 1: THE TREASURE MAP (FULL-SCREEN BOARD GAME - ALL 26 NODES VISIBLE)
+         ========================================================================== -->
     <main id="screen-map" class="game-screen active">
-      <svg class="map-scenery-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 800" preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="seaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#38bdf8"/>
-            <stop offset="40%" stop-color="#0284c7"/>
-            <stop offset="100%" stop-color="#0369a1"/>
-          </linearGradient>
-        </defs>
-        <g fill="rgba(255,255,255,0.7)">
-          <path d="M 120,90 Q 150,50 190,75 Q 230,55 260,85 Q 290,75 310,105 L 110,105 Z" />
-          <path d="M 620,110 Q 650,70 690,95 Q 730,75 760,105 Q 790,95 810,125 L 610,125 Z" />
-          <path d="M 1120,80 Q 1150,40 1190,65 Q 1230,45 1260,75 Q 1290,65 1310,95 L 1110,95 Z" />
-        </g>
-        <path d="M 0,380 Q 100,360 200,380 T 400,380 T 600,380 T 800,380 T 1000,380 T 1200,380 T 1400,380 T 1600,380" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="4" />
-        <path d="M 0,440 Q 120,420 240,440 T 480,440 T 720,440 T 960,440 T 1200,440 T 1440,440 T 1680,440" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="4" />
-        <path d="M 0,520 Q 80,500 160,520 T 320,520 T 480,520 T 640,520 T 800,520 T 960,520 T 1120,520 T 1280,520 T 1440,520 T 1600,520" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="3" />
-      </svg>
+      <div class="boardgame-container">
+        <!-- Rich Illustrated Cartoon Vector Background -->
+        <svg class="board-bg-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#38bdf8"/>
+              <stop offset="35%" stop-color="#7dd3fc"/>
+              <stop offset="36%" stop-color="#0284c7"/>
+              <stop offset="70%" stop-color="#0369a1"/>
+              <stop offset="100%" stop-color="#075985"/>
+            </linearGradient>
+            <!-- Island Gradient -->
+            <linearGradient id="islandGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#86efac"/>
+              <stop offset="60%" stop-color="#22c55e"/>
+              <stop offset="100%" stop-color="#15803d"/>
+            </linearGradient>
+            <!-- Sand Gradient -->
+            <linearGradient id="sandGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#fef08a"/>
+              <stop offset="100%" stop-color="#eab308"/>
+            </linearGradient>
+            <!-- Castle Gradient -->
+            <linearGradient id="castleGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#c084fc"/>
+              <stop offset="100%" stop-color="#7e22ce"/>
+            </linearGradient>
+          </defs>
 
-      <div class="map-controls-bar">
-        <button class="map-nav-arrow-btn" onclick="scrollMap(-320)" title="Scroll Left">◀</button>
-        <span style="font-size:0.85rem; font-weight:800; color:#FFD600;">🏝️ Alphabet Quest (A–Z)</span>
-        <button class="map-nav-arrow-btn" onclick="scrollMap(320)" title="Scroll Right">▶</button>
+          <!-- Sky and Deep Ocean Base -->
+          <rect width="1200" height="800" fill="url(#skyGrad)" />
+
+          <!-- Cartoon Clouds in Sky -->
+          <g fill="rgba(255,255,255,0.85)">
+            <ellipse cx="140" cy="50" rx="60" ry="25" />
+            <ellipse cx="180" cy="40" rx="45" ry="22" />
+            <ellipse cx="110" cy="45" rx="40" ry="18" />
+
+            <ellipse cx="580" cy="45" rx="70" ry="25" />
+            <ellipse cx="630" cy="35" rx="50" ry="22" />
+            <ellipse cx="540" cy="40" rx="45" ry="18" />
+
+            <ellipse cx="1020" cy="55" rx="65" ry="25" />
+            <ellipse cx="1065" cy="42" rx="45" ry="20" />
+            <ellipse cx="980" cy="48" rx="40" ry="18" />
+          </g>
+
+          <!-- Rainbow Arc -->
+          <path d="M 700,100 Q 850,-20 1000,100" fill="none" stroke="rgba(244, 63, 94, 0.45)" stroke-width="12" />
+          <path d="M 706,100 Q 850,-10 994,100" fill="none" stroke="rgba(251, 191, 36, 0.45)" stroke-width="10" />
+          <path d="M 712,100 Q 850,0 988,100" fill="none" stroke="rgba(52, 211, 153, 0.45)" stroke-width="8" />
+          <path d="M 718,100 Q 850,10 982,100" fill="none" stroke="rgba(56, 189, 248, 0.45)" stroke-width="6" />
+
+          <!-- Tropical Island Landmasses (Behind the winding path) -->
+          <!-- Top Left Island (Letters A-C) -->
+          <path d="M 30,80 Q 200,40 380,85 Q 480,120 360,170 Q 200,200 40,160 Z" fill="url(#sandGrad)" />
+          <path d="M 50,90 Q 200,55 360,95 Q 440,125 340,155 Q 200,185 60,145 Z" fill="url(#islandGrad)" />
+
+          <!-- Top Right Island (Letters D-G) -->
+          <path d="M 580,75 Q 850,30 1150,80 Q 1190,160 1120,240 Q 850,230 620,180 Z" fill="url(#sandGrad)" />
+          <path d="M 610,85 Q 850,45 1120,90 Q 1160,150 1100,220 Q 850,210 640,165 Z" fill="url(#islandGrad)" />
+
+          <!-- Mid Right Island (Letters H-K) -->
+          <path d="M 400,220 Q 750,190 1120,250 Q 1180,360 850,370 Q 500,380 380,300 Z" fill="url(#sandGrad)" />
+          <path d="M 430,235 Q 750,205 1090,265 Q 1140,345 850,355 Q 520,365 410,285 Z" fill="url(#islandGrad)" />
+
+          <!-- Mid Left Island (Letters L-N) -->
+          <path d="M 20,320 Q 300,300 450,360 Q 480,480 300,520 Q 100,510 20,440 Z" fill="url(#sandGrad)" />
+          <path d="M 40,335 Q 300,315 420,370 Q 450,465 290,500 Q 110,490 40,425 Z" fill="url(#islandGrad)" />
+
+          <!-- Center-Right Island (Letters O-R) -->
+          <path d="M 380,390 Q 700,360 1140,410 Q 1180,520 850,550 Q 520,560 360,480 Z" fill="url(#sandGrad)" />
+          <path d="M 410,405 Q 700,375 1110,425 Q 1140,505 850,535 Q 540,545 385,465 Z" fill="url(#islandGrad)" />
+
+          <!-- Bottom Left Island (Letters S-X) -->
+          <path d="M 30,520 Q 450,490 950,540 Q 1160,620 900,720 Q 450,750 30,680 Z" fill="url(#sandGrad)" />
+          <path d="M 50,535 Q 450,505 920,555 Q 1120,605 880,700 Q 450,730 50,660 Z" fill="url(#islandGrad)" />
+
+          <!-- Grand Castle Island (Letters Y, Z & Grand Reading Castle) -->
+          <path d="M 40,700 Q 350,660 1160,680 Q 1190,795 650,795 Q 150,795 30,770 Z" fill="url(#sandGrad)" />
+          <path d="M 60,715 Q 350,675 1140,695 Q 1160,785 650,785 Q 170,785 50,755 Z" fill="url(#islandGrad)" />
+
+          <!-- Cartoon Palm Trees & Mountains on Islands -->
+          <!-- Palm Tree 1 (Top Left) -->
+          <path d="M 90,140 Q 80,105 105,80" stroke="#78350f" stroke-width="6" fill="none" stroke-linecap="round" />
+          <ellipse cx="105" cy="78" rx="22" ry="12" fill="#16a34a" />
+          <ellipse cx="118" cy="84" rx="20" ry="10" fill="#15803d" />
+          <ellipse cx="90" cy="82" rx="18" ry="9" fill="#22c55e" />
+
+          <!-- Palm Tree 2 (Mid Right) -->
+          <path d="M 1080,310 Q 1065,270 1090,240" stroke="#78350f" stroke-width="6" fill="none" stroke-linecap="round" />
+          <ellipse cx="1090" cy="238" rx="22" ry="12" fill="#16a34a" />
+          <ellipse cx="1105" cy="245" rx="19" ry="10" fill="#15803d" />
+          <ellipse cx="1075" cy="242" rx="18" ry="9" fill="#22c55e" />
+
+          <!-- Palm Tree 3 (Bottom Left) -->
+          <path d="M 80,630 Q 70,590 95,560" stroke="#78350f" stroke-width="6" fill="none" stroke-linecap="round" />
+          <ellipse cx="95" cy="558" rx="24" ry="12" fill="#16a34a" />
+          <ellipse cx="110" cy="565" rx="20" ry="10" fill="#15803d" />
+          <ellipse cx="78" cy="562" rx="18" ry="9" fill="#22c55e" />
+
+          <!-- Pirate Galleon Ship in Water (Right side) -->
+          <g transform="translate(1010, 560) scale(0.65)">
+            <!-- Ship Hull -->
+            <path d="M 0,40 Q 50,70 140,40 L 125,75 Q 50,95 10,75 Z" fill="#78350f" stroke="#451a03" stroke-width="3"/>
+            <!-- Mast -->
+            <line x1="65" y1="45" x2="65" y2="-30" stroke="#451a03" stroke-width="5"/>
+            <!-- White Sails -->
+            <path d="M 68,-25 Q 110,-10 68,5 Q 105,18 68,35" fill="#f8fafc" stroke="#94a3b8" stroke-width="2"/>
+            <!-- Pirate Jolly Roger Flag -->
+            <rect x="25" y="-35" width="38" height="22" fill="#0f172a" rx="2"/>
+            <circle cx="44" cy="-24" r="5" fill="#f8fafc"/>
+            <line x1="36" y1="-16" x2="52" y2="-32" stroke="#f8fafc" stroke-width="2"/>
+            <line x1="52" y1="-16" x2="36" y2="-32" stroke="#f8fafc" stroke-width="2"/>
+          </g>
+
+          <!-- Cute Swimming Dolphin in Ocean -->
+          <g transform="translate(240, 240) scale(0.55)">
+            <path d="M 0,20 Q 30,-15 70,0 Q 90,10 110,0 Q 95,25 70,30 Q 30,35 0,20 Z" fill="#38bdf8" stroke="#0284c7" stroke-width="3"/>
+            <!-- Fin -->
+            <path d="M 35,0 Q 45,-25 55,-5 Z" fill="#0284c7"/>
+            <circle cx="20" cy="15" r="3" fill="#0f172a"/>
+          </g>
+
+          <!-- Sea Turtle (Left) -->
+          <g transform="translate(160, 420) scale(0.5)">
+            <ellipse cx="40" cy="30" rx="28" ry="20" fill="#15803d" stroke="#166534" stroke-width="3"/>
+            <circle cx="75" cy="30" r="10" fill="#22c55e"/>
+            <!-- Flippers -->
+            <ellipse cx="55" cy="10" rx="14" ry="7" fill="#22c55e"/>
+            <ellipse cx="55" cy="50" rx="14" ry="7" fill="#22c55e"/>
+            <ellipse cx="20" cy="12" rx="10" ry="6" fill="#22c55e"/>
+            <ellipse cx="20" cy="48" rx="10" ry="6" fill="#22c55e"/>
+          </g>
+
+          <!-- Grand Castle of Reading at the Finish (Bottom Right) -->
+          <g transform="translate(740, 640) scale(0.85)">
+            <!-- Base Castle Wall -->
+            <rect x="0" y="50" width="220" height="90" fill="url(#castleGrad)" stroke="#581c87" stroke-width="4" rx="6"/>
+            <!-- Castle Gate -->
+            <path d="M 85,140 L 85,90 Q 110,65 135,90 L 135,140 Z" fill="#3b0764" stroke="#ffd600" stroke-width="3"/>
+            <!-- Towers -->
+            <rect x="-15" y="10" width="45" height="130" fill="url(#castleGrad)" stroke="#581c87" stroke-width="4" rx="4"/>
+            <polygon points="-20,10 7.5,-35 35,10" fill="#ffd600" stroke="#b45309" stroke-width="3"/>
+            
+            <rect x="190" y="10" width="45" height="130" fill="url(#castleGrad)" stroke="#581c87" stroke-width="4" rx="4"/>
+            <polygon points="185,10 212.5,-35 240,10" fill="#ffd600" stroke="#b45309" stroke-width="3"/>
+
+            <!-- Center High Tower -->
+            <rect x="80" y="-10" width="60" height="70" fill="url(#castleGrad)" stroke="#581c87" stroke-width="4" rx="4"/>
+            <polygon points="70,-10 110,-60 150,-10" fill="#ffd600" stroke="#b45309" stroke-width="3"/>
+            
+            <!-- Castle Flag -->
+            <line x1="110" y1="-60" x2="110" y2="-85" stroke="#451a03" stroke-width="3"/>
+            <polygon points="110,-85 145,-73 110,-61" fill="#ec4899"/>
+            <!-- Castle Title Banner -->
+            <rect x="25" y="14" width="170" height="26" fill="#ffd600" stroke="#b45309" stroke-width="2" rx="6"/>
+            <text x="110" y="32" font-family="'Fredoka', sans-serif" font-size="14" font-weight="900" fill="#451a03" text-anchor="middle">👑 PHONICS CASTLE</text>
+          </g>
+
+          <!-- Winding Cobblestone Board Game Track Path (Connecting A to Z) -->
+          <!-- Dotted Line connecting the winding sequence -->
+          <path id="board-game-path-line" 
+                d="M 96,96 
+                   Q 180,90 276,96 
+                   T 456,96 
+                   T 636,96 
+                   T 816,96 
+                   T 996,112 
+                   Q 1116,160 1104,224 
+                   Q 1080,264 972,264 
+                   T 792,264 
+                   T 612,264 
+                   T 432,264 
+                   T 252,264 
+                   Q 84,320 96,400 
+                   Q 120,440 252,432 
+                   T 432,432 
+                   T 612,432 
+                   T 792,432 
+                   T 972,432 
+                   Q 1116,480 1104,560 
+                   Q 1080,600 972,600 
+                   T 792,600 
+                   T 612,600 
+                   T 432,600 
+                   T 252,600 
+                   Q 84,650 144,720 
+                   Q 240,730 384,720"
+                fill="none" 
+                stroke="#ffd600" 
+                stroke-width="12" 
+                stroke-dasharray="14 10" 
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                opacity="0.8" />
+          <path d="M 96,96 
+                   Q 180,90 276,96 
+                   T 456,96 
+                   T 636,96 
+                   T 816,96 
+                   T 996,112 
+                   Q 1116,160 1104,224 
+                   Q 1080,264 972,264 
+                   T 792,264 
+                   T 612,264 
+                   T 432,264 
+                   T 252,264 
+                   Q 84,320 96,400 
+                   Q 120,440 252,432 
+                   T 432,432 
+                   T 612,432 
+                   T 792,432 
+                   T 972,432 
+                   Q 1116,480 1104,560 
+                   Q 1080,600 972,600 
+                   T 792,600 
+                   T 612,600 
+                   T 432,600 
+                   T 252,600 
+                   Q 84,650 144,720 
+                   Q 240,730 384,720"
+                fill="none" 
+                stroke="#ffffff" 
+                stroke-width="4" 
+                stroke-dasharray="6 18" 
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                opacity="0.9" />
+        </svg>
+
+        <!-- DOM Node Layer with all 26 nodes placed at precise percentages -->
+        <div class="board-nodes-layer" id="board-nodes-container">
+          <!-- 26 nodes generated by JavaScript -->
+        </div>
       </div>
-
-      <div class="map-track" id="map-track-container"></div>
     </main>
 
-    <!-- TIGER MASCOT COMPANION -->
+    <!-- TIGER MASCOT COMPANION (SPEECH BUBBLE STRICTLY HIDDEN OPACITY 0 BY DEFAULT) -->
     <div class="tiger-companion-wrap">
       <button id="tiger-mascot-btn" class="tiger-mascot-btn" onclick="toggleTigerMascot()" title="Click Astro Tiger for Help!">
         <svg viewBox="0 0 100 100" width="100%" height="100%">
@@ -1258,11 +1455,13 @@
         </svg>
       </button>
       <div id="tiger-speech-bubble" class="tiger-speech-bubble">
-        <span id="tiger-speech-text">Roar! Welcome explorer! Click 'play' under any letter node to start! 🐯</span>
+        <span id="tiger-speech-text">Roar! Welcome explorer! Click 'play' under any letter on the map to begin! 🐯</span>
       </div>
     </div>
 
-    <!-- SCREEN 2: STEP 1 - LEARN THE SOUND -->
+    <!-- ==========================================================================
+         SCREEN 2: STEP 1 - LEARN THE SOUND
+         ========================================================================== -->
     <section id="screen-learn" class="game-screen">
       <h2 class="screen-header-title" style="color:var(--gold);">
         Step 1: Learn the Sound
@@ -1291,7 +1490,9 @@
       </div>
     </section>
 
-    <!-- SCREEN 3: STEP 2 - MATCH THE SOUND -->
+    <!-- ==========================================================================
+         SCREEN 3: STEP 2 - MATCH THE SOUND
+         ========================================================================== -->
     <section id="screen-match" class="game-screen">
       <h2 class="screen-header-title" style="color:var(--cyan);">
         Step 2: Match the Sound
@@ -1314,7 +1515,9 @@
       </div>
     </section>
 
-    <!-- SCREEN 4: STEP 3 - LETTER TRACING -->
+    <!-- ==========================================================================
+         SCREEN 4: STEP 3 - LETTER TRACING
+         ========================================================================== -->
     <section id="screen-trace" class="game-screen">
       <h2 class="screen-header-title" style="color:var(--green);">
         Step 3: Letter Tracing
@@ -1324,7 +1527,7 @@
       </p>
 
       <div id="trace-canvas-wrap">
-        <canvas id="trace-canvas" width="520" height="360"></canvas>
+        <canvas id="trace-canvas" width="500" height="340"></canvas>
       </div>
 
       <div class="trace-toolbar">
@@ -1343,7 +1546,9 @@
       </div>
     </section>
 
-    <!-- SCREEN 5: STEP 4 - WORD BLENDING -->
+    <!-- ==========================================================================
+         SCREEN 5: STEP 4 - WORD BLENDING (CLICKABLE PHONETICS + DRAG/TAP)
+         ========================================================================== -->
     <section id="screen-blend" class="game-screen">
       <h2 class="screen-header-title" style="color:var(--purple);">
         Step 4: Word Blending
@@ -1353,8 +1558,8 @@
       </p>
 
       <div class="blend-target-box">
-        <span style="font-size:2.8rem;" id="blend-target-preview-emoji">🐜</span>
-        <span style="font-size:1.4rem; font-weight:900; color:#FFD600;" id="blend-target-preview-name">Target: ANT</span>
+        <span style="font-size:2.5rem;" id="blend-target-preview-emoji">🐜</span>
+        <span style="font-size:1.3rem; font-weight:900; color:#FFD600;" id="blend-target-preview-name">Target: ANT</span>
       </div>
 
       <div class="blend-slots-row" id="blend-slots-container"></div>
@@ -1390,10 +1595,10 @@
 
     <!-- CHEST MODAL (100-ITEM CATALOG) -->
     <div id="chest-modal" class="modal-backdrop">
-      <div class="modal-box" style="max-width:700px;">
+      <div class="modal-box" style="max-width:660px;">
         <button class="btn-close-x" onclick="closeTreasureChest()">✕</button>
         <h2>🎁 Phonics Treasure Chest 🎁</h2>
-        <p style="color:#80DEEA; font-size:0.9rem; margin-bottom:4px;">
+        <p style="color:#80DEEA; font-size:0.85rem; margin-bottom:4px;">
           Complete letter activities and milestones to unlock all 100 rewards!
         </p>
         <div class="chest-progress-counter" id="chest-progress-text">
@@ -1411,7 +1616,7 @@
         <div class="treasure-grid" id="chest-grid"></div>
 
         <div style="margin-top:10px;">
-          <button class="hud-btn" style="background:#5a1212; border-color:#ff5252; font-size:0.75rem;" onclick="resetAllGameProgress()">
+          <button class="hud-btn" style="background:#5a1212; border-color:#ff5252; font-size:0.72rem;" onclick="resetAllGameProgress()">
             ⚠️ Reset All Progress
           </button>
         </div>
@@ -1421,40 +1626,78 @@
 
   <script>
     const PHONICS_DATA = {
-      'a': { letter: 'a', title: 'Apple Adventure Island 🍎', word: 'ant', emoji: '🐜', letters: ['a', 'n', 't'], soundText: 'a', phonemeSpeech: 'ah' },
-      'b': { letter: 'b', title: 'Bear Blossom Beach 🐻', word: 'bat', emoji: '🦇', letters: ['b', 'a', 't'], soundText: 'b', phonemeSpeech: 'buh' },
-      'c': { letter: 'c', title: 'Coral Castle Cove 🏰', word: 'cat', emoji: '🐱', letters: ['c', 'a', 't'], soundText: 'c', phonemeSpeech: 'kuh' },
-      'd': { letter: 'd', title: 'Dolphin Deep Dunes 🐬', word: 'dog', emoji: '🐶', letters: ['d', 'o', 'g'], soundText: 'd', phonemeSpeech: 'duh' },
-      'e': { letter: 'e', title: 'Explorer Egg Valley 🥚', word: 'egg', emoji: '🥚', letters: ['e', 'g', 'g'], soundText: 'e', phonemeSpeech: 'eh' },
-      'f': { letter: 'f', title: 'Fox Forest Falls 🦊', word: 'fox', emoji: '🦊', letters: ['f', 'o', 'x'], soundText: 'f', phonemeSpeech: 'fff' },
-      'g': { letter: 'g', title: 'Gumdrop Giant Grove 🍬', word: 'gum', emoji: '🍬', letters: ['g', 'u', 'm'], soundText: 'g', phonemeSpeech: 'guh' },
-      'h': { letter: 'h', title: 'Hippo Hidden Haven 🦛', word: 'hat', emoji: '🎩', letters: ['h', 'a', 't'], soundText: 'h', phonemeSpeech: 'hhh' },
-      'i': { letter: 'i', title: 'Iguana Ice Island 🦎', word: 'ink', emoji: '🖋️', letters: ['i', 'n', 'k'], soundText: 'i', phonemeSpeech: 'ih' },
-      'j': { letter: 'j', title: 'Jungle Jet Junction ✈️', word: 'jet', emoji: '✈️', letters: ['j', 'e', 't'], soundText: 'j', phonemeSpeech: 'juh' },
-      'k': { letter: 'k', title: 'Koala Kid Kingdom 🐨', word: 'kid', emoji: '🧒', letters: ['k', 'i', 'd'], soundText: 'k', phonemeSpeech: 'kuh' },
-      'l': { letter: 'l', title: 'Lion Log Lookout 🦁', word: 'log', emoji: '🪵', letters: ['l', 'o', 'g'], soundText: 'l', phonemeSpeech: 'lll' },
-      'm': { letter: 'm', title: 'Monkey Magic Mountain 🐒', word: 'mug', emoji: '☕', letters: ['m', 'u', 'g'], soundText: 'm', phonemeSpeech: 'mmm' },
-      'n': { letter: 'n', title: 'Nutty Nest Lagoon 🥜', word: 'nut', emoji: '🥜', letters: ['n', 'u', 't'], soundText: 'n', phonemeSpeech: 'nnn' },
-      'o': { letter: 'o', title: 'Ocean Owl Oasis 🦉', word: 'owl', emoji: '🦉', letters: ['o', 'w', 'l'], soundText: 'o', phonemeSpeech: 'aw' },
-      'p': { letter: 'p', title: 'Pirate Penguin Port 🐧', word: 'pig', emoji: '🐷', letters: ['p', 'i', 'g'], soundText: 'p', phonemeSpeech: 'puh' },
-      'q': { letter: 'q', title: 'Queen Quiz Quarry 👑', word: 'quiz', emoji: '❓', letters: ['q', 'u', 'i', 'z'], soundText: 'q', phonemeSpeech: 'kw' },
-      'r': { letter: 'r', title: 'Ruby Rainbow Reef 🌈', word: 'red', emoji: '🔴', letters: ['r', 'e', 'd'], soundText: 'r', phonemeSpeech: 'rrr' },
-      's': { letter: 's', title: 'Snake Safari Park 🐍', word: 'sun', emoji: '☀️', letters: ['s', 'u', 'n'], soundText: 's', phonemeSpeech: 'sss' },
-      't': { letter: 't', title: 'Tiger Treasure Trail 🐯', word: 'tub', emoji: '🛁', letters: ['t', 'u', 'b'], soundText: 't', phonemeSpeech: 'tuh' },
-      'u': { letter: 'u', title: 'Undersea Umbrella Cove ☂️', word: 'bug', emoji: '🐛', letters: ['b', 'u', 'g'], soundText: 'u', phonemeSpeech: 'uh' },
-      'v': { letter: 'v', title: 'Volcano Van Valley 🌋', word: 'van', emoji: '🚐', letters: ['v', 'a', 'n'], soundText: 'v', phonemeSpeech: 'vvv' },
-      'w': { letter: 'w', title: 'Wizard Web Woods 🧙‍♂️', word: 'web', emoji: '🕸️', letters: ['w', 'e', 'b'], soundText: 'w', phonemeSpeech: 'wuh' },
-      'x': { letter: 'x', title: 'X-Ray Explorer Box 📦', word: 'box', emoji: '📦', letters: ['b', 'o', 'x'], soundText: 'x', phonemeSpeech: 'ksss' },
-      'y': { letter: 'y', title: 'Yellow Yak Yard 🦬', word: 'yak', emoji: '🦬', letters: ['y', 'a', 'k'], soundText: 'y', phonemeSpeech: 'yyy' },
-      'z': { letter: 'z', title: 'Zebra Zigzag Zoo 🦓', word: 'zip', emoji: '🤐', letters: ['z', 'i', 'p'], soundText: 'z', phonemeSpeech: 'zzz' }
+      'a': { letter: 'a', title: 'A: Apple Island 🍎', word: 'ant', emoji: '🐜', letters: ['a', 'n', 't'], soundText: 'a', phonemeSpeech: 'ah' },
+      'b': { letter: 'b', title: 'B: Bear Beach 🐻', word: 'bat', emoji: '🦇', letters: ['b', 'a', 't'], soundText: 'b', phonemeSpeech: 'buh' },
+      'c': { letter: 'c', title: 'C: Coral Cove 🏰', word: 'cat', emoji: '🐱', letters: ['c', 'a', 't'], soundText: 'c', phonemeSpeech: 'kuh' },
+      'd': { letter: 'd', title: 'D: Dolphin Dunes 🐬', word: 'dog', emoji: '🐶', letters: ['d', 'o', 'g'], soundText: 'd', phonemeSpeech: 'duh' },
+      'e': { letter: 'e', title: 'E: Explorer Valley 🥚', word: 'egg', emoji: '🥚', letters: ['e', 'g', 'g'], soundText: 'e', phonemeSpeech: 'eh' },
+      'f': { letter: 'f', title: 'F: Fox Falls 🦊', word: 'fox', emoji: '🦊', letters: ['f', 'o', 'x'], soundText: 'f', phonemeSpeech: 'fff' },
+      'g': { letter: 'g', title: 'G: Giant Grove 🍬', word: 'gum', emoji: '🍬', letters: ['g', 'u', 'm'], soundText: 'g', phonemeSpeech: 'guh' },
+      'h': { letter: 'h', title: 'H: Hippo Haven 🦛', word: 'hat', emoji: '🎩', letters: ['h', 'a', 't'], soundText: 'h', phonemeSpeech: 'hhh' },
+      'i': { letter: 'i', title: 'I: Iguana Isle 🦎', word: 'ink', emoji: '🖋️', letters: ['i', 'n', 'k'], soundText: 'i', phonemeSpeech: 'ih' },
+      'j': { letter: 'j', title: 'J: Jungle Jet ✈️', word: 'jet', emoji: '✈️', letters: ['j', 'e', 't'], soundText: 'j', phonemeSpeech: 'juh' },
+      'k': { letter: 'k', title: 'K: Koala Kingdom 🐨', word: 'kid', emoji: '🧒', letters: ['k', 'i', 'd'], soundText: 'k', phonemeSpeech: 'kuh' },
+      'l': { letter: 'l', title: 'L: Lion Lookout 🦁', word: 'log', emoji: '🪵', letters: ['l', 'o', 'g'], soundText: 'l', phonemeSpeech: 'lll' },
+      'm': { letter: 'm', title: 'M: Monkey Mountain 🐒', word: 'mug', emoji: '☕', letters: ['m', 'u', 'g'], soundText: 'm', phonemeSpeech: 'mmm' },
+      'n': { letter: 'n', title: 'N: Nutty Lagoon 🥜', word: 'nut', emoji: '🥜', letters: ['n', 'u', 't'], soundText: 'n', phonemeSpeech: 'nnn' },
+      'o': { letter: 'o', title: 'O: Owl Oasis 🦉', word: 'owl', emoji: '🦉', letters: ['o', 'w', 'l'], soundText: 'o', phonemeSpeech: 'aw' },
+      'p': { letter: 'p', title: 'P: Pirate Port 🐧', word: 'pig', emoji: '🐷', letters: ['p', 'i', 'g'], soundText: 'p', phonemeSpeech: 'puh' },
+      'q': { letter: 'q', title: 'Q: Quiz Quarry 👑', word: 'quiz', emoji: '❓', letters: ['q', 'u', 'i', 'z'], soundText: 'q', phonemeSpeech: 'kw' },
+      'r': { letter: 'r', title: 'R: Rainbow Reef 🌈', word: 'red', emoji: '🔴', letters: ['r', 'e', 'd'], soundText: 'r', phonemeSpeech: 'rrr' },
+      's': { letter: 's', title: 'S: Snake Safari 🐍', word: 'sun', emoji: '☀️', letters: ['s', 'u', 'n'], soundText: 's', phonemeSpeech: 'sss' },
+      't': { letter: 't', title: 'T: Tiger Trail 🐯', word: 'tub', emoji: '🛁', letters: ['t', 'u', 'b'], soundText: 't', phonemeSpeech: 'tuh' },
+      'u': { letter: 'u', title: 'U: Umbrella Cove ☂️', word: 'bug', emoji: '🐛', letters: ['b', 'u', 'g'], soundText: 'u', phonemeSpeech: 'uh' },
+      'v': { letter: 'v', title: 'V: Volcano Valley 🌋', word: 'van', emoji: '🚐', letters: ['v', 'a', 'n'], soundText: 'v', phonemeSpeech: 'vvv' },
+      'w': { letter: 'w', title: 'W: Wizard Woods 🧙‍♂️', word: 'web', emoji: '🕸️', letters: ['w', 'e', 'b'], soundText: 'w', phonemeSpeech: 'wuh' },
+      'x': { letter: 'x', title: 'X: X-Ray Box 📦', word: 'box', emoji: '📦', letters: ['b', 'o', 'x'], soundText: 'x', phonemeSpeech: 'ksss' },
+      'y': { letter: 'y', title: 'Y: Yak Yard 🦬', word: 'yak', emoji: '🦬', letters: ['y', 'a', 'k'], soundText: 'y', phonemeSpeech: 'yyy' },
+      'z': { letter: 'z', title: 'Z: Zebra Zoo 🦓', word: 'zip', emoji: '🤐', letters: ['z', 'i', 'p'], soundText: 'z', phonemeSpeech: 'zzz' }
     };
 
     const LETTER_KEYS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
+    // 26 PRECISE PERCENTAGE COORDINATES ON THE FULL-SCREEN WINDING BOARD PATH
+    const NODE_COORDINATES = [
+      // Row 1: Left to Right (A - F)
+      { l: 'a', x: 8,  y: 12 },
+      { l: 'b', x: 23, y: 12 },
+      { l: 'c', x: 38, y: 12 },
+      { l: 'd', x: 53, y: 12 },
+      { l: 'e', x: 68, y: 12 },
+      { l: 'f', x: 83, y: 14 },
+      // Curve 1 down (G)
+      { l: 'g', x: 92, y: 28 },
+      // Row 2: Right to Left (H - L)
+      { l: 'h', x: 81, y: 33 },
+      { l: 'i', x: 66, y: 33 },
+      { l: 'j', x: 51, y: 33 },
+      { l: 'k', x: 36, y: 33 },
+      { l: 'l', x: 21, y: 33 },
+      // Curve 2 down (M)
+      { l: 'm', x: 8,  y: 48 },
+      // Row 3: Left to Right (N - R)
+      { l: 'n', x: 21, y: 54 },
+      { l: 'o', x: 36, y: 54 },
+      { l: 'p', x: 51, y: 54 },
+      { l: 'q', x: 66, y: 54 },
+      { l: 'r', x: 81, y: 54 },
+      // Curve 3 down (S)
+      { l: 's', x: 92, y: 68 },
+      // Row 4: Right to Left (T - X)
+      { l: 't', x: 81, y: 75 },
+      { l: 'u', x: 66, y: 75 },
+      { l: 'v', x: 51, y: 75 },
+      { l: 'w', x: 36, y: 75 },
+      { l: 'x', x: 21, y: 75 },
+      // Row 5: Finish Path to Castle (Y - Z)
+      { l: 'y', x: 12, y: 90 },
+      { l: 'z', x: 32, y: 90 }
+    ];
+
     // EXACT 100 REWARDS CATALOG
     const REWARDS_LIST = [];
 
-    // CATEGORY 1: 26 Island Letter Stickers (1 per letter for Step 1)
+    // CATEGORY 1: 26 Island Letter Stickers (Step 1)
     LETTER_KEYS.forEach(function(l) {
       const p = PHONICS_DATA[l];
       REWARDS_LIST.push({
@@ -1463,14 +1706,14 @@
         categoryName: '🏷️ Sticker',
         letter: l,
         step: 1,
-        name: p.title.split(' ')[0] + ' Golden Sticker',
+        name: p.title.split(':')[1].trim() + ' Sticker',
         icon: p.emoji,
         condition: "Learn sound for Letter '" + l.toUpperCase() + "' (Step 1)",
         unlocked: false
       });
     });
 
-    // CATEGORY 2: 26 Explorer Hats & Crowns (1 per letter for Step 2)
+    // CATEGORY 2: 26 Explorer Hats & Crowns (Step 2)
     const HAT_ICONS = ['👑', '🤠', '🎩', '🧢', '👒', '🎓', '🪖', '⛑️', '👑', '🤠', '🎩', '🧢', '👒', '🎓', '🪖', '⛑️', '👑', '🤠', '🎩', '🧢', '👒', '🎓', '🪖', '⛑️', '👑', '🤠'];
     LETTER_KEYS.forEach(function(l, idx) {
       REWARDS_LIST.push({
@@ -1486,7 +1729,7 @@
       });
     });
 
-    // CATEGORY 3: 24 Magic Wands & Relics (for Tracing Step 3)
+    // CATEGORY 3: 24 Magic Wands & Relics (Step 3 Tracing)
     const WAND_ICONS = ['🪄', '🔮', '✨', '🌟', '⚡', '🔱', '💫', '🌠', '🗡️', '🪐', '🛡️', '💎', '🪄', '🔮', '✨', '🌟', '⚡', '🔱', '💫', '🌠', '🗡️', '🪐', '🛡️', '💎'];
     const WAND_NAMES = [
       'Starlight Magic Wand', 'Crystal Sound Orb', 'Golden Letter Quill', 'Solar Flare Wand',
@@ -1511,7 +1754,7 @@
       });
     }
 
-    // CATEGORY 4: 24 Phonics Pets & Companions (for Blending Step 4)
+    // CATEGORY 4: 24 Phonics Pets & Companions (Step 4 Blending)
     const PET_ICONS = ['🐉', '🦄', '🦊', '🐼', '🦉', '🐬', '🦁', '🐰', '🐧', '🐱', '🐶', '🐨', '🐯', '🦜', '🦩', '🐢', '🦖', '🐝', '🦋', '🐳', '🦔', '🦥', '🦦', '🦒'];
     const PET_NAMES = [
       'Sparky the Dragon', 'Stella the Unicorn', 'Rusty the Phonics Fox', 'Pip the Sweet Panda',
@@ -1536,9 +1779,9 @@
       });
     }
 
-    console.log('Total Rewards Registered: ' + REWARDS_LIST.length + ' (Verified exactly 100 items).');
+    console.log('Total Rewards Initialized: ' + REWARDS_LIST.length + ' (Exactly 100 items).');
 
-    // 100% OFFLINE NATURAL AUDIO ENGINE
+    // 100% OFFLINE NATURAL AUDIO ENGINE (0.5s - 1.0s DURATION)
     class HumanPhonicsAudioEngine {
       constructor() {
         this.ctx = null;
@@ -1643,8 +1886,8 @@
         const gain = this.ctx.createGain();
 
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(1760.00, t);
-        osc.frequency.exponentialRampToValueAtTime(2093.00, t + 0.08);
+        osc.frequency.setValueAtTime(1760.00, t); // High A6
+        osc.frequency.exponentialRampToValueAtTime(2093.00, t + 0.08); // High C7
 
         osc2.type = 'triangle';
         osc2.frequency.setValueAtTime(2637.02, t);
@@ -1765,7 +2008,7 @@
 
     const audio = new HumanPhonicsAudioEngine();
 
-    // GAME STATE
+    // GAME STATE & PERSISTENCE
     let currentLetterKey = 'a';
     let currentStepNumber = 1;
     let unlockedNodeIndex = 0;
@@ -1814,7 +2057,7 @@
       document.getElementById('chest-progress-text').textContent = 'Unlocked: ' + count + ' / 100 (' + Math.round((count / 100) * 100) + '%)';
     }
 
-    // STRICT 4-STAR PROGRESSION (100% WHITE TO YELLOW)
+    // STRICT 4-STAR PROGRESSION (100% PURE WHITE INITIAL)
     function resetStarsToWhite() {
       for (let i = 1; i <= 4; i++) {
         const star = document.getElementById('star-slot-' + i);
@@ -1837,6 +2080,7 @@
       }
     }
 
+    // SCREEN NAVIGATION & TOP HUD
     function showScreen(screenId) {
       document.querySelectorAll('.game-screen').forEach(s => s.classList.remove('active'));
       const target = document.getElementById(screenId);
@@ -1847,9 +2091,9 @@
       const letterUpper = currentLetterKey.toUpperCase();
 
       if (screenId === 'screen-map') {
-        titleBadge.textContent = '🗺️ Treasure Map';
+        titleBadge.textContent = '🗺️ Treasure Map • Full Alphabet Quest';
         starBar.style.display = 'none';
-        buildTreasureMap();
+        buildFullBoardGameMap();
       } else {
         starBar.style.display = 'inline-flex';
         if (screenId === 'screen-learn') {
@@ -1869,27 +2113,31 @@
       showScreen('screen-map');
     }
 
-    function buildTreasureMap() {
-      const container = document.getElementById('map-track-container');
+    // BUILD FULL-SCREEN BOARD GAME MAP (ALL 26 NODES SIMULTANEOUSLY VISIBLE)
+    function buildFullBoardGameMap() {
+      const container = document.getElementById('board-nodes-container');
       container.innerHTML = '';
 
-      LETTER_KEYS.forEach((lKey, idx) => {
+      NODE_COORDINATES.forEach((coord, idx) => {
+        const lKey = coord.l;
         const p = PHONICS_DATA[lKey];
         const isUnlocked = idx <= unlockedNodeIndex;
         const isCurrent = idx === unlockedNodeIndex;
 
-        const card = document.createElement('div');
-        card.className = 'map-node-card';
-        card.id = 'map-node-' + lKey;
+        const node = document.createElement('div');
+        node.className = 'board-node ' + (isCurrent ? 'active-node' : '');
+        node.style.left = coord.x + '%';
+        node.style.top = coord.y + '%';
+        node.id = 'board-node-' + lKey;
 
-        card.innerHTML = 
-          '<button class="node-circle-btn ' + (isUnlocked ? 'unlocked' : 'locked') + ' ' + (idx < unlockedNodeIndex ? 'completed' : '') + '" id="circle-btn-' + lKey + '" title="Letter ' + lKey.toUpperCase() + '">' +
-            (isCurrent ? '<div class="btn-here-badge">🚩 YOU ARE HERE</div>' : '') +
-            '<div class="btn-letter-char">' + lKey.toUpperCase() + '</div>' +
-            '<div class="btn-letter-word-preview">' + p.word.toUpperCase() + ' ' + p.emoji + '</div>' +
+        node.innerHTML = 
+          (isCurrent ? '<div class="node-here-pin">🚩 HERE</div>' : '') +
+          '<button class="node-bubble-btn ' + (isUnlocked ? 'unlocked' : 'locked') + ' ' + (idx < unlockedNodeIndex ? 'completed' : '') + '" id="bubble-btn-' + lKey + '" title="Letter ' + lKey.toUpperCase() + '">' +
+            '<div class="node-letter-char">' + lKey.toUpperCase() + '</div>' +
+            '<div class="node-word-emoji">' + p.emoji + '</div>' +
           '</button>' +
-          '<div class="node-title-label">' + p.title + '</div>' +
-          '<button class="node-play-btn ' + (isUnlocked ? 'unlocked' : 'locked') + '" id="play-btn-' + lKey + '">' +
+          '<div class="node-title-badge">' + p.title + '</div>' +
+          '<button class="node-play-action-btn ' + (isUnlocked ? 'unlocked' : 'locked') + '" id="play-btn-' + lKey + '">' +
             (isUnlocked ? 'play' : '🔒') +
           '</button>';
 
@@ -1898,29 +2146,18 @@
             audio.playLetterPhoneme(lKey);
             startLetterQuest(lKey);
           } else {
-            audio.speakText("Complete the previous islands to unlock " + p.title + "!");
+            audio.speakText("Complete earlier letters on the path to unlock " + p.title + "!");
           }
         };
 
-        card.querySelector('#circle-btn-' + lKey).onclick = startAction;
-        card.querySelector('#play-btn-' + lKey).onclick = startAction;
+        node.querySelector('#bubble-btn-' + lKey).onclick = startAction;
+        node.querySelector('#play-btn-' + lKey).onclick = startAction;
 
-        container.appendChild(card);
+        container.appendChild(node);
       });
-
-      setTimeout(() => {
-        const currentCard = document.getElementById('map-node-' + LETTER_KEYS[unlockedNodeIndex]);
-        if (currentCard) {
-          currentCard.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-        }
-      }, 150);
     }
 
-    function scrollMap(amount) {
-      const mapElem = document.getElementById('screen-map');
-      if (mapElem) mapElem.scrollBy({ left: amount, behavior: 'smooth' });
-    }
-
+    // TIGER MASCOT COMPANION LOGIC (SPEECH BUBBLE HIDDEN BY DEFAULT)
     function toggleTigerMascot() {
       audio.initCtx();
       const bubble = document.getElementById('tiger-speech-bubble');
@@ -1931,7 +2168,7 @@
         if (tigerBubbleTimer) clearTimeout(tigerBubbleTimer);
       } else {
         const activeScreen = document.querySelector('.game-screen.active');
-        let hint = "Roar! Click 'play' under any letter on the map to start learning! 🐯";
+        let hint = "Roar! Welcome explorer! Click 'play' under any letter on the map to begin! 🐯";
 
         if (activeScreen) {
           const sid = activeScreen.id;
@@ -1954,6 +2191,7 @@
       }
     }
 
+    // 4-STEP LEARNING LOOP CONTROLLER
     function startLetterQuest(lKey) {
       currentLetterKey = lKey;
       currentStepNumber = 1;
@@ -1966,6 +2204,7 @@
       audio.speakText("Letter " + lKey.toUpperCase() + "! Click to hear!");
     }
 
+    // STEP 1: LEARN THE SOUND
     function setupStep1Learn() {
       const p = PHONICS_DATA[currentLetterKey];
       document.getElementById('learn-letter-char').textContent = currentLetterKey.toUpperCase();
@@ -2011,6 +2250,7 @@
       audio.speakText("Match the sound for letter " + currentLetterKey.toUpperCase() + "!");
     }
 
+    // STEP 2: MATCH SOUND
     function setupStep2Match() {
       document.getElementById('match-next-container').style.display = 'none';
       document.getElementById('match-target-char').textContent = currentLetterKey.toUpperCase();
@@ -2057,6 +2297,7 @@
       audio.speakText("Trace the letter " + currentLetterKey.toUpperCase() + "!");
     }
 
+    // STEP 3: LETTER TRACING
     let traceCanvas, traceCtx, isTracing = false, tracePointCount = 0;
 
     function setupStep3Tracing() {
@@ -2113,22 +2354,22 @@
       traceCtx.clearRect(0, 0, traceCanvas.width, traceCanvas.height);
 
       traceCtx.fillStyle = 'rgba(255, 255, 255, 0.16)';
-      traceCtx.font = 'bold 230px "Fredoka", sans-serif';
+      traceCtx.font = 'bold 220px "Fredoka", sans-serif';
       traceCtx.textAlign = 'center';
       traceCtx.textBaseline = 'middle';
       traceCtx.fillText(currentLetterKey.toUpperCase(), traceCanvas.width / 2, traceCanvas.height / 2 + 10);
 
       traceCtx.fillStyle = '#00E676';
       traceCtx.beginPath();
-      traceCtx.arc(traceCanvas.width / 2 - 40, traceCanvas.height / 2 - 80, 12, 0, Math.PI * 2);
+      traceCtx.arc(traceCanvas.width / 2 - 40, traceCanvas.height / 2 - 75, 12, 0, Math.PI * 2);
       traceCtx.fill();
       traceCtx.strokeStyle = '#FFFFFF';
       traceCtx.lineWidth = 3;
       traceCtx.stroke();
 
       traceCtx.fillStyle = '#FFF59D';
-      traceCtx.font = 'bold 16px "Fredoka", sans-serif';
-      traceCtx.fillText('START HERE', traceCanvas.width / 2 - 40, traceCanvas.height / 2 - 102);
+      traceCtx.font = 'bold 15px "Fredoka", sans-serif';
+      traceCtx.fillText('START HERE', traceCanvas.width / 2 - 40, traceCanvas.height / 2 - 96);
     }
 
     function resetTracingCanvas() {
@@ -2145,6 +2386,7 @@
       audio.speakText("Blend the word " + PHONICS_DATA[currentLetterKey].word.toUpperCase() + "!");
     }
 
+    // STEP 4: WORD BLENDING (CLICKABLE PHONETIC TILES)
     let currentSpellSequence = [];
     let tileDataList = [];
 
@@ -2252,11 +2494,12 @@
         unlockedNodeIndex++;
         saveGameState();
       }
-      buildTreasureMap();
+      buildFullBoardGameMap();
       showScreen('screen-map');
-      audio.speakText("Fantastic job! Next island unlocked on the Treasure Map!");
+      audio.speakText("Fantastic job! Next letter unlocked on the Treasure Map!");
     }
 
+    // 100-ITEM REWARD SYSTEM & MODALS
     function checkAndTriggerReward(letterKey, stepNum) {
       const reward = REWARDS_LIST.find(r => r.letter === letterKey && r.step === stepNum && !r.unlocked);
       if (!reward) return;
@@ -2324,7 +2567,7 @@
         totalEarnedStars = 0;
         REWARDS_LIST.forEach(r => r.unlocked = false);
         saveGameState();
-        buildTreasureMap();
+        buildFullBoardGameMap();
         renderChestGrid();
         showScreen('screen-map');
         audio.playPop();
@@ -2399,9 +2642,9 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       loadSavedGame();
-      buildTreasureMap();
+      buildFullBoardGameMap();
       showScreen('screen-map');
-      console.log("Phonics Treasure Island Suite Ready!");
+      console.log("Phonics Board Game Adventure Ready!");
     });
   </script>
 </body>
