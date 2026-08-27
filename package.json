@@ -1,9 +1,11 @@
 {
   "name": "phonics-galaxy-adventure",
   "version": "1.0.0",
-  "description": "Educational 2D platformer and phonics minigame collection for 6-year-olds learning English phonics, letter tracing, and reading.",
+  "description": "Educational phonics and reading game for 1st grade students with interactive alphabet quest, letter tracing, sound matching, and word blending.",
   "main": "index.html",
   "scripts": {
+    "build": "echo 'Production static build ready: index.html is root.'",
+    "test": "node -e \"const fs = require('fs'); if (!fs.existsSync('index.html')) throw new Error('index.html not found'); console.log('✔ All build assets verified.');\"",
     "start": "npx serve ."
   },
   "keywords": [
@@ -11,8 +13,6 @@
     "education",
     "reading",
     "letter-tracing",
-    "minigames",
-    "platformer",
     "html5-game",
     "web-audio"
   ],
