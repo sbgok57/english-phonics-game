@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Phonics Treasure Island - 1st Grade Reading Board Game</title>
+  <title>Phonics Treasure Island - 1st Grade Reading Adventure</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;800&family=Nunito:wght@700;900&display=swap');
 
     :root {
       --font-main: 'Fredoka', 'Nunito', 'Comic Sans MS', 'Chalkboard SE', system-ui, -apple-system, sans-serif;
-      --bg-deep: #061126;
+      --bg-deep: #061024;
       --ocean-blue: #0288D1;
       --gold: #FFD600;
       --gold-dark: #FF9100;
@@ -47,25 +47,25 @@
       height: 100vh;
       display: flex;
       flex-direction: column;
-      background: #0b1736;
+      background: #08142f;
       overflow: hidden;
     }
 
     /* ==========================================================================
-       TOP GLOBAL HUD - ALWAYS VISIBLE, ZERO OVERFLOW, STRICT VISUAL ORDER
+       TOP GLOBAL HUD - ALWAYS VISIBLE, ZERO OVERFLOW
        ========================================================================== */
     #top-hud {
       position: relative;
       width: 100%;
-      height: clamp(50px, 6.8vh, 62px);
+      height: clamp(52px, 7vh, 64px);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 clamp(8px, 1.8vw, 20px);
+      padding: 0 clamp(8px, 2vw, 20px);
       z-index: 100;
       background: rgba(5, 12, 30, 0.96);
       border-bottom: 3px solid var(--cyan);
-      box-shadow: 0 4px 18px rgba(0, 229, 255, 0.3);
+      box-shadow: 0 4px 20px rgba(0, 229, 255, 0.3);
       flex-shrink: 0;
       gap: 6px;
     }
@@ -215,10 +215,10 @@
        ========================================================================== */
     .game-screen {
       position: absolute;
-      top: clamp(50px, 6.8vh, 62px);
+      top: clamp(52px, 7vh, 64px);
       left: 0;
       width: 100%;
-      height: calc(100% - clamp(50px, 6.8vh, 62px));
+      height: calc(100% - clamp(52px, 7vh, 64px));
       display: none;
       flex-direction: column;
       align-items: center;
@@ -252,7 +252,7 @@
       line-height: 1.3;
     }
 
-    /* LARGE, HIGHLY VISIBLE "NEXT" BUTTON (ONLY REVEALED ON TASK COMPLETION) */
+    /* LARGE NEXT BUTTON - ONLY REVEALED ON TASK COMPLETION */
     .btn-next-action {
       background: linear-gradient(180deg, #00E676 0%, #00B248 100%);
       border: 4px solid #FFFFFF;
@@ -304,23 +304,68 @@
     }
 
     /* ==========================================================================
-       1. THE TREASURE MAP: FULL-SCREEN BOARD GAME LAYOUT (ALL 26 NODES VISIBLE)
+       1. THE TREASURE MAP: MOBILE GAME "SAGA" STYLE & SPACIOUS SCROLLABLE MAP
        ========================================================================== */
     #screen-map {
       padding: 0;
-      overflow: hidden;
+      overflow-y: auto;
+      overflow-x: hidden;
       position: relative;
-      background: #0284c7;
+      background: linear-gradient(180deg, #1e1b4b 0%, #312e81 18%, #0369a1 40%, #0d9488 65%, #059669 82%, #15803d 100%);
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
     }
 
-    .boardgame-container {
+    /* Quick Jump Floating Toolbar on Map */
+    .saga-map-nav-toolbar {
+      position: fixed;
+      top: clamp(62px, 8.5vh, 76px);
+      right: clamp(10px, 2vw, 22px);
+      background: rgba(8, 18, 40, 0.92);
+      border: 2px solid var(--gold);
+      border-radius: 24px;
+      padding: 4px 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 90;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+    }
+
+    .saga-nav-pill-btn {
+      background: #0288D1;
+      border: 1.5px solid #FFFFFF;
+      border-radius: 16px;
+      color: #FFFFFF;
+      font-family: var(--font-main);
+      font-size: 0.76rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+
+    .saga-nav-pill-btn:hover {
+      transform: scale(1.08);
+      background: #03A9F4;
+    }
+
+    /* The Vertical Saga Track Container */
+    .saga-canvas-wrapper {
       position: relative;
       width: 100%;
-      height: 100%;
-      overflow: hidden;
+      max-width: 800px;
+      min-height: 3300px;
+      margin: 0 auto;
+      padding-top: 60px;
+      padding-bottom: 90px;
     }
 
-    .board-bg-svg {
+    /* Rich Cartoon SVG Background Behind Nodes */
+    .saga-bg-svg {
       position: absolute;
       top: 0;
       left: 0;
@@ -330,179 +375,206 @@
       z-index: 1;
     }
 
-    .board-nodes-layer {
-      position: absolute;
-      top: 0;
-      left: 0;
+    .saga-nodes-layer {
+      position: relative;
       width: 100%;
       height: 100%;
       z-index: 10;
       pointer-events: auto;
     }
 
-    /* Individual Node on Board Game Path */
-    .board-node {
+    /* Individual Saga Node Card (Candy Crush / Toon Blast Style) */
+    .saga-node-card {
       position: absolute;
       transform: translate(-50%, -50%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 2px;
+      gap: 4px;
       z-index: 15;
     }
 
-    .board-node.active-node {
-      z-index: 25;
+    .saga-node-card.active-node {
+      z-index: 30;
     }
 
-    .node-bubble-btn {
-      width: clamp(42px, 5.4vw, 68px);
-      height: clamp(42px, 5.4vw, 68px);
+    /* 3D Tactile Level Node Button */
+    .saga-node-btn {
+      width: clamp(74px, 12vw, 92px);
+      height: clamp(74px, 12vw, 92px);
       border-radius: 50%;
-      border: clamp(2px, 0.4vw, 4px) solid #FFFFFF;
-      background: linear-gradient(180deg, #FFA000 0%, #E65100 100%);
+      border: 4px solid #FFFFFF;
+      background: linear-gradient(180deg, #FFB300 0%, #F57C00 50%, #E65100 100%);
       color: #FFFFFF;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.7);
-      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5), inset 0 3px 6px rgba(255,255,255,0.85);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
       position: relative;
     }
 
-    .node-bubble-btn:hover {
-      transform: scale(1.15);
+    .saga-node-btn:hover {
+      transform: scale(1.14) translateY(-4px);
       border-color: var(--gold);
-      box-shadow: 0 6px 20px rgba(255, 214, 0, 0.7);
+      box-shadow: 0 12px 30px rgba(255, 214, 0, 0.75);
     }
 
-    .node-bubble-btn:active {
-      transform: scale(0.94);
+    .saga-node-btn:active {
+      transform: scale(0.95) translateY(2px);
     }
 
-    .node-bubble-btn.locked {
-      background: #475569;
-      border-color: #94a3b8;
+    .saga-node-btn.locked {
+      background: linear-gradient(180deg, #64748B 0%, #475569 50%, #334155 100%);
+      border-color: #94A3B8;
       cursor: not-allowed;
-      opacity: 0.72;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      opacity: 0.78;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
 
-    .node-bubble-btn.locked:hover {
+    .saga-node-btn.locked:hover {
       transform: none;
     }
 
-    .node-bubble-btn.completed {
-      background: linear-gradient(180deg, #00E676 0%, #00897B 100%);
+    .saga-node-btn.completed {
+      background: linear-gradient(180deg, #00E676 0%, #00C853 50%, #00897B 100%);
       border-color: #FFF59D;
-      box-shadow: 0 4px 12px rgba(0, 230, 118, 0.5);
+      box-shadow: 0 8px 24px rgba(0, 230, 118, 0.55), inset 0 3px 6px rgba(255,255,255,0.8);
     }
 
-    .node-letter-char {
-      font-size: clamp(1.2rem, 2.4vw, 2.1rem);
+    .saga-node-letter {
+      font-size: clamp(2rem, 3.8vw, 2.8rem);
       font-weight: 900;
       line-height: 1;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
     }
 
-    .node-word-emoji {
-      font-size: clamp(0.55rem, 0.9vw, 0.85rem);
+    .saga-node-emoji-tag {
+      font-size: 0.85rem;
       line-height: 1;
       margin-top: 1px;
     }
 
-    .node-title-badge {
-      background: rgba(6, 16, 38, 0.92);
-      border: 1.5px solid var(--cyan);
-      border-radius: 10px;
-      padding: 1px 6px;
-      font-size: clamp(0.58rem, 0.85vw, 0.74rem);
+    .saga-node-title-badge {
+      background: rgba(6, 16, 38, 0.95);
+      border: 2px solid var(--cyan);
+      border-radius: 12px;
+      padding: 3px 10px;
+      font-size: clamp(0.72rem, 1.1vw, 0.86rem);
       font-weight: 800;
       color: #FFFFFF;
       white-space: nowrap;
       text-align: center;
-      max-width: clamp(75px, 11vw, 130px);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+      max-width: 170px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.45);
     }
 
-    /* DEDICATED "play" BUTTON DIRECTLY UNDER EVERY LETTER NODE */
-    .node-play-action-btn {
+    /* DEDICATED "play" BUTTON UNDER EVERY SINGLE NODE */
+    .saga-node-play-btn {
       background: linear-gradient(180deg, #00E676 0%, #00B248 100%);
-      border: 1.5px solid #FFFFFF;
-      border-radius: 12px;
+      border: 2px solid #FFFFFF;
+      border-radius: 16px;
       color: #FFFFFF;
       font-family: var(--font-main);
-      font-size: clamp(0.64rem, 0.92vw, 0.82rem);
+      font-size: 0.88rem;
       font-weight: 900;
       text-transform: lowercase;
-      padding: 1px clamp(8px, 1.2vw, 14px);
+      padding: 3px 18px;
       cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0, 230, 118, 0.6);
+      box-shadow: 0 4px 14px rgba(0, 230, 118, 0.6);
       transition: transform 0.15s ease, background 0.15s ease;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.5px;
     }
 
-    .node-play-action-btn:hover {
+    .saga-node-play-btn:hover {
       transform: scale(1.12);
       background: linear-gradient(180deg, #69F0AE 0%, #00C853 100%);
     }
 
-    .node-play-action-btn:active {
+    .saga-node-play-btn:active {
       transform: scale(0.94);
     }
 
-    .node-play-action-btn.locked {
+    .saga-node-play-btn.locked {
       background: #475569;
-      border-color: #94a3b8;
+      border-color: #94A3B8;
       cursor: not-allowed;
-      opacity: 0.72;
+      opacity: 0.75;
       box-shadow: none;
     }
 
-    /* "YOU ARE HERE" FLOATING POINTER */
-    .node-here-pin {
+    /* COMPLETED STARS MINI ROW UNDER NODE */
+    .saga-stars-row {
+      display: flex;
+      gap: 2px;
+      color: #FFD600;
+      font-size: 0.85rem;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+      margin-top: -2px;
+    }
+
+    /* "YOU ARE HERE" FLOATING POINTER WITH ANIMATED TIGER MASCOT */
+    .saga-here-avatar {
       position: absolute;
-      top: clamp(-28px, -4vh, -36px);
+      top: -46px;
       background: linear-gradient(180deg, #FF1744 0%, #D50000 100%);
       border: 2px solid #FFFFFF;
-      border-radius: 12px;
-      padding: 2px 7px;
-      font-size: clamp(0.6rem, 0.8vw, 0.72rem);
+      border-radius: 16px;
+      padding: 3px 10px;
+      font-size: 0.72rem;
       font-weight: 900;
       color: #FFFFFF;
       white-space: nowrap;
-      box-shadow: 0 3px 10px rgba(255, 23, 68, 0.7);
-      animation: pinBounce 0.85s infinite alternate ease-in-out;
+      box-shadow: 0 4px 14px rgba(255, 23, 68, 0.8);
+      animation: sagaPinBounce 0.85s infinite alternate ease-in-out;
       pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
 
-    @keyframes pinBounce {
+    @keyframes sagaPinBounce {
       0% { transform: translateY(0); }
-      100% { transform: translateY(-6px); }
+      100% { transform: translateY(-8px); }
+    }
+
+    /* TOP CASTLE FINISH BANNER */
+    .saga-castle-top-banner {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 20;
+    }
+
+    .saga-castle-title {
+      font-size: clamp(1.4rem, 3vw, 2.2rem);
+      font-weight: 900;
+      color: var(--gold);
+      text-shadow: 0 4px 14px rgba(0,0,0,0.8);
     }
 
     /* ==========================================================================
        TIGER MASCOT COMPANION - SPEECH BUBBLE STRICTLY HIDDEN (OPACITY: 0) ON LOAD
        ========================================================================== */
     .tiger-companion-wrap {
-      position: absolute;
-      bottom: clamp(8px, 1.6vh, 16px);
-      left: clamp(8px, 1.6vw, 16px);
+      position: fixed;
+      bottom: clamp(10px, 2vh, 18px);
+      left: clamp(10px, 2vw, 18px);
       display: flex;
       align-items: flex-end;
-      gap: 10px;
+      gap: 12px;
       z-index: 95;
       pointer-events: auto;
     }
 
     .tiger-mascot-btn {
-      width: clamp(50px, 6.2vw, 68px);
-      height: clamp(50px, 6.2vw, 68px);
+      width: clamp(54px, 6.8vw, 70px);
+      height: clamp(54px, 6.8vw, 70px);
       background: linear-gradient(180deg, #FFA000 0%, #E65100 100%);
       border: 3px solid var(--gold);
       border-radius: 50%;
@@ -510,7 +582,7 @@
       justify-content: center;
       align-items: center;
       cursor: pointer;
-      box-shadow: 0 6px 16px rgba(255, 152, 0, 0.55), inset 0 2px 4px rgba(255,255,255,0.7);
+      box-shadow: 0 6px 18px rgba(255, 152, 0, 0.55), inset 0 2px 4px rgba(255,255,255,0.7);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
       padding: 4px;
     }
@@ -529,14 +601,14 @@
       opacity: 0;
       background: #FFFFFF;
       border: 3px solid var(--gold);
-      border-radius: 18px 18px 18px 4px;
+      border-radius: 20px 20px 20px 4px;
       color: #0d1e3a;
-      font-size: clamp(0.78rem, 1.1vw, 0.92rem);
+      font-size: clamp(0.82rem, 1.15vw, 0.95rem);
       font-weight: 800;
-      padding: 8px 14px;
-      box-shadow: 0 10px 26px rgba(0,0,0,0.5);
-      max-width: clamp(220px, 32vw, 340px);
-      line-height: 1.3;
+      padding: 10px 16px;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.5);
+      max-width: clamp(240px, 34vw, 360px);
+      line-height: 1.35;
       position: relative;
       transition: opacity 0.25s ease;
     }
@@ -544,7 +616,7 @@
     .tiger-speech-bubble.visible {
       display: block !important;
       opacity: 1 !important;
-      animation: popBubbleIn 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      animation: popBubbleIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     @keyframes popBubbleIn {
@@ -559,39 +631,39 @@
       background: radial-gradient(circle, #1a2c5a 0%, #081024 100%);
       text-align: center;
       justify-content: center;
-      gap: clamp(8px, 1.6vh, 16px);
+      gap: clamp(10px, 2vh, 18px);
     }
 
     .learn-cards-row {
       display: flex;
       justify-content: center;
       align-items: stretch;
-      gap: clamp(14px, 3vw, 40px);
+      gap: clamp(16px, 3.5vw, 44px);
       flex-wrap: wrap;
-      margin: clamp(6px, 1.2vh, 14px) 0;
-      max-width: 860px;
+      margin: clamp(8px, 1.5vh, 16px) 0;
+      max-width: 880px;
     }
 
     .big-sound-card {
       background: rgba(255, 255, 255, 0.07);
       border: 4px solid var(--cyan);
-      border-radius: 26px;
-      padding: clamp(14px, 2.2vh, 24px) clamp(18px, 2.6vw, 34px);
+      border-radius: 28px;
+      padding: clamp(16px, 2.5vh, 26px) clamp(20px, 3vw, 36px);
       cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      box-shadow: 0 10px 28px rgba(0, 229, 255, 0.25);
+      box-shadow: 0 10px 30px rgba(0, 229, 255, 0.25);
       transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-      min-width: clamp(180px, 28vw, 260px);
+      min-width: clamp(190px, 28vw, 270px);
       flex: 1;
     }
 
     .big-sound-card:hover {
       transform: translateY(-4px) scale(1.04);
       border-color: var(--gold);
-      box-shadow: 0 14px 34px rgba(255, 214, 0, 0.4);
+      box-shadow: 0 14px 36px rgba(255, 214, 0, 0.4);
     }
 
     .big-sound-card:active {
@@ -601,11 +673,11 @@
     .big-sound-card.clicked {
       border-color: var(--green);
       background: rgba(0, 230, 118, 0.16);
-      box-shadow: 0 10px 28px rgba(0, 230, 118, 0.35);
+      box-shadow: 0 10px 30px rgba(0, 230, 118, 0.35);
     }
 
     .card-char-big {
-      font-size: clamp(4.5rem, 9vw, 7rem);
+      font-size: clamp(4.8rem, 9.5vw, 7.2rem);
       font-weight: 900;
       color: var(--gold);
       line-height: 1;
@@ -614,13 +686,13 @@
     }
 
     .card-emoji-big {
-      font-size: clamp(3.8rem, 7.5vw, 5.4rem);
+      font-size: clamp(4rem, 8vw, 5.6rem);
       margin-bottom: 4px;
       filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4));
     }
 
     .card-label-word {
-      font-size: clamp(1.4rem, 2.8vw, 2.2rem);
+      font-size: clamp(1.5rem, 3vw, 2.3rem);
       font-weight: 900;
       color: #FFFFFF;
       letter-spacing: 1px;
@@ -628,7 +700,7 @@
 
     #learn-next-container {
       display: none;
-      margin-top: 4px;
+      margin-top: 6px;
     }
 
     /* ==========================================================================
@@ -638,7 +710,7 @@
       background: radial-gradient(circle, #102d4d 0%, #061222 100%);
       text-align: center;
       justify-content: center;
-      gap: clamp(8px, 1.6vh, 16px);
+      gap: clamp(10px, 2vh, 18px);
     }
 
     .target-sound-card {
@@ -648,11 +720,11 @@
       align-items: center;
       background: rgba(255, 255, 255, 0.08);
       border: 4px solid var(--gold);
-      border-radius: 24px;
-      padding: clamp(10px, 1.8vh, 20px) clamp(22px, 3.5vw, 44px);
-      box-shadow: 0 10px 28px rgba(255, 214, 0, 0.3);
+      border-radius: 26px;
+      padding: clamp(12px, 2vh, 22px) clamp(24px, 4vw, 48px);
+      box-shadow: 0 10px 30px rgba(255, 214, 0, 0.3);
       transition: transform 0.2s ease;
-      margin-bottom: clamp(6px, 1.2vh, 12px);
+      margin-bottom: clamp(6px, 1.5vh, 14px);
     }
 
     .target-sound-card:hover {
@@ -664,7 +736,7 @@
     }
 
     .target-sound-char {
-      font-size: clamp(3.8rem, 7.8vw, 5.8rem);
+      font-size: clamp(4rem, 8vw, 6rem);
       font-weight: 900;
       color: var(--gold);
       line-height: 1;
@@ -674,26 +746,26 @@
     .bubble-row {
       display: flex;
       justify-content: center;
-      gap: clamp(12px, 2.6vw, 28px);
+      gap: clamp(14px, 3vw, 32px);
       flex-wrap: wrap;
-      margin-bottom: clamp(6px, 1.2vh, 12px);
+      margin-bottom: clamp(6px, 1.5vh, 14px);
     }
 
     .match-bubble-btn {
-      width: clamp(76px, 11vw, 110px);
-      height: clamp(76px, 11vw, 110px);
+      width: clamp(80px, 12vw, 116px);
+      height: clamp(80px, 12vw, 116px);
       border-radius: 50%;
       border: 4px solid var(--cyan);
       background: linear-gradient(180deg, #0288D1 0%, #01579B 100%);
       color: #FFFFFF;
-      font-size: clamp(2.2rem, 4.4vw, 3.4rem);
+      font-size: clamp(2.4rem, 4.8vw, 3.6rem);
       font-weight: 900;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      box-shadow: 0 8px 22px rgba(0, 229, 255, 0.35);
+      box-shadow: 0 8px 24px rgba(0, 229, 255, 0.35);
       transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
     }
 
@@ -737,17 +809,17 @@
       background: radial-gradient(circle, #2a1645 0%, #0b0716 100%);
       text-align: center;
       justify-content: center;
-      gap: clamp(6px, 1.2vh, 12px);
+      gap: clamp(8px, 1.5vh, 14px);
     }
 
     #trace-canvas-wrap {
       position: relative;
-      width: min(500px, 90vw);
-      height: min(340px, 46vh);
+      width: min(520px, 92vw);
+      height: min(360px, 48vh);
       background: #141a36;
       border: 4px solid var(--gold);
-      border-radius: 24px;
-      box-shadow: 0 12px 32px rgba(0,0,0,0.6);
+      border-radius: 26px;
+      box-shadow: 0 12px 34px rgba(0,0,0,0.6);
       overflow: hidden;
       margin: 0 auto;
     }
@@ -779,38 +851,38 @@
       background: radial-gradient(circle, #331548 0%, #0e051c 100%);
       text-align: center;
       justify-content: center;
-      gap: clamp(8px, 1.5vh, 14px);
+      gap: clamp(10px, 1.8vh, 16px);
     }
 
     .blend-target-box {
       background: rgba(255,255,255,0.06);
       border: 3px solid var(--cyan);
-      border-radius: 20px;
-      padding: clamp(6px, 1.2vh, 12px) clamp(14px, 2.5vw, 24px);
+      border-radius: 22px;
+      padding: clamp(8px, 1.5vh, 14px) clamp(16px, 3vw, 28px);
       display: inline-flex;
       align-items: center;
-      gap: 14px;
-      margin-bottom: 2px;
+      gap: 16px;
+      margin-bottom: 4px;
     }
 
     .blend-slots-row {
       display: flex;
       justify-content: center;
-      gap: clamp(8px, 1.8vw, 16px);
-      margin: clamp(4px, 0.8vh, 8px) 0;
+      gap: clamp(10px, 2vw, 18px);
+      margin: clamp(4px, 1vh, 10px) 0;
     }
 
     .blend-slot-box {
-      width: clamp(70px, 11vw, 92px);
-      height: clamp(70px, 11vw, 92px);
+      width: clamp(74px, 12vw, 98px);
+      height: clamp(74px, 12vw, 98px);
       border: 3px dashed var(--cyan);
-      border-radius: 18px;
+      border-radius: 20px;
       background: rgba(255, 255, 255, 0.05);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      font-size: clamp(2.2rem, 4vw, 3.1rem);
+      font-size: clamp(2.3rem, 4.4vw, 3.3rem);
       font-weight: 900;
       color: var(--green);
       transition: all 0.2s ease;
@@ -827,7 +899,7 @@
     }
 
     .blend-slot-sub {
-      font-size: 0.6rem;
+      font-size: 0.62rem;
       color: #80DEEA;
       font-weight: 700;
     }
@@ -835,8 +907,8 @@
     .blend-tiles-row {
       display: flex;
       justify-content: center;
-      gap: clamp(8px, 1.8vw, 16px);
-      margin: clamp(4px, 1vh, 10px) 0;
+      gap: clamp(10px, 2vw, 18px);
+      margin: clamp(6px, 1.2vh, 12px) 0;
       flex-wrap: wrap;
     }
 
@@ -844,32 +916,32 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 3px;
+      gap: 4px;
     }
 
     .blend-tile-btn {
-      width: clamp(70px, 11vw, 92px);
-      height: clamp(70px, 11vw, 92px);
-      border-radius: 18px;
+      width: clamp(74px, 12vw, 98px);
+      height: clamp(74px, 12vw, 98px);
+      border-radius: 20px;
       border: 3px solid #FFFFFF;
       background: linear-gradient(180deg, #FFA000 0%, #E65100 100%);
       color: #FFFFFF;
-      font-size: clamp(2rem, 3.8vw, 2.9rem);
+      font-size: clamp(2.1rem, 4vw, 3.1rem);
       font-weight: 900;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.7);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.7);
       transition: transform 0.18s ease, opacity 0.18s ease, border-color 0.18s ease;
       position: relative;
     }
 
     .blend-tile-btn:hover {
-      transform: translateY(-3px) scale(1.06);
+      transform: translateY(-4px) scale(1.08);
       border-color: var(--gold);
-      box-shadow: 0 12px 26px rgba(255, 152, 0, 0.6);
+      box-shadow: 0 12px 28px rgba(255, 152, 0, 0.6);
     }
 
     .blend-tile-btn:active {
@@ -883,15 +955,16 @@
       box-shadow: none;
     }
 
+    /* DEDICATED "CLICK TO HEAR" SOUND BUTTON ON EVERY TILE */
     .tile-hear-sound-btn {
       background: rgba(0, 0, 0, 0.65);
       border: 1.5px solid var(--gold);
       border-radius: 12px;
       color: #FFF59D;
       font-family: var(--font-main);
-      font-size: clamp(0.65rem, 0.9vw, 0.78rem);
+      font-size: clamp(0.68rem, 1vw, 0.8rem);
       font-weight: 800;
-      padding: 2px 7px;
+      padding: 3px 8px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -901,13 +974,13 @@
     }
 
     .tile-hear-sound-btn:hover {
-      transform: scale(1.08);
+      transform: scale(1.1);
       background: rgba(255, 214, 0, 0.25);
     }
 
     #blend-next-container {
       display: none;
-      margin-top: 6px;
+      margin-top: 8px;
     }
 
     /* ==========================================================================
@@ -925,7 +998,7 @@
       justify-content: center;
       align-items: center;
       z-index: 120;
-      padding: clamp(10px, 2vw, 20px);
+      padding: clamp(12px, 2vw, 24px);
     }
 
     .modal-backdrop.active {
@@ -941,9 +1014,9 @@
     .modal-box {
       background: linear-gradient(180deg, #182554 0%, #0b1028 100%);
       border: 4px solid var(--gold);
-      border-radius: 26px;
-      padding: clamp(16px, 2.8vh, 30px) clamp(18px, 3vw, 34px);
-      max-width: 580px;
+      border-radius: 28px;
+      padding: clamp(18px, 3vh, 32px) clamp(20px, 3.5vw, 36px);
+      max-width: 600px;
       width: 100%;
       text-align: center;
       box-shadow: 0 16px 50px rgba(255, 214, 0, 0.35);
@@ -961,15 +1034,15 @@
     }
 
     .modal-box h2 {
-      font-size: clamp(1.5rem, 3.2vw, 2.2rem);
+      font-size: clamp(1.6rem, 3.5vw, 2.3rem);
       color: var(--gold);
-      margin-bottom: 4px;
+      margin-bottom: 6px;
       text-shadow: 0 2px 8px rgba(0,0,0,0.5);
     }
 
     .reward-icon-huge {
-      font-size: clamp(4.2rem, 9vw, 6.2rem);
-      margin: 6px 0;
+      font-size: clamp(4.5rem, 10vw, 6.5rem);
+      margin: 8px 0;
       filter: drop-shadow(0 6px 18px rgba(255, 214, 0, 0.6));
       animation: rewardFloat 1.2s infinite alternate ease-in-out;
     }
@@ -980,21 +1053,21 @@
     }
 
     .reward-item-name {
-      font-size: clamp(1.3rem, 2.4vw, 1.8rem);
+      font-size: clamp(1.4rem, 2.5vw, 1.9rem);
       font-weight: 900;
       color: #FFFFFF;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
     .reward-category-tag {
       background: var(--purple);
       color: #FFFFFF;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       font-weight: 900;
       padding: 3px 12px;
       border-radius: 12px;
       display: inline-block;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       text-transform: uppercase;
     }
 
@@ -1002,25 +1075,25 @@
       display: inline-block;
       background: var(--cyan);
       color: #061324;
-      font-size: clamp(0.75rem, 1.1vw, 0.88rem);
+      font-size: clamp(0.78rem, 1.2vw, 0.9rem);
       font-weight: 900;
-      padding: 5px 14px;
+      padding: 6px 16px;
       border-radius: 14px;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
       max-width: 90%;
     }
 
     .btn-close-x {
       position: absolute;
-      top: 12px;
-      right: 14px;
+      top: 14px;
+      right: 16px;
       background: rgba(255, 255, 255, 0.12);
       border: 2px solid #FFFFFF;
       border-radius: 50%;
-      width: 34px;
-      height: 34px;
+      width: 36px;
+      height: 36px;
       color: #FFFFFF;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       font-weight: bold;
       cursor: pointer;
       display: flex;
@@ -1035,13 +1108,13 @@
       border-color: #FF8A80;
     }
 
-    /* 100-ITEM CHEST MODAL SPECIFICS */
+    /* 100-ITEM CHEST MODAL */
     .chest-filter-bar {
       display: flex;
       justify-content: center;
       gap: 6px;
       flex-wrap: wrap;
-      margin: 8px 0 12px 0;
+      margin: 10px 0 14px 0;
       width: 100%;
     }
 
@@ -1049,10 +1122,10 @@
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.3);
       border-radius: 16px;
-      padding: 3px 10px;
+      padding: 4px 12px;
       color: #FFFFFF;
       font-family: var(--font-main);
-      font-size: 0.75rem;
+      font-size: 0.78rem;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.15s ease;
@@ -1067,29 +1140,29 @@
 
     .chest-progress-counter {
       color: var(--cyan);
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       font-weight: 800;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .treasure-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-      gap: 7px;
+      grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
+      gap: 8px;
       width: 100%;
-      max-height: clamp(220px, 42vh, 360px);
+      max-height: clamp(240px, 45vh, 380px);
       overflow-y: auto;
       padding: 8px;
       background: rgba(0, 0, 0, 0.3);
-      border-radius: 16px;
+      border-radius: 18px;
       border: 2px solid rgba(255, 255, 255, 0.15);
     }
 
     .chest-card {
       background: rgba(255, 255, 255, 0.06);
       border: 2px solid rgba(255, 255, 255, 0.15);
-      border-radius: 12px;
-      padding: 6px 3px;
+      border-radius: 14px;
+      padding: 8px 4px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1109,25 +1182,25 @@
     }
 
     .chest-card-icon {
-      font-size: 1.7rem;
+      font-size: 1.8rem;
       line-height: 1.1;
     }
 
     .chest-card-name {
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       font-weight: 800;
       color: #FFFFFF;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 82px;
+      max-width: 85px;
     }
 
     .chest-card-cond {
-      font-size: 0.58rem;
+      font-size: 0.6rem;
       color: var(--gold);
       line-height: 1.1;
-      max-width: 82px;
+      max-width: 85px;
       overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
@@ -1135,7 +1208,6 @@
       -webkit-box-orient: vertical;
     }
 
-    /* CONFETTI CANVAS OVERLAY */
     #confetti-canvas {
       position: absolute;
       top: 0;
@@ -1164,7 +1236,7 @@
       </div>
 
       <div class="hud-center">
-        <span id="activity-title-badge">🗺️ Treasure Map • Full Alphabet Quest</span>
+        <span id="activity-title-badge">🗺️ Phonics Saga Island Quest (A–Z)</span>
         <!-- STRICT 4-STAR PROGRESSION BAR (100% PURE WHITE ON SCREEN LOAD) -->
         <div id="star-bar" class="star-progress-bar">
           <span id="star-slot-1" class="hud-star white" title="Step 1 Star">☆</span>
@@ -1188,248 +1260,158 @@
     </header>
 
     <!-- ==========================================================================
-         SCREEN 1: THE TREASURE MAP (FULL-SCREEN BOARD GAME - ALL 26 NODES VISIBLE)
+         SCREEN 1: THE TREASURE MAP (SPACIOUS SCROLLABLE MOBILE SAGA STYLE MAP)
          ========================================================================== -->
     <main id="screen-map" class="game-screen active">
-      <div class="boardgame-container">
-        <!-- Rich Illustrated Cartoon Vector Background -->
-        <svg class="board-bg-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" preserveAspectRatio="none">
+      <!-- Quick Navigation Floating Buttons -->
+      <div class="saga-map-nav-toolbar">
+        <button class="saga-nav-pill-btn" onclick="scrollToActiveLevel()" title="Scroll to Current Level">
+          📍 My Island
+        </button>
+        <button class="saga-nav-pill-btn" onclick="scrollMapToTop()" title="Scroll to Castle Summit">
+          ⬆ Castle
+        </button>
+        <button class="saga-nav-pill-btn" onclick="scrollMapToBottom()" title="Scroll to Island A">
+          ⬇ Start
+        </button>
+      </div>
+
+      <div class="saga-canvas-wrapper" id="saga-canvas-wrapper">
+        <!-- Rich Cartoon Vector Illustrated Background -->
+        <svg class="saga-bg-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 3300" preserveAspectRatio="none">
           <defs>
-            <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#38bdf8"/>
-              <stop offset="35%" stop-color="#7dd3fc"/>
-              <stop offset="36%" stop-color="#0284c7"/>
-              <stop offset="70%" stop-color="#0369a1"/>
-              <stop offset="100%" stop-color="#075985"/>
-            </linearGradient>
-            <!-- Island Gradient -->
-            <linearGradient id="islandGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#86efac"/>
-              <stop offset="60%" stop-color="#22c55e"/>
-              <stop offset="100%" stop-color="#15803d"/>
-            </linearGradient>
-            <!-- Sand Gradient -->
-            <linearGradient id="sandGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <linearGradient id="sagaPathGrad" x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="0%" stop-color="#fef08a"/>
-              <stop offset="100%" stop-color="#eab308"/>
+              <stop offset="50%" stop-color="#f59e0b"/>
+              <stop offset="100%" stop-color="#d97706"/>
             </linearGradient>
-            <!-- Castle Gradient -->
-            <linearGradient id="castleGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#c084fc"/>
+            <linearGradient id="castleTopGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#e879f9"/>
               <stop offset="100%" stop-color="#7e22ce"/>
             </linearGradient>
           </defs>
 
-          <!-- Sky and Deep Ocean Base -->
-          <rect width="1200" height="800" fill="url(#skyGrad)" />
-
-          <!-- Cartoon Clouds in Sky -->
-          <g fill="rgba(255,255,255,0.85)">
-            <ellipse cx="140" cy="50" rx="60" ry="25" />
-            <ellipse cx="180" cy="40" rx="45" ry="22" />
-            <ellipse cx="110" cy="45" rx="40" ry="18" />
-
-            <ellipse cx="580" cy="45" rx="70" ry="25" />
-            <ellipse cx="630" cy="35" rx="50" ry="22" />
-            <ellipse cx="540" cy="40" rx="45" ry="18" />
-
-            <ellipse cx="1020" cy="55" rx="65" ry="25" />
-            <ellipse cx="1065" cy="42" rx="45" ry="20" />
-            <ellipse cx="980" cy="48" rx="40" ry="18" />
+          <!-- BIOME 5: Summit Royal Cloud Kingdom (Y=0 to Y=700) -->
+          <rect x="0" y="0" width="800" height="700" fill="rgba(30, 27, 75, 0.45)"/>
+          <g fill="rgba(255, 255, 255, 0.85)">
+            <ellipse cx="160" cy="180" rx="90" ry="35"/>
+            <ellipse cx="220" cy="165" rx="70" ry="30"/>
+            <ellipse cx="640" cy="220" rx="100" ry="40"/>
+            <ellipse cx="580" cy="205" rx="75" ry="30"/>
+            <ellipse cx="400" cy="380" rx="120" ry="45"/>
           </g>
 
+          <!-- BIOME 4: Ruby Rainbow Reef & Crystal Caves (Y=700 to Y=1400) -->
+          <rect x="0" y="700" width="800" height="700" fill="rgba(67, 56, 202, 0.25)"/>
           <!-- Rainbow Arc -->
-          <path d="M 700,100 Q 850,-20 1000,100" fill="none" stroke="rgba(244, 63, 94, 0.45)" stroke-width="12" />
-          <path d="M 706,100 Q 850,-10 994,100" fill="none" stroke="rgba(251, 191, 36, 0.45)" stroke-width="10" />
-          <path d="M 712,100 Q 850,0 988,100" fill="none" stroke="rgba(52, 211, 153, 0.45)" stroke-width="8" />
-          <path d="M 718,100 Q 850,10 982,100" fill="none" stroke="rgba(56, 189, 248, 0.45)" stroke-width="6" />
+          <path d="M 120,880 Q 400,680 680,880" fill="none" stroke="rgba(244, 63, 94, 0.5)" stroke-width="18"/>
+          <path d="M 128,880 Q 400,695 672,880" fill="none" stroke="rgba(251, 191, 36, 0.5)" stroke-width="14"/>
+          <path d="M 136,880 Q 400,710 664,880" fill="none" stroke="rgba(52, 211, 153, 0.5)" stroke-width="10"/>
+          <path d="M 144,880 Q 400,725 656,880" fill="none" stroke="rgba(56, 189, 248, 0.5)" stroke-width="6"/>
 
-          <!-- Tropical Island Landmasses (Behind the winding path) -->
-          <!-- Top Left Island (Letters A-C) -->
-          <path d="M 30,80 Q 200,40 380,85 Q 480,120 360,170 Q 200,200 40,160 Z" fill="url(#sandGrad)" />
-          <path d="M 50,90 Q 200,55 360,95 Q 440,125 340,155 Q 200,185 60,145 Z" fill="url(#islandGrad)" />
+          <!-- BIOME 3: Golden Desert Dunes & Ancient Relics (Y=1400 to Y=2100) -->
+          <rect x="0" y="1400" width="800" height="700" fill="rgba(217, 119, 6, 0.25)"/>
+          <!-- Pyramids in Background -->
+          <polygon points="120,1650 210,1520 300,1650" fill="#f59e0b" stroke="#b45309" stroke-width="4"/>
+          <polygon points="210,1520 235,1520 300,1650 210,1650" fill="#d97706"/>
+          <polygon points="620,1850 690,1740 760,1850" fill="#f59e0b" stroke="#b45309" stroke-width="4"/>
 
-          <!-- Top Right Island (Letters D-G) -->
-          <path d="M 580,75 Q 850,30 1150,80 Q 1190,160 1120,240 Q 850,230 620,180 Z" fill="url(#sandGrad)" />
-          <path d="M 610,85 Q 850,45 1120,90 Q 1160,150 1100,220 Q 850,210 640,165 Z" fill="url(#islandGrad)" />
+          <!-- BIOME 2: Emerald Fox Forest & Waterfall Haven (Y=2100 to Y=2700) -->
+          <rect x="0" y="2100" width="800" height="600" fill="rgba(16, 185, 129, 0.25)"/>
+          <!-- Forest Trees -->
+          <g fill="#15803d" stroke="#14532d" stroke-width="3">
+            <polygon points="140,2350 170,2270 200,2350"/>
+            <polygon points="145,2320 170,2250 195,2320"/>
+            <rect x="165" y="2350" width="10" height="20" fill="#78350f"/>
+            
+            <polygon points="630,2550 665,2460 700,2550"/>
+            <polygon points="635,2510 665,2430 695,2510"/>
+            <rect x="660" y="2550" width="10" height="20" fill="#78350f"/>
+          </g>
 
-          <!-- Mid Right Island (Letters H-K) -->
-          <path d="M 400,220 Q 750,190 1120,250 Q 1180,360 850,370 Q 500,380 380,300 Z" fill="url(#sandGrad)" />
-          <path d="M 430,235 Q 750,205 1090,265 Q 1140,345 850,355 Q 520,365 410,285 Z" fill="url(#islandGrad)" />
+          <!-- BIOME 1: Sunny Tropical Apple Coast (Y=2700 to Y=3300) -->
+          <rect x="0" y="2700" width="800" height="600" fill="rgba(14, 165, 233, 0.25)"/>
+          <!-- Palm Trees & Beach Shore -->
+          <path d="M 0,3150 Q 400,3050 800,3150 L 800,3300 L 0,3300 Z" fill="#fef08a" opacity="0.75"/>
+          <!-- Palm Tree at Start -->
+          <path d="M 680,3180 Q 660,3100 700,3040" stroke="#78350f" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <ellipse cx="700" cy="3035" rx="36" ry="18" fill="#16a34a"/>
+          <ellipse cx="725" cy="3045" rx="30" ry="14" fill="#15803d"/>
+          <ellipse cx="675" cy="3042" rx="28" ry="13" fill="#22c55e"/>
 
-          <!-- Mid Left Island (Letters L-N) -->
-          <path d="M 20,320 Q 300,300 450,360 Q 480,480 300,520 Q 100,510 20,440 Z" fill="url(#sandGrad)" />
-          <path d="M 40,335 Q 300,315 420,370 Q 450,465 290,500 Q 110,490 40,425 Z" fill="url(#islandGrad)" />
-
-          <!-- Center-Right Island (Letters O-R) -->
-          <path d="M 380,390 Q 700,360 1140,410 Q 1180,520 850,550 Q 520,560 360,480 Z" fill="url(#sandGrad)" />
-          <path d="M 410,405 Q 700,375 1110,425 Q 1140,505 850,535 Q 540,545 385,465 Z" fill="url(#islandGrad)" />
-
-          <!-- Bottom Left Island (Letters S-X) -->
-          <path d="M 30,520 Q 450,490 950,540 Q 1160,620 900,720 Q 450,750 30,680 Z" fill="url(#sandGrad)" />
-          <path d="M 50,535 Q 450,505 920,555 Q 1120,605 880,700 Q 450,730 50,660 Z" fill="url(#islandGrad)" />
-
-          <!-- Grand Castle Island (Letters Y, Z & Grand Reading Castle) -->
-          <path d="M 40,700 Q 350,660 1160,680 Q 1190,795 650,795 Q 150,795 30,770 Z" fill="url(#sandGrad)" />
-          <path d="M 60,715 Q 350,675 1140,695 Q 1160,785 650,785 Q 170,785 50,755 Z" fill="url(#islandGrad)" />
-
-          <!-- Cartoon Palm Trees & Mountains on Islands -->
-          <!-- Palm Tree 1 (Top Left) -->
-          <path d="M 90,140 Q 80,105 105,80" stroke="#78350f" stroke-width="6" fill="none" stroke-linecap="round" />
-          <ellipse cx="105" cy="78" rx="22" ry="12" fill="#16a34a" />
-          <ellipse cx="118" cy="84" rx="20" ry="10" fill="#15803d" />
-          <ellipse cx="90" cy="82" rx="18" ry="9" fill="#22c55e" />
-
-          <!-- Palm Tree 2 (Mid Right) -->
-          <path d="M 1080,310 Q 1065,270 1090,240" stroke="#78350f" stroke-width="6" fill="none" stroke-linecap="round" />
-          <ellipse cx="1090" cy="238" rx="22" ry="12" fill="#16a34a" />
-          <ellipse cx="1105" cy="245" rx="19" ry="10" fill="#15803d" />
-          <ellipse cx="1075" cy="242" rx="18" ry="9" fill="#22c55e" />
-
-          <!-- Palm Tree 3 (Bottom Left) -->
-          <path d="M 80,630 Q 70,590 95,560" stroke="#78350f" stroke-width="6" fill="none" stroke-linecap="round" />
-          <ellipse cx="95" cy="558" rx="24" ry="12" fill="#16a34a" />
-          <ellipse cx="110" cy="565" rx="20" ry="10" fill="#15803d" />
-          <ellipse cx="78" cy="562" rx="18" ry="9" fill="#22c55e" />
-
-          <!-- Pirate Galleon Ship in Water (Right side) -->
-          <g transform="translate(1010, 560) scale(0.65)">
-            <!-- Ship Hull -->
+          <!-- Pirate Galleon Ship in Water -->
+          <g transform="translate(100, 2820) scale(0.75)">
             <path d="M 0,40 Q 50,70 140,40 L 125,75 Q 50,95 10,75 Z" fill="#78350f" stroke="#451a03" stroke-width="3"/>
-            <!-- Mast -->
             <line x1="65" y1="45" x2="65" y2="-30" stroke="#451a03" stroke-width="5"/>
-            <!-- White Sails -->
             <path d="M 68,-25 Q 110,-10 68,5 Q 105,18 68,35" fill="#f8fafc" stroke="#94a3b8" stroke-width="2"/>
-            <!-- Pirate Jolly Roger Flag -->
             <rect x="25" y="-35" width="38" height="22" fill="#0f172a" rx="2"/>
             <circle cx="44" cy="-24" r="5" fill="#f8fafc"/>
-            <line x1="36" y1="-16" x2="52" y2="-32" stroke="#f8fafc" stroke-width="2"/>
-            <line x1="52" y1="-16" x2="36" y2="-32" stroke="#f8fafc" stroke-width="2"/>
           </g>
 
-          <!-- Cute Swimming Dolphin in Ocean -->
-          <g transform="translate(240, 240) scale(0.55)">
-            <path d="M 0,20 Q 30,-15 70,0 Q 90,10 110,0 Q 95,25 70,30 Q 30,35 0,20 Z" fill="#38bdf8" stroke="#0284c7" stroke-width="3"/>
-            <!-- Fin -->
-            <path d="M 35,0 Q 45,-25 55,-5 Z" fill="#0284c7"/>
-            <circle cx="20" cy="15" r="3" fill="#0f172a"/>
-          </g>
-
-          <!-- Sea Turtle (Left) -->
-          <g transform="translate(160, 420) scale(0.5)">
-            <ellipse cx="40" cy="30" rx="28" ry="20" fill="#15803d" stroke="#166534" stroke-width="3"/>
-            <circle cx="75" cy="30" r="10" fill="#22c55e"/>
-            <!-- Flippers -->
-            <ellipse cx="55" cy="10" rx="14" ry="7" fill="#22c55e"/>
-            <ellipse cx="55" cy="50" rx="14" ry="7" fill="#22c55e"/>
-            <ellipse cx="20" cy="12" rx="10" ry="6" fill="#22c55e"/>
-            <ellipse cx="20" cy="48" rx="10" ry="6" fill="#22c55e"/>
-          </g>
-
-          <!-- Grand Castle of Reading at the Finish (Bottom Right) -->
-          <g transform="translate(740, 640) scale(0.85)">
-            <!-- Base Castle Wall -->
-            <rect x="0" y="50" width="220" height="90" fill="url(#castleGrad)" stroke="#581c87" stroke-width="4" rx="6"/>
-            <!-- Castle Gate -->
+          <!-- GRAND PHONICS CASTLE AT TOP SUMMIT (Y=80) -->
+          <g transform="translate(280, 50) scale(1.1)">
+            <rect x="0" y="50" width="220" height="90" fill="url(#castleTopGrad)" stroke="#581c87" stroke-width="4" rx="8"/>
             <path d="M 85,140 L 85,90 Q 110,65 135,90 L 135,140 Z" fill="#3b0764" stroke="#ffd600" stroke-width="3"/>
-            <!-- Towers -->
-            <rect x="-15" y="10" width="45" height="130" fill="url(#castleGrad)" stroke="#581c87" stroke-width="4" rx="4"/>
+            <rect x="-15" y="10" width="45" height="130" fill="url(#castleTopGrad)" stroke="#581c87" stroke-width="4" rx="4"/>
             <polygon points="-20,10 7.5,-35 35,10" fill="#ffd600" stroke="#b45309" stroke-width="3"/>
-            
-            <rect x="190" y="10" width="45" height="130" fill="url(#castleGrad)" stroke="#581c87" stroke-width="4" rx="4"/>
+            <rect x="190" y="10" width="45" height="130" fill="url(#castleTopGrad)" stroke="#581c87" stroke-width="4" rx="4"/>
             <polygon points="185,10 212.5,-35 240,10" fill="#ffd600" stroke="#b45309" stroke-width="3"/>
-
-            <!-- Center High Tower -->
-            <rect x="80" y="-10" width="60" height="70" fill="url(#castleGrad)" stroke="#581c87" stroke-width="4" rx="4"/>
+            <rect x="80" y="-10" width="60" height="70" fill="url(#castleTopGrad)" stroke="#581c87" stroke-width="4" rx="4"/>
             <polygon points="70,-10 110,-60 150,-10" fill="#ffd600" stroke="#b45309" stroke-width="3"/>
-            
-            <!-- Castle Flag -->
             <line x1="110" y1="-60" x2="110" y2="-85" stroke="#451a03" stroke-width="3"/>
-            <polygon points="110,-85 145,-73 110,-61" fill="#ec4899"/>
-            <!-- Castle Title Banner -->
+            <polygon points="110,-85 150,-72 110,-59" fill="#ec4899"/>
             <rect x="25" y="14" width="170" height="26" fill="#ffd600" stroke="#b45309" stroke-width="2" rx="6"/>
-            <text x="110" y="32" font-family="'Fredoka', sans-serif" font-size="14" font-weight="900" fill="#451a03" text-anchor="middle">👑 PHONICS CASTLE</text>
+            <text x="110" y="32" font-family="'Fredoka', sans-serif" font-size="14" font-weight="900" fill="#451a03" text-anchor="middle">👑 READING CASTLE</text>
           </g>
 
-          <!-- Winding Cobblestone Board Game Track Path (Connecting A to Z) -->
-          <!-- Dotted Line connecting the winding sequence -->
-          <path id="board-game-path-line" 
-                d="M 96,96 
-                   Q 180,90 276,96 
-                   T 456,96 
-                   T 636,96 
-                   T 816,96 
-                   T 996,112 
-                   Q 1116,160 1104,224 
-                   Q 1080,264 972,264 
-                   T 792,264 
-                   T 612,264 
-                   T 432,264 
-                   T 252,264 
-                   Q 84,320 96,400 
-                   Q 120,440 252,432 
-                   T 432,432 
-                   T 612,432 
-                   T 792,432 
-                   T 972,432 
-                   Q 1116,480 1104,560 
-                   Q 1080,600 972,600 
-                   T 792,600 
-                   T 612,600 
-                   T 432,600 
-                   T 252,600 
-                   Q 84,650 144,720 
-                   Q 240,730 384,720"
-                fill="none" 
-                stroke="#ffd600" 
-                stroke-width="12" 
-                stroke-dasharray="14 10" 
+          <!-- Smooth Vertical Winding Dotted Road Path (Stepping Stones from A to Z) -->
+          <path id="saga-winding-path"
+                d="M 400,3140
+                   C 260,3070 180,2980 280,2880
+                   C 400,2770 650,2740 600,2620
+                   C 540,2500 240,2480 200,2370
+                   C 160,2240 580,2220 620,2110
+                   C 660,1990 260,1960 210,1850
+                   C 160,1720 620,1700 630,1580
+                   C 640,1460 220,1430 200,1310
+                   C 180,1180 620,1160 620,1030
+                   C 620,900 220,870 210,750
+                   C 200,620 620,590 620,460
+                   C 620,330 350,300 390,210"
+                fill="none"
+                stroke="url(#sagaPathGrad)"
+                stroke-width="28"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                opacity="0.8" />
-          <path d="M 96,96 
-                   Q 180,90 276,96 
-                   T 456,96 
-                   T 636,96 
-                   T 816,96 
-                   T 996,112 
-                   Q 1116,160 1104,224 
-                   Q 1080,264 972,264 
-                   T 792,264 
-                   T 612,264 
-                   T 432,264 
-                   T 252,264 
-                   Q 84,320 96,400 
-                   Q 120,440 252,432 
-                   T 432,432 
-                   T 612,432 
-                   T 792,432 
-                   T 972,432 
-                   Q 1116,480 1104,560 
-                   Q 1080,600 972,600 
-                   T 792,600 
-                   T 612,600 
-                   T 432,600 
-                   T 252,600 
-                   Q 84,650 144,720 
-                   Q 240,730 384,720"
-                fill="none" 
-                stroke="#ffffff" 
-                stroke-width="4" 
-                stroke-dasharray="6 18" 
+                opacity="0.85" />
+          <!-- Inner Dotted White Line -->
+          <path d="M 400,3140
+                   C 260,3070 180,2980 280,2880
+                   C 400,2770 650,2740 600,2620
+                   C 540,2500 240,2480 200,2370
+                   C 160,2240 580,2220 620,2110
+                   C 660,1990 260,1960 210,1850
+                   C 160,1720 620,1700 630,1580
+                   C 640,1460 220,1430 200,1310
+                   C 180,1180 620,1160 620,1030
+                   C 620,900 220,870 210,750
+                   C 200,620 620,590 620,460
+                   C 620,330 350,300 390,210"
+                fill="none"
+                stroke="#FFFFFF"
+                stroke-width="6"
+                stroke-dasharray="12 16"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                opacity="0.9" />
+                opacity="0.95" />
         </svg>
 
-        <!-- DOM Node Layer with all 26 nodes placed at precise percentages -->
-        <div class="board-nodes-layer" id="board-nodes-container">
-          <!-- 26 nodes generated by JavaScript -->
-        </div>
+        <!-- DOM Saga Nodes Layer (Generated dynamically from bottom A to top Z) -->
+        <div class="saga-nodes-layer" id="saga-nodes-container"></div>
       </div>
     </main>
 
-    <!-- TIGER MASCOT COMPANION (SPEECH BUBBLE STRICTLY HIDDEN OPACITY 0 BY DEFAULT) -->
+    <!-- TIGER MASCOT COMPANION (SPEECH BUBBLE HIDDEN OPACITY 0 BY DEFAULT) -->
     <div class="tiger-companion-wrap">
       <button id="tiger-mascot-btn" class="tiger-mascot-btn" onclick="toggleTigerMascot()" title="Click Astro Tiger for Help!">
         <svg viewBox="0 0 100 100" width="100%" height="100%">
@@ -1527,7 +1509,7 @@
       </p>
 
       <div id="trace-canvas-wrap">
-        <canvas id="trace-canvas" width="500" height="340"></canvas>
+        <canvas id="trace-canvas" width="520" height="360"></canvas>
       </div>
 
       <div class="trace-toolbar">
@@ -1558,8 +1540,8 @@
       </p>
 
       <div class="blend-target-box">
-        <span style="font-size:2.5rem;" id="blend-target-preview-emoji">🐜</span>
-        <span style="font-size:1.3rem; font-weight:900; color:#FFD600;" id="blend-target-preview-name">Target: ANT</span>
+        <span style="font-size:2.6rem;" id="blend-target-preview-emoji">🐜</span>
+        <span style="font-size:1.35rem; font-weight:900; color:#FFD600;" id="blend-target-preview-name">Target: ANT</span>
       </div>
 
       <div class="blend-slots-row" id="blend-slots-container"></div>
@@ -1595,10 +1577,10 @@
 
     <!-- CHEST MODAL (100-ITEM CATALOG) -->
     <div id="chest-modal" class="modal-backdrop">
-      <div class="modal-box" style="max-width:660px;">
+      <div class="modal-box" style="max-width:680px;">
         <button class="btn-close-x" onclick="closeTreasureChest()">✕</button>
         <h2>🎁 Phonics Treasure Chest 🎁</h2>
-        <p style="color:#80DEEA; font-size:0.85rem; margin-bottom:4px;">
+        <p style="color:#80DEEA; font-size:0.88rem; margin-bottom:4px;">
           Complete letter activities and milestones to unlock all 100 rewards!
         </p>
         <div class="chest-progress-counter" id="chest-progress-text">
@@ -1656,42 +1638,35 @@
 
     const LETTER_KEYS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
-    // 26 PRECISE PERCENTAGE COORDINATES ON THE FULL-SCREEN WINDING BOARD PATH
-    const NODE_COORDINATES = [
-      // Row 1: Left to Right (A - F)
-      { l: 'a', x: 8,  y: 12 },
-      { l: 'b', x: 23, y: 12 },
-      { l: 'c', x: 38, y: 12 },
-      { l: 'd', x: 53, y: 12 },
-      { l: 'e', x: 68, y: 12 },
-      { l: 'f', x: 83, y: 14 },
-      // Curve 1 down (G)
-      { l: 'g', x: 92, y: 28 },
-      // Row 2: Right to Left (H - L)
-      { l: 'h', x: 81, y: 33 },
-      { l: 'i', x: 66, y: 33 },
-      { l: 'j', x: 51, y: 33 },
-      { l: 'k', x: 36, y: 33 },
-      { l: 'l', x: 21, y: 33 },
-      // Curve 2 down (M)
-      { l: 'm', x: 8,  y: 48 },
-      // Row 3: Left to Right (N - R)
-      { l: 'n', x: 21, y: 54 },
-      { l: 'o', x: 36, y: 54 },
-      { l: 'p', x: 51, y: 54 },
-      { l: 'q', x: 66, y: 54 },
-      { l: 'r', x: 81, y: 54 },
-      // Curve 3 down (S)
-      { l: 's', x: 92, y: 68 },
-      // Row 4: Right to Left (T - X)
-      { l: 't', x: 81, y: 75 },
-      { l: 'u', x: 66, y: 75 },
-      { l: 'v', x: 51, y: 75 },
-      { l: 'w', x: 36, y: 75 },
-      { l: 'x', x: 21, y: 75 },
-      // Row 5: Finish Path to Castle (Y - Z)
-      { l: 'y', x: 12, y: 90 },
-      { l: 'z', x: 32, y: 90 }
+    // 26 SPACIOUS VERTICAL SAGA MAP COORDINATES (WINDS FROM BOTTOM A TO TOP Z)
+    // Absolute pixel coordinates inside the 800 x 3300 saga canvas
+    const SAGA_COORDINATES = [
+      { l: 'a', x: 400, y: 3140 }, // Start Beach Shore
+      { l: 'b', x: 260, y: 3020 },
+      { l: 'c', x: 200, y: 2900 },
+      { l: 'd', x: 340, y: 2780 },
+      { l: 'e', x: 580, y: 2680 },
+      { l: 'f', x: 620, y: 2560 }, // Biome 2: Forest & Waterfalls
+      { l: 'g', x: 440, y: 2460 },
+      { l: 'h', x: 220, y: 2360 },
+      { l: 'i', x: 180, y: 2240 },
+      { l: 'j', x: 380, y: 2160 },
+      { l: 'k', x: 600, y: 2060 }, // Biome 3: Golden Desert Dunes
+      { l: 'l', x: 640, y: 1940 },
+      { l: 'm', x: 440, y: 1840 },
+      { l: 'n', x: 220, y: 1740 },
+      { l: 'o', x: 200, y: 1620 },
+      { l: 'p', x: 400, y: 1540 },
+      { l: 'q', x: 620, y: 1440 }, // Biome 4: Crystal Reef & Caverns
+      { l: 'r', x: 640, y: 1320 },
+      { l: 's', x: 440, y: 1220 },
+      { l: 't', x: 220, y: 1120 },
+      { l: 'u', x: 200, y: 1000 },
+      { l: 'v', x: 400, y: 900 },  // Biome 5: Cloud Kingdom & Royal Castle
+      { l: 'w', x: 600, y: 780 },
+      { l: 'x', x: 620, y: 640 },
+      { l: 'y', x: 420, y: 520 },
+      { l: 'z', x: 240, y: 380 }   // Top Summit next to Reading Castle (y:210)
     ];
 
     // EXACT 100 REWARDS CATALOG
@@ -1781,7 +1756,7 @@
 
     console.log('Total Rewards Initialized: ' + REWARDS_LIST.length + ' (Exactly 100 items).');
 
-    // 100% OFFLINE NATURAL AUDIO ENGINE (0.5s - 1.0s DURATION)
+    // ULTRA-REALISTIC NATURAL HUMAN AUDIO ENGINE (0.5s - 1.0s DURATION)
     class HumanPhonicsAudioEngine {
       constructor() {
         this.ctx = null;
@@ -1812,12 +1787,14 @@
         const selectTeacherVoice = () => {
           const voices = this.synth.getVoices();
           if (!voices || voices.length === 0) return;
+          // Priority Heuristic: Pick highest quality natural human English voice
           this.humanTeacherVoice = voices.find(v => v.lang.startsWith('en') && (
             v.name.includes('Natural') || v.name.includes('Google US English') ||
             v.name.includes('Samantha') || v.name.includes('Ava') ||
             v.name.includes('Serena') || v.name.includes('Karen') ||
             v.name.includes('Daniel') || v.name.includes('Jenny') ||
-            v.name.includes('Victoria') || v.name.includes('Allison')
+            v.name.includes('Victoria') || v.name.includes('Allison') ||
+            v.name.includes('Zoe')
           )) || voices.find(v => v.lang.startsWith('en-US')) || voices.find(v => v.lang.startsWith('en')) || voices[0];
         };
         selectTeacherVoice();
@@ -1886,7 +1863,7 @@
         const gain = this.ctx.createGain();
 
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(1760.00, t); // High A6
+        osc.frequency.setValueAtTime(1760.00, t); // High A6 bell
         osc.frequency.exponentialRampToValueAtTime(2093.00, t + 0.08); // High C7
 
         osc2.type = 'triangle';
@@ -2091,9 +2068,10 @@
       const letterUpper = currentLetterKey.toUpperCase();
 
       if (screenId === 'screen-map') {
-        titleBadge.textContent = '🗺️ Treasure Map • Full Alphabet Quest';
+        titleBadge.textContent = '🗺️ Phonics Saga Island Quest (A–Z)';
         starBar.style.display = 'none';
-        buildFullBoardGameMap();
+        buildSagaMap();
+        setTimeout(scrollToActiveLevel, 100);
       } else {
         starBar.style.display = 'inline-flex';
         if (screenId === 'screen-learn') {
@@ -2113,48 +2091,67 @@
       showScreen('screen-map');
     }
 
-    // BUILD FULL-SCREEN BOARD GAME MAP (ALL 26 NODES SIMULTANEOUSLY VISIBLE)
-    function buildFullBoardGameMap() {
-      const container = document.getElementById('board-nodes-container');
+    // BUILD SPATIOUS VERTICAL SAGA MAP (CANDY CRUSH / TOON BLAST STYLE)
+    function buildSagaMap() {
+      const container = document.getElementById('saga-nodes-container');
       container.innerHTML = '';
 
-      NODE_COORDINATES.forEach((coord, idx) => {
+      SAGA_COORDINATES.forEach((coord, idx) => {
         const lKey = coord.l;
         const p = PHONICS_DATA[lKey];
         const isUnlocked = idx <= unlockedNodeIndex;
+        const isCompleted = idx < unlockedNodeIndex;
         const isCurrent = idx === unlockedNodeIndex;
 
-        const node = document.createElement('div');
-        node.className = 'board-node ' + (isCurrent ? 'active-node' : '');
-        node.style.left = coord.x + '%';
-        node.style.top = coord.y + '%';
-        node.id = 'board-node-' + lKey;
+        const card = document.createElement('div');
+        card.className = 'saga-node-card ' + (isCurrent ? 'active-node' : '');
+        card.style.left = coord.x + 'px';
+        card.style.top = coord.y + 'px';
+        card.id = 'saga-node-' + lKey;
 
-        node.innerHTML = 
-          (isCurrent ? '<div class="node-here-pin">🚩 HERE</div>' : '') +
-          '<button class="node-bubble-btn ' + (isUnlocked ? 'unlocked' : 'locked') + ' ' + (idx < unlockedNodeIndex ? 'completed' : '') + '" id="bubble-btn-' + lKey + '" title="Letter ' + lKey.toUpperCase() + '">' +
-            '<div class="node-letter-char">' + lKey.toUpperCase() + '</div>' +
-            '<div class="node-word-emoji">' + p.emoji + '</div>' +
+        card.innerHTML = 
+          (isCurrent ? '<div class="saga-here-avatar">🐯 YOU ARE HERE</div>' : '') +
+          '<button class="saga-node-btn ' + (isUnlocked ? 'unlocked' : 'locked') + ' ' + (isCompleted ? 'completed' : '') + '" id="saga-btn-' + lKey + '" title="Letter ' + lKey.toUpperCase() + '">' +
+            '<div class="saga-node-letter">' + lKey.toUpperCase() + '</div>' +
+            '<div class="saga-node-emoji-tag">' + p.emoji + '</div>' +
           '</button>' +
-          '<div class="node-title-badge">' + p.title + '</div>' +
-          '<button class="node-play-action-btn ' + (isUnlocked ? 'unlocked' : 'locked') + '" id="play-btn-' + lKey + '">' +
+          '<div class="saga-node-title-badge">' + p.title + '</div>' +
+          '<button class="saga-node-play-btn ' + (isUnlocked ? 'unlocked' : 'locked') + '" id="saga-play-btn-' + lKey + '">' +
             (isUnlocked ? 'play' : '🔒') +
-          '</button>';
+          '</button>' +
+          (isCompleted ? '<div class="saga-stars-row">★★★★</div>' : '');
 
         const startAction = () => {
           if (isUnlocked) {
             audio.playLetterPhoneme(lKey);
             startLetterQuest(lKey);
           } else {
-            audio.speakText("Complete earlier letters on the path to unlock " + p.title + "!");
+            audio.speakText("Complete earlier islands on the path to unlock " + p.title + "!");
           }
         };
 
-        node.querySelector('#bubble-btn-' + lKey).onclick = startAction;
-        node.querySelector('#play-btn-' + lKey).onclick = startAction;
+        card.querySelector('#saga-btn-' + lKey).onclick = startAction;
+        card.querySelector('#saga-play-btn-' + lKey).onclick = startAction;
 
-        container.appendChild(node);
+        container.appendChild(card);
       });
+    }
+
+    function scrollToActiveLevel() {
+      const activeNode = document.getElementById('saga-node-' + LETTER_KEYS[unlockedNodeIndex]);
+      if (activeNode) {
+        activeNode.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    function scrollMapToTop() {
+      const mapElem = document.getElementById('screen-map');
+      if (mapElem) mapElem.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function scrollMapToBottom() {
+      const mapElem = document.getElementById('screen-map');
+      if (mapElem) mapElem.scrollTo({ top: mapElem.scrollHeight, behavior: 'smooth' });
     }
 
     // TIGER MASCOT COMPANION LOGIC (SPEECH BUBBLE HIDDEN BY DEFAULT)
@@ -2354,22 +2351,22 @@
       traceCtx.clearRect(0, 0, traceCanvas.width, traceCanvas.height);
 
       traceCtx.fillStyle = 'rgba(255, 255, 255, 0.16)';
-      traceCtx.font = 'bold 220px "Fredoka", sans-serif';
+      traceCtx.font = 'bold 230px "Fredoka", sans-serif';
       traceCtx.textAlign = 'center';
       traceCtx.textBaseline = 'middle';
       traceCtx.fillText(currentLetterKey.toUpperCase(), traceCanvas.width / 2, traceCanvas.height / 2 + 10);
 
       traceCtx.fillStyle = '#00E676';
       traceCtx.beginPath();
-      traceCtx.arc(traceCanvas.width / 2 - 40, traceCanvas.height / 2 - 75, 12, 0, Math.PI * 2);
+      traceCtx.arc(traceCanvas.width / 2 - 40, traceCanvas.height / 2 - 80, 12, 0, Math.PI * 2);
       traceCtx.fill();
       traceCtx.strokeStyle = '#FFFFFF';
       traceCtx.lineWidth = 3;
       traceCtx.stroke();
 
       traceCtx.fillStyle = '#FFF59D';
-      traceCtx.font = 'bold 15px "Fredoka", sans-serif';
-      traceCtx.fillText('START HERE', traceCanvas.width / 2 - 40, traceCanvas.height / 2 - 96);
+      traceCtx.font = 'bold 16px "Fredoka", sans-serif';
+      traceCtx.fillText('START HERE', traceCanvas.width / 2 - 40, traceCanvas.height / 2 - 102);
     }
 
     function resetTracingCanvas() {
@@ -2494,9 +2491,9 @@
         unlockedNodeIndex++;
         saveGameState();
       }
-      buildFullBoardGameMap();
+      buildSagaMap();
       showScreen('screen-map');
-      audio.speakText("Fantastic job! Next letter unlocked on the Treasure Map!");
+      audio.speakText("Fantastic job! Next island unlocked on the Treasure Map!");
     }
 
     // 100-ITEM REWARD SYSTEM & MODALS
@@ -2567,7 +2564,7 @@
         totalEarnedStars = 0;
         REWARDS_LIST.forEach(r => r.unlocked = false);
         saveGameState();
-        buildFullBoardGameMap();
+        buildSagaMap();
         renderChestGrid();
         showScreen('screen-map');
         audio.playPop();
@@ -2642,9 +2639,9 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       loadSavedGame();
-      buildFullBoardGameMap();
+      buildSagaMap();
       showScreen('screen-map');
-      console.log("Phonics Board Game Adventure Ready!");
+      console.log("Phonics Saga Board Game Ready!");
     });
   </script>
 </body>
