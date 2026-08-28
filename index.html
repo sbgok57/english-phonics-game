@@ -49,6 +49,17 @@
       box-sizing: border-box;
     }
 
+    /* CLICK VISUAL FEEDBACK FLASH ANIMATION */
+    @keyframes audioPulse {
+      0% { transform: scale(1); filter: brightness(1); }
+      50% { transform: scale(1.12); filter: brightness(1.25) drop-shadow(0 0 14px #ffd166); }
+      100% { transform: scale(1); filter: brightness(1); }
+    }
+
+    .audio-pulse-active {
+      animation: audioPulse 0.35s ease-out !important;
+    }
+
     /* APP CONTAINER */
     #app-container {
       width: 100%;
@@ -126,6 +137,7 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      pointer-events: auto;
       flex-shrink: 0;
       transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
@@ -185,6 +197,8 @@
       border: 2px solid #fff;
       box-shadow: 0 3px 6px rgba(0,0,0,0.15);
       flex-shrink: 0;
+      cursor: pointer;
+      pointer-events: auto;
     }
 
     /* SCREEN WRAPPER */
@@ -221,6 +235,7 @@
       font-weight: 800;
       border-radius: 50px;
       cursor: pointer;
+      pointer-events: auto;
       box-shadow: 0 6px 0 #025741, 0 10px 15px rgba(0,0,0,0.25);
       display: inline-flex;
       align-items: center;
@@ -234,6 +249,8 @@
       text-align: center;
       word-break: break-word;
       white-space: normal;
+      position: relative;
+      z-index: 10;
     }
 
     .btn-primary:hover {
@@ -272,6 +289,8 @@
       animation: gentleBounce 2.5s infinite ease-in-out;
       text-align: center;
       max-width: 100%;
+      cursor: pointer;
+      pointer-events: auto;
     }
 
     @keyframes gentleBounce {
@@ -280,7 +299,7 @@
     }
 
     /* ---------------------------------------------------- */
-    /* 1. START / SPLASH SCREEN                             */
+    /* 1. START / SPLASH SCREEN (AUTOPLAY-COMPLIANT INTRO)   */
     /* ---------------------------------------------------- */
     #screen-splash {
       background: radial-gradient(circle at center, #3a0ca3 0%, #10002b 100%);
@@ -369,7 +388,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      pointer-events: none;
+      pointer-events: none !important;
       z-index: 5;
     }
 
@@ -378,6 +397,7 @@
       transform: translate(-50%, -50%);
       z-index: 10;
       cursor: pointer;
+      pointer-events: auto;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -450,7 +470,7 @@
       position: absolute;
       transform: translate(-50%, -100%);
       z-index: 30;
-      pointer-events: none;
+      pointer-events: none !important;
       transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
       display: flex;
       flex-direction: column;
@@ -503,6 +523,8 @@
       text-align: center;
       overflow: hidden;
       box-sizing: border-box;
+      position: relative;
+      z-index: 5;
     }
 
     .intro-pair {
@@ -519,11 +541,14 @@
       flex-direction: column;
       align-items: center;
       cursor: pointer;
+      pointer-events: auto !important;
       padding: 16px 20px;
       border-radius: 24px;
       background: #f8f9fa;
       border: 3px solid #e9ecef;
       max-width: 100%;
+      position: relative;
+      z-index: 10;
       transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
@@ -545,6 +570,7 @@
       line-height: 1;
       text-shadow: 0 4px 8px rgba(114, 9, 183, 0.2);
       text-align: center;
+      pointer-events: auto;
     }
 
     .anchor-img-box {
@@ -553,6 +579,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      pointer-events: auto;
     }
 
     .big-word-display {
@@ -561,6 +588,7 @@
       color: #073b4c;
       letter-spacing: 2px;
       text-align: center;
+      pointer-events: auto;
     }
 
     /* ---------------------------------------------------- */
@@ -584,6 +612,8 @@
       justify-content: center;
       overflow: hidden;
       box-sizing: border-box;
+      position: relative;
+      z-index: 5;
     }
 
     .target-drop-zone {
@@ -622,6 +652,7 @@
       font-size: 2.2rem;
       font-weight: 900;
       cursor: grab;
+      pointer-events: auto !important;
       position: absolute;
       transition: transform 0.15s ease;
       z-index: 10;
@@ -661,6 +692,8 @@
       touch-action: none;
       overflow: hidden;
       box-sizing: border-box;
+      position: relative;
+      z-index: 5;
     }
 
     #trace-canvas {
@@ -671,13 +704,14 @@
       height: 100%;
       border-radius: 32px;
       z-index: 5;
+      pointer-events: auto;
     }
 
     .trace-start-star {
       position: absolute;
       width: 32px;
       height: 32px;
-      pointer-events: none;
+      pointer-events: none !important;
       z-index: 15;
       animation: starGuidePulse 1s infinite alternate;
     }
@@ -708,6 +742,8 @@
       gap: 16px;
       box-sizing: border-box;
       overflow: hidden;
+      position: relative;
+      z-index: 5;
     }
 
     .blend-blocks-tray {
@@ -732,7 +768,10 @@
       justify-content: center;
       font-size: clamp(2.2rem, 6vw, 3rem);
       font-weight: 900;
-      cursor: grab;
+      cursor: pointer;
+      pointer-events: auto !important;
+      position: relative;
+      z-index: 10;
       transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
@@ -774,6 +813,8 @@
       align-items: center;
       justify-content: center;
       transition: all 0.2s ease;
+      position: relative;
+      z-index: 10;
     }
 
     .blend-slot.filled {
@@ -790,6 +831,8 @@
       animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       width: 100%;
       text-align: center;
+      position: relative;
+      z-index: 10;
     }
 
     @keyframes popIn {
@@ -816,6 +859,8 @@
       margin: 16px 0;
       flex-wrap: wrap;
       box-sizing: border-box;
+      position: relative;
+      z-index: 5;
     }
 
     .alien-crater-wrap {
@@ -824,16 +869,20 @@
       align-items: center;
       position: relative;
       width: clamp(120px, 26vw, 160px);
+      z-index: 10;
     }
 
     .alien-character-btn {
       background: none;
       border: none;
       cursor: pointer;
+      pointer-events: auto !important;
       display: flex;
       flex-direction: column;
       align-items: center;
       transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      z-index: 10;
     }
 
     .alien-character-btn:hover {
@@ -851,6 +900,8 @@
       box-shadow: 0 6px 12px rgba(0,0,0,0.3);
       margin-bottom: 4px;
       text-align: center;
+      cursor: pointer;
+      pointer-events: auto;
     }
 
     .crater-base {
@@ -935,6 +986,7 @@
       font-weight: 800;
       font-size: clamp(0.8rem, 1.8vw, 0.92rem);
       cursor: pointer;
+      pointer-events: auto;
       white-space: nowrap;
       transition: all 0.15s ease;
       flex-shrink: 0;
@@ -968,6 +1020,7 @@
       gap: 4px;
       transition: all 0.2s ease;
       cursor: pointer;
+      pointer-events: auto;
       position: relative;
       box-sizing: border-box;
       overflow: hidden;
@@ -1064,6 +1117,8 @@
       animation: bounceCard 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       box-sizing: border-box;
       overflow: hidden;
+      position: relative;
+      z-index: 10;
     }
 
     @keyframes bounceCard {
@@ -1090,14 +1145,14 @@
       50% { transform: rotate(12deg) scale(1.08); }
     }
 
-    /* PARTICLES CANVAS */
+    /* PARTICLES CANVAS - STRICTLY NON-BLOCKING */
     #fx-canvas {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      pointer-events: none;
+      pointer-events: none !important;
       z-index: 250;
     }
   </style>
@@ -1130,7 +1185,7 @@
           <svg class="star-icon" id="star-4" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
         </div>
 
-        <div class="total-stars-pill" id="btn-open-rewards" style="cursor: pointer;" title="Treasure Chest">
+        <div class="total-stars-pill" id="btn-open-rewards" title="Treasure Chest">
           <span>🎒</span> <span id="total-stars-count">0</span>
         </div>
       </div>
@@ -1225,7 +1280,7 @@
         </div>
 
         <p style="color: #64748b; font-size: clamp(0.95rem, 2vw, 1.1rem); font-weight: 600;">
-          Tap both the letter and word to listen to their human voice sounds!
+          Tap both the letter and word to listen to their sounds!
         </p>
 
         <!-- MANUAL ADVANCE NEXT BUTTON -->
@@ -1321,7 +1376,7 @@
           <div id="blended-word-title" style="font-size: clamp(2rem, 6vw, 3rem); font-weight: 900; color: #073b4c; letter-spacing: 2px;">
             ANT
           </div>
-          <div class="click-to-hear" id="btn-replay-blended-word" style="cursor: pointer;">
+          <div class="click-to-hear" id="btn-replay-blended-word">
             <span>🔊</span> <span>Click to hear</span>
           </div>
         </div>
@@ -1406,7 +1461,7 @@
     </div>
 
     <!-- ==================================================== -->
-    <!-- 9. MASSIVE CELEBRATORY POPUP MODAL                   -->
+    <!-- 9. MASSIVE CELEBRATORY REWARD POPUP                  -->
     <!-- ==================================================== -->
     <div class="modal-backdrop" id="modal-celebrate">
       <div class="celebrate-card">
@@ -1431,11 +1486,11 @@
   </div>
 
   <!-- ==================================================== -->
-  <!-- JAVASCRIPT: PURE HUMAN SPEECH SYNTHESIS ENGINE       -->
+  <!-- JAVASCRIPT: ROBUST SPEECH SYNTHESIS & GAME LOGIC     -->
   <!-- ==================================================== -->
   <script>
     /**
-     * PHONICS ADVENTURE - NATURAL HUMAN SPEECH SYNTHESIS ENGINE
+     * PHONICS ADVENTURE - FOOLPROOF SPEECH SYNTHESIS ENGINE
      */
     
     // --- 1. FULL 26-LETTER CURRICULUM DATABASE WITH MATCHING ANCHOR WORDS ---
@@ -1468,7 +1523,7 @@
       { letter: 'z', word: 'zip', title: 'Node Z: Zip Zigzag Zenith', zone: 4, x: 660, y: 1330, strokePath: [[150, 190], [220, 190], [150, 280], [220, 280]] }
     ];
 
-    // Accurate Short Phonics Mapping for Natural Teacher Pronunciation (0.5s - 1.0s)
+    // Accurate Short Phonics Mapping for Natural Teacher Pronunciation
     const PHONIC_SOUNDS = {
       'a': 'ah',
       'b': 'buh',
@@ -1611,7 +1666,7 @@
       { name: "Galaxy Swirl", cat: "pets", icon: "🌀" }
     ];
 
-    // Generate 100 Reward Objects with distinct conditions
+    // Generate 100 Reward Objects
     for (let i = 0; i < 100; i++) {
       const item = ITEM_NAMES[i];
       let desc = "";
@@ -1694,36 +1749,84 @@
       updateHeaderUI();
     }
 
-    // --- 4. STRICT REAL HUMAN VOICE AUDIO & SPEECH SYNTHESIS ENGINE ---
+    // --- 4. DEDICATED, FOOLPROOF SPEECH SYNTHESIS ENGINE ---
+    window._activeUtterances = []; // Global anchor to prevent Chrome premature GC
+
+    function playVoice(textToSpeak, isPhonetic = false) {
+      if (!textToSpeak) return;
+      console.log("Playing audio for: ", textToSpeak);
+
+      if (!GameState.soundEnabled) return;
+      if (!('speechSynthesis' in window)) {
+        console.warn("speechSynthesis is not supported in this browser environment");
+        return;
+      }
+
+      try {
+        // ALWAYS cancel previous queue to prevent freezing
+        window.speechSynthesis.cancel();
+
+        // Resume if browser engine was suspended/paused
+        if (window.speechSynthesis.paused) {
+          window.speechSynthesis.resume();
+        }
+
+        let spokenText = textToSpeak.toString().trim();
+        if (isPhonetic && PHONIC_SOUNDS[spokenText.toLowerCase()]) {
+          spokenText = PHONIC_SOUNDS[spokenText.toLowerCase()];
+        }
+
+        const utterance = new SpeechSynthesisUtterance(spokenText);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.8;
+        utterance.pitch = 1.15;
+        utterance.volume = 1.0;
+
+        // Auto-select the highest quality natural English voice
+        const voices = window.speechSynthesis.getVoices();
+        if (voices && voices.length > 0) {
+          const naturalVoice = voices.find(v => (v.lang === 'en-US' || v.lang === 'en_US') && (
+            v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Samantha') || 
+            v.name.includes('Victoria') || v.name.includes('Jenny') || v.name.includes('Aria') ||
+            v.name.includes('Guy') || v.name.includes('Zira')
+          )) || voices.find(v => v.lang.startsWith('en-US')) || voices.find(v => v.lang.startsWith('en'));
+
+          if (naturalVoice) {
+            utterance.voice = naturalVoice;
+          }
+        }
+
+        // Retain in window array to prevent Chrome GC bug
+        window._activeUtterances.push(utterance);
+        utterance.onend = utterance.onerror = () => {
+          const idx = window._activeUtterances.indexOf(utterance);
+          if (idx > -1) window._activeUtterances.splice(idx, 1);
+        };
+
+        window.speechSynthesis.speak(utterance);
+
+        if (window.speechSynthesis.paused) {
+          window.speechSynthesis.resume();
+        }
+      } catch (err) {
+        console.error("Error in playVoice:", err);
+      }
+    }
+
+    // Helper: Trigger quick visual pulse feedback on any clicked element
+    function triggerVisualFeedback(el) {
+      if (!el) return;
+      el.classList.remove('audio-pulse-active');
+      void el.offsetWidth; // force DOM reflow
+      el.classList.add('audio-pulse-active');
+      setTimeout(() => el.classList.remove('audio-pulse-active'), 380);
+    }
+
+    // Audio SFX & Background Music System
     class AudioEngine {
       constructor() {
         this.ctx = null;
-        this.selectedVoice = null;
         this.isBgmPlaying = false;
-        this.initVoiceSelector();
-      }
-
-      initVoiceSelector() {
-        const updateVoices = () => {
-          if (!('speechSynthesis' in window)) return;
-          const voices = window.speechSynthesis.getVoices();
-          if (voices.length > 0) {
-            // Find natural, human-sounding US/UK English voices
-            this.selectedVoice = voices.find(v => (v.lang === 'en-US' || v.lang === 'en_US') && (
-              v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Samantha') || 
-              v.name.includes('Victoria') || v.name.includes('Zira') || v.name.includes('Jenny') ||
-              v.name.includes('Aria') || v.name.includes('Guy')
-            ))
-            || voices.find(v => v.lang.startsWith('en-US'))
-            || voices.find(v => v.lang.startsWith('en'))
-            || voices[0];
-          }
-        };
-
-        if ('speechSynthesis' in window) {
-          window.speechSynthesis.onvoiceschanged = updateVoices;
-          updateVoices();
-        }
       }
 
       initAudioContext() {
@@ -1736,50 +1839,6 @@
         }
       }
 
-      // Welcome voice message on Start Game
-      playWelcomeVoice() {
-        if (!GameState.soundEnabled || !('speechSynthesis' in window)) return;
-        window.speechSynthesis.cancel();
-        const welcomeText = "Welcome to the game children! Let's learn our letters on the treasure map!";
-        const utter = new SpeechSynthesisUtterance(welcomeText);
-        if (this.selectedVoice) utter.voice = this.selectedVoice;
-        utter.rate = 0.9;
-        utter.pitch = 1.15;
-        utter.volume = 1.0;
-        utter.lang = 'en-US';
-        window.speechSynthesis.speak(utter);
-      }
-
-      // STRICT NATURAL HUMAN VOICE PHONICS (NO SYNTHETIC NOISES/OSCILLATORS)
-      playPhoneticSound(letter) {
-        if (!GameState.soundEnabled || !('speechSynthesis' in window)) return;
-        window.speechSynthesis.cancel();
-        
-        const soundText = PHONIC_SOUNDS[letter.toLowerCase()] || letter;
-        const utter = new SpeechSynthesisUtterance(soundText);
-        if (this.selectedVoice) utter.voice = this.selectedVoice;
-        utter.rate = 0.85; // Slow and articulated for 1st graders
-        utter.pitch = 1.2;  // Cheerful, friendly teacher tone
-        utter.volume = 1.0;
-        utter.lang = 'en-US';
-        window.speechSynthesis.speak(utter);
-      }
-
-      // Natural Human Word Pronunciation
-      playWord(word) {
-        if (!GameState.soundEnabled || !('speechSynthesis' in window)) return;
-        window.speechSynthesis.cancel();
-
-        const utter = new SpeechSynthesisUtterance(word);
-        if (this.selectedVoice) utter.voice = this.selectedVoice;
-        utter.rate = 0.85;
-        utter.pitch = 1.15;
-        utter.volume = 1.0;
-        utter.lang = 'en-US';
-        window.speechSynthesis.speak(utter);
-      }
-
-      // Star Ding Sound (Subtle Bell Chime for Feedback)
       playStarDing() {
         if (!GameState.soundEnabled) return;
         this.initAudioContext();
@@ -1792,7 +1851,7 @@
           const gain = this.ctx.createGain();
           osc.type = 'sine';
           osc.frequency.setValueAtTime(freq, t);
-          gain.gain.setValueAtTime(0.15, t);
+          gain.gain.setValueAtTime(0.12, t);
           gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
           osc.connect(gain);
           gain.connect(this.ctx.destination);
@@ -1801,7 +1860,6 @@
         });
       }
 
-      // Gentle Bubble Pop
       playPop() {
         if (!GameState.soundEnabled) return;
         this.initAudioContext();
@@ -1812,7 +1870,7 @@
         const gain = this.ctx.createGain();
         osc.frequency.setValueAtTime(450, t);
         osc.frequency.exponentialRampToValueAtTime(160, t + 0.08);
-        gain.gain.setValueAtTime(0.2, t);
+        gain.gain.setValueAtTime(0.18, t);
         gain.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
         osc.connect(gain);
         gain.connect(this.ctx.destination);
@@ -1820,7 +1878,6 @@
         osc.stop(t + 0.09);
       }
 
-      // Soft friendly wobble for wrong attempts
       playWrongWobble() {
         if (!GameState.soundEnabled) return;
         this.initAudioContext();
@@ -1832,7 +1889,7 @@
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(260, t);
         osc.frequency.linearRampToValueAtTime(200, t + 0.2);
-        gain.gain.setValueAtTime(0.18, t);
+        gain.gain.setValueAtTime(0.15, t);
         gain.gain.exponentialRampToValueAtTime(0.001, t + 0.25);
         osc.connect(gain);
         gain.connect(this.ctx.destination);
@@ -1840,7 +1897,6 @@
         osc.stop(t + 0.28);
       }
 
-      // Victory Fanfare
       playVictoryFanfare() {
         if (!GameState.soundEnabled) return;
         this.initAudioContext();
@@ -1853,7 +1909,7 @@
           const gain = this.ctx.createGain();
           osc.type = 'triangle';
           osc.frequency.setValueAtTime(freq, t);
-          gain.gain.setValueAtTime(0.2, t);
+          gain.gain.setValueAtTime(0.18, t);
           gain.gain.exponentialRampToValueAtTime(0.001, t + 0.7);
           osc.connect(gain);
           gain.connect(this.ctx.destination);
@@ -1862,7 +1918,6 @@
         });
       }
 
-      // Cheerful, child-friendly background music loop (low volume ~0.15-0.2)
       startGentleBGM() {
         if (this.isBgmPlaying || !GameState.soundEnabled) return;
         this.initAudioContext();
@@ -1880,7 +1935,7 @@
           osc.type = 'sine';
           const note = scale[step % scale.length];
           osc.frequency.setValueAtTime(note, t);
-          gain.gain.setValueAtTime(0.025, t); // Low non-intrusive volume
+          gain.gain.setValueAtTime(0.02, t);
           gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.55);
           osc.connect(gain);
           gain.connect(this.ctx.destination);
@@ -2101,7 +2156,8 @@
       modal.classList.add('open');
     }
 
-    document.getElementById('btn-claim-celebrate').addEventListener('click', () => {
+    document.getElementById('btn-claim-celebrate').addEventListener('click', (e) => {
+      e.stopPropagation();
       document.getElementById('modal-celebrate').classList.remove('open');
     });
 
@@ -2138,7 +2194,9 @@
           <div class="node-stars">${starsCount ? `<span>${starsCount}</span>` : ''}</div>
         `;
 
-        nodeEl.addEventListener('click', () => {
+        nodeEl.addEventListener('click', (e) => {
+          e.stopPropagation();
+          triggerVisualFeedback(nodeEl);
           if (isUnlocked) {
             startLetterNode(idx);
           } else {
@@ -2187,14 +2245,21 @@
       const nextBtn = document.getElementById('btn-next-to-match');
       nextBtn.style.display = 'none';
 
-      document.getElementById('intro-letter-btn').onclick = () => {
-        AudioSys.playPhoneticSound(data.letter);
+      // Robust click & touch handlers with visual feedback and explicit playVoice calls
+      const letterBox = document.getElementById('intro-letter-btn');
+      letterBox.onclick = (e) => {
+        e.stopPropagation();
+        triggerVisualFeedback(letterBox);
+        playVoice(data.letter, true);
         GameState.hasInteractedIntroLetter = true;
         checkStep1Progress();
       };
 
-      document.getElementById('intro-word-btn').onclick = () => {
-        AudioSys.playWord(data.word);
+      const wordBox = document.getElementById('intro-word-btn');
+      wordBox.onclick = (e) => {
+        e.stopPropagation();
+        triggerVisualFeedback(wordBox);
+        playVoice(data.word, false);
         GameState.hasInteractedIntroWord = true;
         checkStep1Progress();
       };
@@ -2207,7 +2272,8 @@
       }
     }
 
-    document.getElementById('btn-next-to-match').addEventListener('click', () => {
+    document.getElementById('btn-next-to-match').addEventListener('click', (e) => {
+      e.stopPropagation();
       GameState.currentStep = 2;
       loadStep2Match();
       showScreen('screen-match');
@@ -2244,9 +2310,11 @@
         bubble.innerText = letChar;
         Object.assign(bubble.style, positions[idx]);
 
-        // Tap to hear sound
-        bubble.addEventListener('click', () => {
-          AudioSys.playPhoneticSound(letChar);
+        // Explicit click handler with playVoice and visual feedback
+        bubble.addEventListener('click', (e) => {
+          e.stopPropagation();
+          triggerVisualFeedback(bubble);
+          playVoice(letChar, true);
           if (letChar === data.letter) {
             handleMatchSuccess(bubble);
           } else {
@@ -2257,7 +2325,7 @@
         // HTML5 Drag and Drop Support
         bubble.draggable = true;
         bubble.addEventListener('dragstart', (e) => {
-          AudioSys.playPhoneticSound(letChar);
+          playVoice(letChar, true);
           e.dataTransfer.setData('text/plain', letChar);
         });
 
@@ -2291,7 +2359,8 @@
       document.getElementById('btn-next-to-trace').style.display = 'inline-flex';
     }
 
-    document.getElementById('btn-next-to-trace').addEventListener('click', () => {
+    document.getElementById('btn-next-to-trace').addEventListener('click', (e) => {
+      e.stopPropagation();
       GameState.currentStep = 3;
       loadStep3Tracing();
       showScreen('screen-trace');
@@ -2386,16 +2455,20 @@
     function checkTraceCompletion() {
       const data = ALPHABET_DATA[GameState.activeNodeIdx];
       if (tracePointsHit >= requiredTracePoints.length * 0.7) {
-        AudioSys.playPhoneticSound(data.letter);
+        playVoice(data.letter, true);
         earnStar(3);
         spawnConfetti(window.innerWidth / 2, window.innerHeight / 2, 35);
         document.getElementById('btn-next-to-blend').style.display = 'inline-flex';
       }
     }
 
-    document.getElementById('btn-clear-trace').addEventListener('click', loadStep3Tracing);
+    document.getElementById('btn-clear-trace').addEventListener('click', (e) => {
+      e.stopPropagation();
+      loadStep3Tracing();
+    });
 
-    document.getElementById('btn-next-to-blend').addEventListener('click', () => {
+    document.getElementById('btn-next-to-blend').addEventListener('click', (e) => {
+      e.stopPropagation();
       GameState.currentStep = 4;
       loadStep4Blending();
       showScreen('screen-blend');
@@ -2430,21 +2503,22 @@
         block.dataset.letter = char;
         block.dataset.idx = idx;
 
-        // Individual click to hear pure human phonetics
-        block.addEventListener('click', () => {
-          block.classList.add('playing-sound');
-          AudioSys.playPhoneticSound(char);
-          setTimeout(() => block.classList.remove('playing-sound'), 500);
+        // Individual click to hear pure human phonetics with visual pulse
+        block.addEventListener('click', (e) => {
+          e.stopPropagation();
+          triggerVisualFeedback(block);
+          playVoice(char, true);
         });
 
         // Tap or Drag to place into next empty slot
         block.draggable = true;
         block.addEventListener('dragstart', (e) => {
-          AudioSys.playPhoneticSound(char);
+          playVoice(char, true);
           e.dataTransfer.setData('text/plain', JSON.stringify({ char, idx }));
         });
 
-        block.addEventListener('dblclick', () => {
+        block.addEventListener('dblclick', (e) => {
+          e.stopPropagation();
           placeLetterInSlot(char, idx, block);
         });
 
@@ -2467,14 +2541,22 @@
         const emptySlot = targetSlot || Array.from(slots).find(s => !s.classList.contains('filled'));
         if (!emptySlot) return;
 
-        emptySlot.innerHTML = `<div class="blend-letter-block" style="cursor: pointer;">${char}</div>`;
+        const slotLetter = document.createElement('div');
+        slotLetter.className = 'blend-letter-block';
+        slotLetter.innerText = char;
+        slotLetter.style.cursor = 'pointer';
+
+        slotLetter.onclick = (e) => {
+          e.stopPropagation();
+          triggerVisualFeedback(slotLetter);
+          playVoice(char, true);
+        };
+
+        emptySlot.innerHTML = '';
+        emptySlot.appendChild(slotLetter);
         emptySlot.classList.add('filled');
         blockEl.style.visibility = 'hidden';
         AudioSys.playPop();
-
-        emptySlot.querySelector('.blend-letter-block').onclick = () => {
-          AudioSys.playPhoneticSound(char);
-        };
 
         placedCount++;
         if (placedCount === letters.length) {
@@ -2484,20 +2566,17 @@
     }
 
     function triggerFullBlendAnimation(word, letters) {
-      // Sequential phonetics playback with human speech
+      // Sequential phonetics playback with playVoice
       letters.forEach((char, i) => {
         setTimeout(() => {
-          AudioSys.playPhoneticSound(char);
+          playVoice(char, true);
           const slots = document.querySelectorAll('.blend-slot');
-          if (slots[i]) {
-            slots[i].style.transform = 'scale(1.15)';
-            setTimeout(() => slots[i].style.transform = 'scale(1)', 350);
-          }
+          if (slots[i]) triggerVisualFeedback(slots[i]);
         }, i * 700);
       });
 
       setTimeout(() => {
-        AudioSys.playWord(word);
+        playVoice(word, false);
         earnStar(4);
         GameState.completedNodes.add(GameState.activeNodeIdx);
 
@@ -2506,8 +2585,11 @@
         document.getElementById('blended-word-illustration').innerHTML = getWordSvg(word);
         document.getElementById('blended-word-title').innerText = word.toUpperCase();
 
-        document.getElementById('btn-replay-blended-word').onclick = () => {
-          AudioSys.playWord(word);
+        const replayBtn = document.getElementById('btn-replay-blended-word');
+        replayBtn.onclick = (e) => {
+          e.stopPropagation();
+          triggerVisualFeedback(replayBtn);
+          playVoice(word, false);
         };
 
         document.getElementById('btn-next-finish-node').style.display = 'inline-flex';
@@ -2515,7 +2597,8 @@
       }, letters.length * 750);
     }
 
-    document.getElementById('btn-next-finish-node').addEventListener('click', () => {
+    document.getElementById('btn-next-finish-node').addEventListener('click', (e) => {
+      e.stopPropagation();
       if (GameState.activeNodeIdx < ALPHABET_DATA.length - 1) {
         GameState.activeNodeIdx++;
       }
@@ -2529,10 +2612,13 @@
       const targetWord = SIGHT_WORDS[GameState.alienTargetIdx];
       document.getElementById('alien-target-word').innerText = targetWord.toUpperCase();
 
-      setTimeout(() => AudioSys.playWord(targetWord), 300);
+      setTimeout(() => playVoice(targetWord, false), 300);
 
-      document.getElementById('btn-replay-alien-prompt').onclick = () => {
-        AudioSys.playWord(targetWord);
+      const replayAlienBtn = document.getElementById('btn-replay-alien-prompt');
+      replayAlienBtn.onclick = (e) => {
+        e.stopPropagation();
+        triggerVisualFeedback(replayAlienBtn);
+        playVoice(targetWord, false);
       };
 
       const distractors = SIGHT_WORDS.filter(w => w !== targetWord)
@@ -2562,7 +2648,11 @@
           <div class="crater-base"></div>
         `;
 
-        wrap.querySelector('.alien-character-btn').addEventListener('click', () => {
+        const alienBtn = wrap.querySelector('.alien-character-btn');
+        alienBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          triggerVisualFeedback(alienBtn);
+          playVoice(w, false);
           if (w === targetWord) {
             AudioSys.playStarDing();
             spawnConfetti(window.innerWidth / 2, window.innerHeight / 2, 40);
@@ -2581,13 +2671,20 @@
       });
     }
 
-    document.getElementById('btn-alien-quest').addEventListener('click', () => {
+    document.getElementById('btn-alien-quest').addEventListener('click', (e) => {
+      e.stopPropagation();
       loadAlienMinigame();
       showScreen('screen-alien');
     });
 
-    document.getElementById('btn-alien-next-word').addEventListener('click', loadAlienMinigame);
-    document.getElementById('btn-alien-back-map').addEventListener('click', () => showScreen('screen-map'));
+    document.getElementById('btn-alien-next-word').addEventListener('click', (e) => {
+      e.stopPropagation();
+      loadAlienMinigame();
+    });
+    document.getElementById('btn-alien-back-map').addEventListener('click', (e) => {
+      e.stopPropagation();
+      showScreen('screen-map');
+    });
 
     // --- 12. STICKER BOOK & 100 REWARDS MODAL ---
     function openStickerBook(activeTab = 'all') {
@@ -2617,7 +2714,9 @@
         `;
 
         if (reward.unlocked && reward.slot) {
-          card.addEventListener('click', () => {
+          card.addEventListener('click', (e) => {
+            e.stopPropagation();
+            triggerVisualFeedback(card);
             if (GameState.equipped[reward.slot] === reward.icon) {
               GameState.equipped[reward.slot] = null;
             } else {
@@ -2634,40 +2733,53 @@
     }
 
     document.querySelectorAll('.reward-tab-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
         document.querySelectorAll('.reward-tab-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         renderRewardsGrid(btn.dataset.tab);
       });
     });
 
-    document.getElementById('btn-open-rewards').addEventListener('click', () => openStickerBook());
-    document.getElementById('btn-open-stickerbook').addEventListener('click', () => openStickerBook());
-    document.getElementById('btn-close-rewards').addEventListener('click', () => {
+    document.getElementById('btn-open-rewards').addEventListener('click', (e) => {
+      e.stopPropagation();
+      openStickerBook();
+    });
+    document.getElementById('btn-open-stickerbook').addEventListener('click', (e) => {
+      e.stopPropagation();
+      openStickerBook();
+    });
+    document.getElementById('btn-close-rewards').addEventListener('click', (e) => {
+      e.stopPropagation();
       document.getElementById('modal-rewards').classList.remove('open');
     });
 
-    document.getElementById('btn-clear-equipped').addEventListener('click', () => {
+    document.getElementById('btn-clear-equipped').addEventListener('click', (e) => {
+      e.stopPropagation();
       GameState.equipped = { hat: null, glasses: null, cape: null, wand: null };
       saveProgress();
       renderRewardsGrid('wearables');
     });
 
     // --- 13. GLOBAL EVENT LISTENERS & START GAME TRIGGER ---
-    document.getElementById('btn-start-game').addEventListener('click', () => {
-      // 1. Trigger background music loop
+    document.getElementById('btn-start-game').addEventListener('click', (e) => {
+      e.stopPropagation();
+      triggerVisualFeedback(document.getElementById('btn-start-game'));
+      // 1. Start gentle BGM
       AudioSys.startGentleBGM();
-      // 2. Play warm welcoming human teacher voice
-      AudioSys.playWelcomeVoice();
-      // 3. Move to Treasure Map
+      // 2. Play welcoming human teacher voice
+      playVoice("Welcome to the game children! Let's learn our letters on the treasure map!", false);
+      // 3. Navigate to Treasure Map
       showScreen('screen-map');
     });
 
-    document.getElementById('btn-home-map').addEventListener('click', () => {
+    document.getElementById('btn-home-map').addEventListener('click', (e) => {
+      e.stopPropagation();
       showScreen('screen-map');
     });
 
-    document.getElementById('btn-sound-toggle').addEventListener('click', () => {
+    document.getElementById('btn-sound-toggle').addEventListener('click', (e) => {
+      e.stopPropagation();
       const enabled = AudioSys.toggleSound();
       document.getElementById('btn-sound-toggle').innerText = enabled ? '🔊' : '🔇';
     });
