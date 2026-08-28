@@ -1779,25 +1779,19 @@
     // Force load voices in the background
     if ('speechSynthesis' in window) {
       window.speechSynthesis.getVoices();
+      window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+      };
     }
 
     function playVoice(textToSpeak) {
       console.log("Playing audio for: ", textToSpeak);
-      if (!GameState.soundEnabled) return;
-      if (!('speechSynthesis' in window)) {
-        console.warn("speechSynthesis not supported");
-        return;
-      }
-      try {
-        window.speechSynthesis.cancel(); // Clear any stuck audio
-        let utterance = new SpeechSynthesisUtterance(textToSpeak);
-        utterance.lang = 'en-US'; // Force English human voice
-        utterance.rate = 0.8; // Slightly slower for 1st graders
-        utterance.volume = 1.0;
-        window.speechSynthesis.speak(utterance);
-      } catch (err) {
-        console.error("Error in playVoice:", err);
-      }
+      window.speechSynthesis.cancel(); // Clear any stuck audio
+      let utterance = new SpeechSynthesisUtterance(textToSpeak);
+      utterance.lang = 'en-US'; // Force English human voice
+      utterance.rate = 0.8; // Slightly slower for 1st graders
+      utterance.volume = 1.0;
+      window.speechSynthesis.speak(utterance);
     }
 
     // Helper: Trigger quick visual pulse feedback on any clicked element
