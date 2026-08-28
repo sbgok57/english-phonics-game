@@ -20,7 +20,7 @@
       --star-gold: #ffd166;
     }
 
-    * {
+    *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
@@ -29,16 +29,24 @@
       touch-action: manipulation;
     }
 
-    body {
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      overflow-x: hidden;
       font-family: var(--font-main);
       background: #1a0826;
       color: #333;
-      overflow-x: hidden;
-      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
+    }
+
+    /* Universal text containment to prevent any overflow */
+    h1, h2, h3, h4, p, span, div, button, a {
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      box-sizing: border-box;
     }
 
     /* APP CONTAINER */
@@ -51,6 +59,7 @@
       position: relative;
       background: var(--bg-cream);
       box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+      overflow-x: hidden;
     }
 
     /* TOP HEADER BAR */
@@ -65,32 +74,43 @@
       z-index: 100;
       position: sticky;
       top: 0;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .header-left, .header-right {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+      flex-shrink: 0;
     }
 
     .header-center {
       text-align: center;
       flex-grow: 1;
+      min-width: 0;
+      padding: 0 8px;
     }
 
     .activity-badge {
       background: rgba(255, 255, 255, 0.25);
       backdrop-filter: blur(4px);
-      padding: 6px 16px;
+      padding: 6px 14px;
       border-radius: 30px;
-      font-size: 1.15rem;
+      font-size: clamp(0.85rem, 2.2vw, 1.15rem);
       font-weight: 700;
       letter-spacing: 0.5px;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
       border: 2px solid rgba(255, 255, 255, 0.4);
       text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      max-width: 100%;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .btn-icon {
@@ -99,18 +119,19 @@
       color: white;
       font-size: 1.2rem;
       font-weight: bold;
-      width: 44px;
-      height: 44px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      flex-shrink: 0;
       transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     .btn-icon:hover, .btn-icon:active {
-      transform: scale(1.15);
+      transform: scale(1.12);
       background: rgba(255, 255, 255, 0.45);
     }
 
@@ -118,16 +139,17 @@
     .star-meter {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
       background: rgba(0, 0, 0, 0.2);
-      padding: 4px 10px;
+      padding: 4px 8px;
       border-radius: 20px;
       border: 1px solid rgba(255,255,255,0.3);
+      flex-shrink: 0;
     }
 
     .star-icon {
-      width: 28px;
-      height: 28px;
+      width: 24px;
+      height: 24px;
       fill: var(--star-empty);
       stroke: #d89600;
       stroke-width: 2px;
@@ -157,10 +179,12 @@
       background: #ffb703;
       color: #5c3800;
       font-weight: 800;
-      padding: 4px 12px;
+      font-size: 0.95rem;
+      padding: 4px 10px;
       border-radius: 20px;
       border: 2px solid #fff;
       box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+      flex-shrink: 0;
     }
 
     /* SCREEN WRAPPER */
@@ -174,6 +198,7 @@
       width: 100%;
       padding: 16px;
       overflow-y: auto;
+      box-sizing: border-box;
     }
 
     .screen.active {
@@ -191,19 +216,24 @@
       background: linear-gradient(180deg, #06d6a0, #048866);
       color: white;
       border: 3px solid #ffffff;
-      padding: 14px 28px;
-      font-size: 1.3rem;
+      padding: clamp(10px, 2vw, 14px) clamp(18px, 3vw, 28px);
+      font-size: clamp(1rem, 2.2vw, 1.3rem);
       font-weight: 800;
       border-radius: 50px;
       cursor: pointer;
       box-shadow: 0 6px 0 #025741, 0 10px 15px rgba(0,0,0,0.25);
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 10px;
       transition: all 0.15s ease;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       font-family: inherit;
+      max-width: 100%;
+      text-align: center;
+      word-break: break-word;
+      white-space: normal;
     }
 
     .btn-primary:hover {
@@ -222,16 +252,16 @@
 
     @keyframes pulseBtn {
       0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.06); }
+      50% { transform: scale(1.05); }
     }
 
-    /* "CLICK TO HEAR" LABEL */
+    /* "CLICK TO HEAR" STATIC LABEL (NO SECONDS / TIMERS) */
     .click-to-hear {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
-      font-size: 1.05rem;
+      font-size: clamp(0.85rem, 2vw, 1.05rem);
       font-weight: 700;
       color: #7209b7;
       background: #f3e8ff;
@@ -239,12 +269,14 @@
       padding: 6px 14px;
       border-radius: 20px;
       margin-top: 8px;
-      animation: gentleBounce 2s infinite ease-in-out;
+      animation: gentleBounce 2.5s infinite ease-in-out;
+      text-align: center;
+      max-width: 100%;
     }
 
     @keyframes gentleBounce {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-4px); }
+      50% { transform: translateY(-3px); }
     }
 
     /* ---------------------------------------------------- */
@@ -254,37 +286,45 @@
       background: radial-gradient(circle at center, #3a0ca3 0%, #10002b 100%);
       color: white;
       text-align: center;
-      gap: 24px;
+      gap: 20px;
+      padding: 24px 16px;
     }
 
     .splash-card {
       background: rgba(255, 255, 255, 0.15);
       backdrop-filter: blur(10px);
       border: 4px solid rgba(255, 255, 255, 0.4);
-      padding: 30px;
+      padding: clamp(20px, 4vw, 36px);
       border-radius: 36px;
       max-width: 550px;
+      width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 16px;
       box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+      text-align: center;
     }
 
     .splash-title {
-      font-size: 2.8rem;
+      font-size: clamp(2rem, 6vw, 3rem);
       font-weight: 900;
-      line-height: 1.1;
+      line-height: 1.15;
       text-shadow: 0 4px 10px rgba(0,0,0,0.5);
       background: linear-gradient(180deg, #ffd166, #ff70a6);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      text-align: center;
+      width: 100%;
     }
 
     .splash-subtitle {
-      font-size: 1.25rem;
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
       color: #e0aaff;
       font-weight: 600;
+      line-height: 1.4;
+      text-align: center;
+      width: 100%;
     }
 
     /* ---------------------------------------------------- */
@@ -303,7 +343,7 @@
       width: 100%;
       min-width: 900px;
       min-height: 1400px;
-      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1400" viewBox="0 0 900 1400"><defs><linearGradient id="ocean" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="%231a535c"/><stop offset="30%" stop-color="%234ecdc4"/><stop offset="65%" stop-color="%233a0ca3"/><stop offset="100%" stop-color="%2310002b"/></linearGradient><radialGradient id="islandGrad" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="%2380ed99"/><stop offset="85%" stop-color="%2357cc99"/><stop offset="100%" stop-color="%2338a3a5"/></radialGradient></defs><rect width="900" height="1400" fill="url(%23ocean)"/><!-- Island 1 Jungle Beach --><path d="M 80 120 Q 250 80 400 160 Q 550 250 480 380 Q 300 460 120 380 Z" fill="url(%23islandGrad)" opacity="0.9"/><path d="M 60 100 Q 260 60 420 150 Q 570 240 500 400 Q 300 480 100 400 Z" fill="none" stroke="%23ffe6a7" stroke-width="8" opacity="0.6"/><!-- Island 2 Crystal Highlands --><path d="M 450 480 Q 750 420 820 580 Q 860 760 650 820 Q 400 780 420 620 Z" fill="url(%23islandGrad)" opacity="0.9"/><path d="M 430 460 Q 770 400 840 570 Q 880 780 640 840 Q 380 800 400 600 Z" fill="none" stroke="%23ffe6a7" stroke-width="8" opacity="0.6"/><!-- Island 3 Cloud Volcano --><path d="M 80 840 Q 320 780 400 950 Q 450 1100 240 1180 Q 60 1120 50 960 Z" fill="url(%23islandGrad)" opacity="0.9"/><path d="M 60 820 Q 340 760 420 940 Q 470 1120 230 1200 Q 40 1140 30 940 Z" fill="none" stroke="%23ffe6a7" stroke-width="8" opacity="0.6"/><!-- Island 4 Galaxy Zenith --><path d="M 460 1080 Q 780 1000 850 1180 Q 880 1340 680 1380 Q 450 1340 440 1220 Z" fill="%237209b7" opacity="0.9"/><path d="M 440 1060 Q 800 980 870 1170 Q 900 1360 670 1400 Q 430 1360 420 1200 Z" fill="none" stroke="%23ff9e00" stroke-width="8" opacity="0.7"/><!-- Decorative Nautical compass and trees --><circle cx="120" cy="620" r="45" fill="none" stroke="%23ffd166" stroke-width="3" stroke-dasharray="6,6"/><text x="110" y="628" font-size="28" fill="%23ffd166" font-family="sans-serif" font-weight="bold">N</text></svg>');
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1400" viewBox="0 0 900 1400"><defs><linearGradient id="ocean" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="%231a535c"/><stop offset="30%" stop-color="%234ecdc4"/><stop offset="65%" stop-color="%233a0ca3"/><stop offset="100%" stop-color="%2310002b"/></linearGradient><radialGradient id="islandGrad" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="%2380ed99"/><stop offset="85%" stop-color="%2357cc99"/><stop offset="100%" stop-color="%2338a3a5"/></radialGradient></defs><rect width="900" height="1400" fill="url(%23ocean)"/><path d="M 80 120 Q 250 80 400 160 Q 550 250 480 380 Q 300 460 120 380 Z" fill="url(%23islandGrad)" opacity="0.9"/><path d="M 60 100 Q 260 60 420 150 Q 570 240 500 400 Q 300 480 100 400 Z" fill="none" stroke="%23ffe6a7" stroke-width="8" opacity="0.6"/><path d="M 450 480 Q 750 420 820 580 Q 860 760 650 820 Q 400 780 420 620 Z" fill="url(%23islandGrad)" opacity="0.9"/><path d="M 430 460 Q 770 400 840 570 Q 880 780 640 840 Q 380 800 400 600 Z" fill="none" stroke="%23ffe6a7" stroke-width="8" opacity="0.6"/><path d="M 80 840 Q 320 780 400 950 Q 450 1100 240 1180 Q 60 1120 50 960 Z" fill="url(%23islandGrad)" opacity="0.9"/><path d="M 60 820 Q 340 760 420 940 Q 470 1120 230 1200 Q 40 1140 30 940 Z" fill="none" stroke="%23ffe6a7" stroke-width="8" opacity="0.6"/><path d="M 460 1080 Q 780 1000 850 1180 Q 880 1340 680 1380 Q 450 1340 440 1220 Z" fill="%237209b7" opacity="0.9"/><path d="M 440 1060 Q 800 980 870 1170 Q 900 1360 670 1400 Q 430 1360 420 1200 Z" fill="none" stroke="%23ff9e00" stroke-width="8" opacity="0.7"/><circle cx="120" cy="620" r="45" fill="none" stroke="%23ffd166" stroke-width="3" stroke-dasharray="6,6"/><text x="110" y="628" font-size="28" fill="%23ffd166" font-family="sans-serif" font-weight="bold">N</text></svg>');
       background-size: 100% 100%;
     }
 
@@ -312,14 +352,15 @@
       top: 0;
       left: 0;
       right: 0;
-      background: rgba(16, 0, 43, 0.85);
+      background: rgba(16, 0, 43, 0.88);
       backdrop-filter: blur(8px);
-      padding: 10px 20px;
+      padding: 10px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       z-index: 50;
       border-bottom: 2px solid #ffb703;
+      gap: 10px;
     }
 
     .map-svg-path {
@@ -344,7 +385,7 @@
     }
 
     .map-node:hover {
-      transform: translate(-50%, -55%) scale(1.1);
+      transform: translate(-50%, -55%) scale(1.08);
       z-index: 20;
     }
 
@@ -374,16 +415,22 @@
     }
 
     .node-banner {
-      background: rgba(255, 255, 255, 0.95);
-      padding: 4px 10px;
+      background: rgba(255, 255, 255, 0.96);
+      padding: 4px 8px;
       border-radius: 12px;
-      font-size: 0.85rem;
+      font-size: clamp(0.72rem, 1.5vw, 0.82rem);
       font-weight: 800;
       color: #240046;
-      white-space: nowrap;
+      max-width: 150px;
+      width: max-content;
+      text-align: center;
+      white-space: normal;
+      word-break: break-word;
+      overflow: hidden;
       margin-top: 6px;
       border: 2px solid #7209b7;
       box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+      line-height: 1.2;
     }
 
     .node-stars {
@@ -393,7 +440,7 @@
     }
 
     .node-stars span {
-      font-size: 14px;
+      font-size: 13px;
       color: #ffd166;
       text-shadow: 0 1px 2px rgba(0,0,0,0.6);
     }
@@ -444,7 +491,7 @@
     .card-large {
       background: white;
       border-radius: 36px;
-      padding: 30px;
+      padding: clamp(20px, 4vw, 32px);
       box-shadow: 0 16px 36px rgba(114, 9, 183, 0.15);
       border: 4px solid #ffb703;
       max-width: 650px;
@@ -452,15 +499,17 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 20px;
+      gap: 18px;
       text-align: center;
+      overflow: hidden;
+      box-sizing: border-box;
     }
 
     .intro-pair {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 40px;
+      gap: clamp(16px, 3vw, 36px);
       width: 100%;
       flex-wrap: wrap;
     }
@@ -470,15 +519,16 @@
       flex-direction: column;
       align-items: center;
       cursor: pointer;
-      padding: 16px 24px;
+      padding: 16px 20px;
       border-radius: 24px;
       background: #f8f9fa;
       border: 3px solid #e9ecef;
+      max-width: 100%;
       transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     .letter-interactive-box:hover, .word-interactive-box:hover {
-      transform: scale(1.06);
+      transform: scale(1.05);
       background: #fff0f5;
       border-color: #ff477e;
       box-shadow: 0 10px 25px rgba(255, 71, 126, 0.25);
@@ -489,26 +539,28 @@
     }
 
     .big-letter-display {
-      font-size: 6.5rem;
+      font-size: clamp(4rem, 12vw, 6.5rem);
       font-weight: 900;
       color: #7209b7;
       line-height: 1;
       text-shadow: 0 4px 8px rgba(114, 9, 183, 0.2);
+      text-align: center;
     }
 
     .anchor-img-box {
-      width: 140px;
-      height: 140px;
+      width: clamp(100px, 18vw, 140px);
+      height: clamp(100px, 18vw, 140px);
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     .big-word-display {
-      font-size: 2.8rem;
+      font-size: clamp(2rem, 6vw, 2.8rem);
       font-weight: 800;
       color: #073b4c;
       letter-spacing: 2px;
+      text-align: center;
     }
 
     /* ---------------------------------------------------- */
@@ -522,7 +574,7 @@
       position: relative;
       width: 100%;
       max-width: 650px;
-      height: 380px;
+      height: 360px;
       background: white;
       border-radius: 36px;
       border: 4px solid #06d6a0;
@@ -531,11 +583,12 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      box-sizing: border-box;
     }
 
     .target-drop-zone {
-      width: 170px;
-      height: 170px;
+      width: clamp(130px, 25vw, 170px);
+      height: clamp(130px, 25vw, 170px);
       border-radius: 50%;
       background: #e8f5e9;
       border: 4px dashed #06d6a0;
@@ -545,17 +598,18 @@
       justify-content: center;
       z-index: 5;
       transition: all 0.3s ease;
+      text-align: center;
     }
 
     .target-drop-zone.drag-over {
-      transform: scale(1.15);
+      transform: scale(1.12);
       background: #c8e6c9;
       border-color: #2e7d32;
     }
 
     .phonics-bubble {
-      width: 76px;
-      height: 76px;
+      width: 72px;
+      height: 72px;
       border-radius: 50%;
       background: radial-gradient(circle at 30% 30%, #ffffff, #4cc9f0 60%, #4361ee);
       color: white;
@@ -582,7 +636,7 @@
 
     @keyframes floatBubble {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-12px); }
+      50% { transform: translateY(-10px); }
     }
 
     /* ---------------------------------------------------- */
@@ -595,8 +649,8 @@
 
     .tracing-board {
       position: relative;
-      width: 360px;
-      height: 380px;
+      width: clamp(280px, 80vw, 360px);
+      height: clamp(300px, 80vw, 380px);
       background: #190028;
       border-radius: 36px;
       border: 4px solid #ff70a6;
@@ -605,6 +659,8 @@
       align-items: center;
       justify-content: center;
       touch-action: none;
+      overflow: hidden;
+      box-sizing: border-box;
     }
 
     #trace-canvas {
@@ -641,7 +697,7 @@
     .blending-conveyor-card {
       background: white;
       border-radius: 36px;
-      padding: 24px;
+      padding: clamp(16px, 3vw, 24px);
       border: 4px solid #f43f5e;
       box-shadow: 0 16px 36px rgba(244, 63, 94, 0.2);
       max-width: 680px;
@@ -649,19 +705,22 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 20px;
+      gap: 16px;
+      box-sizing: border-box;
+      overflow: hidden;
     }
 
     .blend-blocks-tray {
       display: flex;
       justify-content: center;
-      gap: 18px;
+      gap: clamp(10px, 2vw, 18px);
       width: 100%;
+      flex-wrap: wrap;
     }
 
     .blend-letter-block {
-      width: 80px;
-      height: 90px;
+      width: clamp(64px, 15vw, 80px);
+      height: clamp(74px, 18vw, 90px);
       background: linear-gradient(180deg, #ffb703, #fb8500);
       color: white;
       border: 3px solid white;
@@ -671,14 +730,14 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-size: 3rem;
+      font-size: clamp(2.2rem, 6vw, 3rem);
       font-weight: 900;
       cursor: grab;
       transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     .blend-letter-block:hover {
-      transform: translateY(-4px) scale(1.06);
+      transform: translateY(-3px) scale(1.05);
     }
 
     .blend-letter-block:active {
@@ -689,24 +748,25 @@
     .blend-letter-block.playing-sound {
       background: linear-gradient(180deg, #06d6a0, #048866);
       box-shadow: 0 0 20px #06d6a0;
-      transform: scale(1.15);
+      transform: scale(1.12);
     }
 
     .blend-slots-conveyor {
       background: #2b2d42;
       border-radius: 24px;
-      padding: 16px 24px;
+      padding: 14px 20px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 20px;
+      gap: clamp(10px, 2vw, 18px);
       width: 100%;
       border: 3px solid #8d99ae;
+      box-sizing: border-box;
     }
 
     .blend-slot {
-      width: 84px;
-      height: 94px;
+      width: clamp(68px, 16vw, 84px);
+      height: clamp(78px, 19vw, 94px);
       border-radius: 20px;
       background: rgba(255, 255, 255, 0.1);
       border: 3px dashed #edf2f4;
@@ -726,8 +786,10 @@
       display: none;
       flex-direction: column;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      width: 100%;
+      text-align: center;
     }
 
     @keyframes popIn {
@@ -747,12 +809,13 @@
       display: flex;
       justify-content: center;
       align-items: flex-end;
-      gap: 24px;
+      gap: clamp(12px, 2.5vw, 24px);
       width: 100%;
       max-width: 750px;
-      min-height: 280px;
-      margin: 20px 0;
+      min-height: 260px;
+      margin: 16px 0;
       flex-wrap: wrap;
+      box-sizing: border-box;
     }
 
     .alien-crater-wrap {
@@ -760,7 +823,7 @@
       flex-direction: column;
       align-items: center;
       position: relative;
-      width: 160px;
+      width: clamp(120px, 26vw, 160px);
     }
 
     .alien-character-btn {
@@ -774,24 +837,25 @@
     }
 
     .alien-character-btn:hover {
-      transform: translateY(-10px) scale(1.08);
+      transform: translateY(-8px) scale(1.06);
     }
 
     .alien-sign {
       background: #ffd166;
       color: #3d0066;
-      font-size: 1.6rem;
+      font-size: clamp(1.2rem, 3.5vw, 1.6rem);
       font-weight: 900;
-      padding: 6px 16px;
+      padding: 6px 14px;
       border-radius: 16px;
       border: 3px solid white;
       box-shadow: 0 6px 12px rgba(0,0,0,0.3);
       margin-bottom: 4px;
+      text-align: center;
     }
 
     .crater-base {
-      width: 140px;
-      height: 36px;
+      width: clamp(100px, 22vw, 140px);
+      height: 34px;
       background: #39006b;
       border: 3px solid #7209b7;
       border-radius: 50%;
@@ -814,6 +878,7 @@
       align-items: center;
       justify-content: center;
       padding: 16px;
+      box-sizing: border-box;
     }
 
     .modal-backdrop.open {
@@ -838,37 +903,41 @@
       flex-direction: column;
       overflow: hidden;
       position: relative;
+      box-sizing: border-box;
     }
 
     .modal-header {
       background: linear-gradient(135deg, #7209b7, #3a0ca3);
       color: white;
-      padding: 16px 24px;
+      padding: 14px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      box-sizing: border-box;
     }
 
     .reward-tabs {
       display: flex;
       gap: 8px;
-      padding: 12px 24px;
+      padding: 10px 16px;
       background: #ffe3e0;
       overflow-x: auto;
       border-bottom: 2px solid #ffccd5;
+      box-sizing: border-box;
     }
 
     .reward-tab-btn {
       background: white;
       border: 2px solid #ff70a6;
       color: #7209b7;
-      padding: 8px 16px;
+      padding: 6px 14px;
       border-radius: 20px;
       font-weight: 800;
-      font-size: 0.95rem;
+      font-size: clamp(0.8rem, 1.8vw, 0.92rem);
       cursor: pointer;
       white-space: nowrap;
       transition: all 0.15s ease;
+      flex-shrink: 0;
     }
 
     .reward-tab-btn.active {
@@ -879,30 +948,33 @@
 
     .rewards-grid-area {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-      gap: 14px;
-      padding: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 12px;
+      padding: 16px;
       overflow-y: auto;
       flex: 1;
+      box-sizing: border-box;
     }
 
     .reward-item-card {
       background: white;
       border: 3px solid #e2e8f0;
       border-radius: 20px;
-      padding: 12px 8px;
+      padding: 10px 6px;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      gap: 6px;
+      gap: 4px;
       transition: all 0.2s ease;
       cursor: pointer;
       position: relative;
+      box-sizing: border-box;
+      overflow: hidden;
     }
 
     .reward-item-card:hover {
-      transform: translateY(-4px);
+      transform: translateY(-3px);
       box-shadow: 0 8px 16px rgba(0,0,0,0.1);
     }
 
@@ -920,46 +992,58 @@
     }
 
     .reward-icon-box {
-      width: 54px;
-      height: 54px;
+      width: 48px;
+      height: 48px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     .reward-title {
-      font-size: 0.85rem;
+      font-size: clamp(0.75rem, 1.8vw, 0.85rem);
       font-weight: 800;
       color: #1e293b;
       line-height: 1.2;
+      word-break: break-word;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
 
     .reward-cond {
-      font-size: 0.7rem;
+      font-size: clamp(0.65rem, 1.4vw, 0.72rem);
       color: #64748b;
-      line-height: 1.1;
+      line-height: 1.15;
+      word-break: break-word;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     /* AVATAR DRESS-UP PREVIEW IN STICKER BOOK */
     .avatar-closet-bar {
       background: #f1f5f9;
-      padding: 14px 20px;
+      padding: 12px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       border-top: 2px solid #e2e8f0;
+      box-sizing: border-box;
+      gap: 10px;
     }
 
     .avatar-preview-box {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
+      overflow: hidden;
     }
 
     /* ---------------------------------------------------- */
     /* 9. MASSIVE CELEBRATORY REWARD POPUP                  */
     /* ---------------------------------------------------- */
-    #celebration-popup {
+    #modal-celebrate {
       z-index: 300;
     }
 
@@ -968,27 +1052,29 @@
       color: white;
       border: 6px solid #ffd166;
       border-radius: 40px;
-      padding: 36px 28px;
+      padding: clamp(24px, 4vw, 36px) clamp(16px, 3vw, 28px);
       max-width: 500px;
       width: 100%;
       text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 20px;
+      gap: 16px;
       box-shadow: 0 30px 80px rgba(0,0,0,0.6);
       animation: bounceCard 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-sizing: border-box;
+      overflow: hidden;
     }
 
     @keyframes bounceCard {
       0% { transform: scale(0.3) rotate(-10deg); }
-      70% { transform: scale(1.1) rotate(4deg); }
+      70% { transform: scale(1.08) rotate(3deg); }
       100% { transform: scale(1) rotate(0deg); }
     }
 
     .celebrate-icon-box {
-      width: 110px;
-      height: 110px;
+      width: 100px;
+      height: 100px;
       background: white;
       border-radius: 50%;
       display: flex;
@@ -1001,7 +1087,7 @@
 
     @keyframes spinReward {
       0%, 100% { transform: rotate(0deg) scale(1); }
-      50% { transform: rotate(15deg) scale(1.1); }
+      50% { transform: rotate(12deg) scale(1.08); }
     }
 
     /* PARTICLES CANVAS */
@@ -1013,18 +1099,6 @@
       height: 100vh;
       pointer-events: none;
       z-index: 250;
-    }
-
-    /* RESPONSIVE QUERIES */
-    @media (max-width: 768px) {
-      .big-letter-display { font-size: 4.8rem; }
-      .anchor-img-box { width: 100px; height: 100px; }
-      .big-word-display { font-size: 2.2rem; }
-      .match-playfield { height: 320px; }
-      .tracing-board { width: 300px; height: 320px; }
-      .blend-letter-block { width: 64px; height: 74px; font-size: 2.4rem; }
-      .blend-slot { width: 68px; height: 78px; }
-      .activity-badge { font-size: 0.95rem; padding: 4px 10px; }
     }
   </style>
 </head>
@@ -1063,7 +1137,7 @@
     </header>
 
     <!-- ==================================================== -->
-    <!-- 1. START / SPLASH SCREEN                             -->
+    <!-- 1. START / SPLASH SCREEN (AUTOPLAY-COMPLIANT INTRO)   -->
     <!-- ==================================================== -->
     <main class="screen active" id="screen-splash">
       <div class="splash-card">
@@ -1075,9 +1149,9 @@
           <path d="M42 58 Q50 68 58 58" fill="none" stroke="#3d0066" stroke-width="3" stroke-linecap="round"/>
         </svg>
         <h1 class="splash-title">Phonics Adventure</h1>
-        <p class="splash-subtitle">Magical Phonics, Tracing & Reading for 1st Graders!</p>
-        <button class="btn-primary btn-pulse" id="btn-start-game" style="font-size: 1.5rem; margin-top: 10px;">
-          🚀 Start Adventure!
+        <p class="splash-subtitle">Magical Phonics, Tracing & Reading Journey for 1st Graders!</p>
+        <button class="btn-primary btn-pulse" id="btn-start-game" style="font-size: clamp(1.2rem, 3vw, 1.5rem); margin-top: 10px;">
+          🚀 Start Game!
         </button>
       </div>
     </main>
@@ -1089,14 +1163,14 @@
       <div class="map-container" id="map-container">
         <!-- Floating Navigation & Quick Access -->
         <div class="map-header-bar">
-          <div style="color: #ffd166; font-weight: 800; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+          <div style="color: #ffd166; font-weight: 800; font-size: clamp(0.9rem, 2vw, 1.1rem); display: flex; align-items: center; gap: 8px;">
             <span>🏝️ Treasure Island & Galaxy Map</span>
           </div>
-          <div style="display: flex; gap: 10px;">
-            <button class="btn-primary" id="btn-alien-quest" style="font-size: 0.95rem; padding: 8px 16px; background: linear-gradient(180deg, #7209b7, #3a0ca3);">
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="btn-primary" id="btn-alien-quest" style="font-size: clamp(0.8rem, 1.8vw, 0.95rem); padding: 8px 14px; background: linear-gradient(180deg, #7209b7, #3a0ca3);">
               👾 Alien Sight Words
             </button>
-            <button class="btn-primary" id="btn-open-stickerbook" style="font-size: 0.95rem; padding: 8px 16px; background: linear-gradient(180deg, #ffb703, #fb8500);">
+            <button class="btn-primary" id="btn-open-stickerbook" style="font-size: clamp(0.8rem, 1.8vw, 0.95rem); padding: 8px 14px; background: linear-gradient(180deg, #ffb703, #fb8500);">
               🏆 100 Rewards (<span id="unlocked-reward-count">0</span>/100)
             </button>
           </div>
@@ -1112,12 +1186,10 @@
         <div id="you-are-here-marker">
           <div class="yah-badge">⭐ YOU ARE HERE ⭐</div>
           <svg class="yah-character" viewBox="0 0 100 100" id="avatar-svg-map">
-            <!-- Dynamic Avatar Graphics -->
             <circle cx="50" cy="50" r="32" fill="#ffccd5"/>
             <circle cx="40" cy="46" r="4" fill="#333"/>
             <circle cx="60" cy="46" r="4" fill="#333"/>
             <path d="M44 58 Q50 66 56 58" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
-            <!-- Avatar Hat / Accessory Layer -->
             <g id="map-avatar-accessories"></g>
           </svg>
         </div>
@@ -1129,14 +1201,14 @@
     <!-- ==================================================== -->
     <section class="screen" id="screen-intro">
       <div class="card-large">
-        <h2 style="color: #7209b7; font-size: 2rem; font-weight: 900;">1. Meet the Letter & Sound!</h2>
+        <h2 style="color: #7209b7; font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 900;">1. Meet the Letter & Sound!</h2>
         
         <div class="intro-pair">
           <!-- Interactive Letter Box -->
           <div class="letter-interactive-box" id="intro-letter-btn">
             <div class="big-letter-display" id="intro-letter-text">a</div>
             <div class="click-to-hear">
-              <span>🔊</span> <span>Click to hear sound</span>
+              <span>🔊</span> <span>Click to hear</span>
             </div>
           </div>
 
@@ -1147,13 +1219,13 @@
             <div class="anchor-img-box" id="intro-word-icon"></div>
             <div class="big-word-display" id="intro-word-text">ant</div>
             <div class="click-to-hear">
-              <span>🔊</span> <span>Click to hear word</span>
+              <span>🔊</span> <span>Click to hear</span>
             </div>
           </div>
         </div>
 
-        <p style="color: #64748b; font-size: 1.1rem; font-weight: 600;">
-          Tap both the letter and word to listen to their sounds!
+        <p style="color: #64748b; font-size: clamp(0.95rem, 2vw, 1.1rem); font-weight: 600;">
+          Tap both the letter and word to listen to their human voice sounds!
         </p>
 
         <!-- MANUAL ADVANCE NEXT BUTTON -->
@@ -1168,16 +1240,16 @@
     <!-- ==================================================== -->
     <section class="screen" id="screen-match">
       <div class="card-large" style="max-width: 720px;">
-        <h2 style="color: #06d6a0; font-size: 1.8rem; font-weight: 900;">2. Match the Letter Sound!</h2>
-        <p style="color: #073b4c; font-size: 1.15rem; font-weight: 700;">
-          Click bubbles to hear sounds, then drag the matching letter to the center!
+        <h2 style="color: #06d6a0; font-size: clamp(1.4rem, 3.5vw, 1.8rem); font-weight: 900;">2. Match the Letter Sound!</h2>
+        <p style="color: #073b4c; font-size: clamp(0.95rem, 2vw, 1.15rem); font-weight: 700;">
+          Click bubbles to hear sounds, then drag or tap the matching letter!
         </p>
 
         <div class="match-playfield" id="match-playfield">
           <!-- Target Drop Zone (Anchor Object) -->
           <div class="target-drop-zone" id="target-drop-zone">
-            <div id="match-anchor-icon" style="width: 80px; height: 80px;"></div>
-            <span id="match-anchor-word" style="font-size: 1.4rem; font-weight: 900; color: #073b4c;">ant</span>
+            <div id="match-anchor-icon" style="width: 70px; height: 70px;"></div>
+            <span id="match-anchor-word" style="font-size: clamp(1.1rem, 2.5vw, 1.4rem); font-weight: 900; color: #073b4c;">ant</span>
           </div>
 
           <!-- Floating Sound Bubbles (Generated by JS) -->
@@ -1196,8 +1268,8 @@
     <!-- ==================================================== -->
     <section class="screen" id="screen-trace">
       <div class="card-large" style="background: #190028; border-color: #ff70a6; color: white;">
-        <h2 style="color: #ff70a6; font-size: 1.8rem; font-weight: 900;">3. Trace the Letter!</h2>
-        <p style="color: #e0aaff; font-size: 1.1rem; font-weight: 600;">
+        <h2 style="color: #ff70a6; font-size: clamp(1.4rem, 3.5vw, 1.8rem); font-weight: 900;">3. Trace the Letter!</h2>
+        <p style="color: #e0aaff; font-size: clamp(0.95rem, 2vw, 1.1rem); font-weight: 600;">
           Follow the glowing star along the dashed line!
         </p>
 
@@ -1210,8 +1282,8 @@
           </div>
         </div>
 
-        <div style="display: flex; gap: 14px; align-items: center;">
-          <button class="btn-icon" id="btn-clear-trace" title="Reset Trace" style="width: auto; height: auto; border-radius: 20px; padding: 8px 16px; font-size: 1rem;">
+        <div style="display: flex; gap: 14px; align-items: center; justify-content: center; flex-wrap: wrap;">
+          <button class="btn-icon" id="btn-clear-trace" title="Reset Trace" style="width: auto; height: auto; border-radius: 20px; padding: 8px 16px; font-size: 0.95rem;">
             🔄 Retry Stroke
           </button>
           
@@ -1228,9 +1300,9 @@
     <!-- ==================================================== -->
     <section class="screen" id="screen-blend">
       <div class="blending-conveyor-card">
-        <h2 style="color: #f43f5e; font-size: 1.8rem; font-weight: 900;">4. CVC Word Blending Machine!</h2>
-        <p style="color: #64748b; font-size: 1.1rem; font-weight: 700; text-align: center;">
-          Click individual letter blocks to hear sounds, then drag them in order to blend the word!
+        <h2 style="color: #f43f5e; font-size: clamp(1.4rem, 3.5vw, 1.8rem); font-weight: 900;">4. CVC Word Blending Machine!</h2>
+        <p style="color: #64748b; font-size: clamp(0.95rem, 2vw, 1.1rem); font-weight: 700; text-align: center;">
+          Click individual letter blocks to hear sounds, then place them in order to blend the word!
         </p>
 
         <!-- Separated Clickable Letter Blocks -->
@@ -1245,12 +1317,12 @@
 
         <!-- Word Blended Picture & Reward Celebration -->
         <div class="blended-result-card" id="blended-result-card">
-          <div id="blended-word-illustration" style="width: 130px; height: 130px;"></div>
-          <div id="blended-word-title" style="font-size: 3rem; font-weight: 900; color: #073b4c; letter-spacing: 2px;">
+          <div id="blended-word-illustration" style="width: 120px; height: 120px;"></div>
+          <div id="blended-word-title" style="font-size: clamp(2rem, 6vw, 3rem); font-weight: 900; color: #073b4c; letter-spacing: 2px;">
             ANT
           </div>
           <div class="click-to-hear" id="btn-replay-blended-word" style="cursor: pointer;">
-            <span>🔊</span> <span>Click to hear word</span>
+            <span>🔊</span> <span>Click to hear</span>
           </div>
         </div>
 
@@ -1266,17 +1338,17 @@
     <!-- ==================================================== -->
     <section class="screen" id="screen-alien">
       <div class="card-large" style="background: #190028; border-color: #ffd166; color: white;">
-        <h2 style="color: #ffd166; font-size: 2rem; font-weight: 900;">👾 Alien Sight Word Challenge!</h2>
+        <h2 style="color: #ffd166; font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 900;">👾 Alien Sight Word Challenge!</h2>
         
-        <div style="display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.15); padding: 10px 20px; border-radius: 30px;">
-          <span style="font-size: 1.3rem;">Find the word:</span>
-          <span id="alien-target-word" style="font-size: 2rem; font-weight: 900; color: #ff70a6; letter-spacing: 1px;">THE</span>
-          <button class="btn-icon" id="btn-replay-alien-prompt" style="width: 36px; height: 36px;">🔊</button>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 12px; background: rgba(255,255,255,0.15); padding: 8px 18px; border-radius: 30px; max-width: 100%;">
+          <span style="font-size: clamp(1rem, 2.5vw, 1.25rem);">Find the word:</span>
+          <span id="alien-target-word" style="font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 900; color: #ff70a6; letter-spacing: 1px;">THE</span>
+          <button class="btn-icon" id="btn-replay-alien-prompt" style="width: 36px; height: 36px; font-size: 1rem;">🔊</button>
         </div>
 
         <div class="alien-crater-field" id="alien-crater-field"></div>
 
-        <div style="display: flex; gap: 14px;">
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
           <button class="btn-primary" id="btn-alien-next-word" style="background: linear-gradient(180deg, #06d6a0, #048866);">
             Next Word ➜
           </button>
@@ -1294,18 +1366,18 @@
       <div class="modal-content">
         <div class="modal-header">
           <div style="display: flex; align-items: center; gap: 10px;">
-            <span style="font-size: 1.8rem;">🎒</span>
-            <h2 style="font-size: 1.5rem; font-weight: 900;">100 Rewards & Sticker Book</h2>
+            <span style="font-size: 1.6rem;">🎒</span>
+            <h2 style="font-size: clamp(1.1rem, 3vw, 1.5rem); font-weight: 900;">100 Rewards & Sticker Book</h2>
           </div>
           <button class="btn-icon" id="btn-close-rewards" style="background: rgba(0,0,0,0.3);">✕</button>
         </div>
 
         <!-- Filter Category Tabs -->
         <div class="reward-tabs">
-          <button class="reward-tab-btn active" data-tab="all">🌟 All Rewards (100)</button>
+          <button class="reward-tab-btn active" data-tab="all">🌟 All (100)</button>
           <button class="reward-tab-btn" data-tab="stickers">🦄 Stickers (40)</button>
-          <button class="reward-tab-btn" data-tab="wearables">👑 Wearable Accessories (30)</button>
-          <button class="reward-tab-btn" data-tab="pets">🐾 Pets & Effects (30)</button>
+          <button class="reward-tab-btn" data-tab="wearables">👑 Wearables (30)</button>
+          <button class="reward-tab-btn" data-tab="pets">🐾 Pets & FX (30)</button>
         </div>
 
         <!-- 100 Rewards Grid -->
@@ -1314,7 +1386,7 @@
         <!-- Live Avatar Dressing Room -->
         <div class="avatar-closet-bar">
           <div class="avatar-preview-box">
-            <svg width="60" height="60" viewBox="0 0 100 100" id="avatar-svg-closet">
+            <svg width="50" height="50" viewBox="0 0 100 100" id="avatar-svg-closet">
               <circle cx="50" cy="50" r="32" fill="#ffccd5"/>
               <circle cx="40" cy="46" r="4" fill="#333"/>
               <circle cx="60" cy="46" r="4" fill="#333"/>
@@ -1322,11 +1394,11 @@
               <g id="closet-avatar-accessories"></g>
             </svg>
             <div>
-              <div style="font-weight: 800; font-size: 1rem; color: #1e293b;">Your Dressed-Up Avatar</div>
-              <div style="font-size: 0.8rem; color: #64748b;">Click any unlocked wearable above to equip!</div>
+              <div style="font-weight: 800; font-size: 0.95rem; color: #1e293b;">Your Dressed-Up Avatar</div>
+              <div style="font-size: 0.78rem; color: #64748b;">Click any unlocked wearable above to equip!</div>
             </div>
           </div>
-          <button class="btn-primary" id="btn-clear-equipped" style="font-size: 0.85rem; padding: 6px 14px; background: #64748b;">
+          <button class="btn-primary" id="btn-clear-equipped" style="font-size: 0.82rem; padding: 6px 12px; background: #64748b;">
             Remove Accessories
           </button>
         </div>
@@ -1338,19 +1410,19 @@
     <!-- ==================================================== -->
     <div class="modal-backdrop" id="modal-celebrate">
       <div class="celebrate-card">
-        <h2 style="font-size: 2.2rem; font-weight: 900; text-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+        <h2 style="font-size: clamp(1.6rem, 5vw, 2.2rem); font-weight: 900; text-shadow: 0 4px 10px rgba(0,0,0,0.3);">
           🎉 AMAZING JOB! 🎉
         </h2>
         <div class="celebrate-icon-box" id="celebrate-icon"></div>
         <div>
-          <h3 id="celebrate-item-name" style="font-size: 1.8rem; font-weight: 900; color: #ffd166;">
+          <h3 id="celebrate-item-name" style="font-size: clamp(1.3rem, 4vw, 1.8rem); font-weight: 900; color: #ffd166;">
             Magic Star Wand!
           </h3>
-          <p id="celebrate-desc" style="font-size: 1.1rem; color: #ffe6a7; margin-top: 6px; font-weight: 700;">
+          <p id="celebrate-desc" style="font-size: clamp(0.95rem, 2.5vw, 1.1rem); color: #ffe6a7; margin-top: 6px; font-weight: 700;">
             You unlocked a new treasure!
           </p>
         </div>
-        <button class="btn-primary btn-pulse" id="btn-claim-celebrate" style="font-size: 1.3rem; background: #ffd166; color: #3d0066; border-color: white;">
+        <button class="btn-primary btn-pulse" id="btn-claim-celebrate" style="font-size: 1.2rem; background: #ffd166; color: #3d0066; border-color: white;">
           🌟 Awesome! Collect!
         </button>
       </div>
@@ -1359,11 +1431,11 @@
   </div>
 
   <!-- ==================================================== -->
-  <!-- JAVASCRIPT: ENGINE, DATA, AUDIO, AND MECHANICS       -->
+  <!-- JAVASCRIPT: PURE HUMAN SPEECH SYNTHESIS ENGINE       -->
   <!-- ==================================================== -->
   <script>
     /**
-     * PHONICS ADVENTURE 2.0 - COMPLETE EDUCATIONAL ENGINE
+     * PHONICS ADVENTURE - NATURAL HUMAN SPEECH SYNTHESIS ENGINE
      */
     
     // --- 1. FULL 26-LETTER CURRICULUM DATABASE WITH MATCHING ANCHOR WORDS ---
@@ -1395,6 +1467,36 @@
       { letter: 'y', word: 'yak', title: 'Node Y: Yak Yonder Yard', zone: 4, x: 800, y: 1260, strokePath: [[150, 190], [185, 240], [220, 190], [185, 240], [185, 310], [150, 310]] },
       { letter: 'z', word: 'zip', title: 'Node Z: Zip Zigzag Zenith', zone: 4, x: 660, y: 1330, strokePath: [[150, 190], [220, 190], [150, 280], [220, 280]] }
     ];
+
+    // Accurate Short Phonics Mapping for Natural Teacher Pronunciation (0.5s - 1.0s)
+    const PHONIC_SOUNDS = {
+      'a': 'ah',
+      'b': 'buh',
+      'c': 'kuh',
+      'd': 'duh',
+      'e': 'eh',
+      'f': 'fff',
+      'g': 'guh',
+      'h': 'huh',
+      'i': 'ih',
+      'j': 'juh',
+      'k': 'kuh',
+      'l': 'lll',
+      'm': 'mmm',
+      'n': 'nnn',
+      'o': 'off',
+      'p': 'puh',
+      'q': 'kwuh',
+      'r': 'rrr',
+      's': 'sss',
+      't': 'tuh',
+      'u': 'uh',
+      'v': 'vvv',
+      'w': 'wuh',
+      'x': 'ks',
+      'y': 'yuh',
+      'z': 'zzz'
+    };
 
     // Sight Words for Alien Minigame
     const SIGHT_WORDS = ['the', 'is', 'my', 'and', 'you', 'see', 'we', 'can', 'go', 'to', 'in', 'it', 'me', 'up', 'he'];
@@ -1512,7 +1614,6 @@
     // Generate 100 Reward Objects with distinct conditions
     for (let i = 0; i < 100; i++) {
       const item = ITEM_NAMES[i];
-      let condCode = `cond_${i+1}`;
       let desc = "";
 
       if (i < 26) {
@@ -1536,14 +1637,14 @@
         slot: item.slot || null,
         icon: item.icon,
         desc: desc,
-        unlocked: i === 0 // 1st reward unlocked by default!
+        unlocked: i === 0
       });
     }
 
     // --- 3. STATE MANAGEMENT ---
     const GameState = {
       activeNodeIdx: 0,
-      currentStep: 1, // 1: Intro, 2: Match, 3: Trace, 4: Blend
+      currentStep: 1,
       activityStars: 0,
       totalStars: 0,
       completedNodes: new Set([0]),
@@ -1593,16 +1694,39 @@
       updateHeaderUI();
     }
 
-    // --- 4. HIGH-QUALITY WEB AUDIO & PHONICS VOCAL SYNTHESIZER ---
+    // --- 4. STRICT REAL HUMAN VOICE AUDIO & SPEECH SYNTHESIS ENGINE ---
     class AudioEngine {
       constructor() {
         this.ctx = null;
-        this.bgmOsc = null;
-        this.bgmGain = null;
+        this.selectedVoice = null;
         this.isBgmPlaying = false;
+        this.initVoiceSelector();
       }
 
-      init() {
+      initVoiceSelector() {
+        const updateVoices = () => {
+          if (!('speechSynthesis' in window)) return;
+          const voices = window.speechSynthesis.getVoices();
+          if (voices.length > 0) {
+            // Find natural, human-sounding US/UK English voices
+            this.selectedVoice = voices.find(v => (v.lang === 'en-US' || v.lang === 'en_US') && (
+              v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Samantha') || 
+              v.name.includes('Victoria') || v.name.includes('Zira') || v.name.includes('Jenny') ||
+              v.name.includes('Aria') || v.name.includes('Guy')
+            ))
+            || voices.find(v => v.lang.startsWith('en-US'))
+            || voices.find(v => v.lang.startsWith('en'))
+            || voices[0];
+          }
+        };
+
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.onvoiceschanged = updateVoices;
+          updateVoices();
+        }
+      }
+
+      initAudioContext() {
         if (!this.ctx) {
           const AudioContext = window.AudioContext || window.webkitAudioContext;
           this.ctx = new AudioContext();
@@ -1610,158 +1734,118 @@
         if (this.ctx.state === 'suspended') {
           this.ctx.resume();
         }
-        this.startGentleBGM();
       }
 
-      // Pure Natural Phonics Sounds (0.5 - 1.0s)
+      // Welcome voice message on Start Game
+      playWelcomeVoice() {
+        if (!GameState.soundEnabled || !('speechSynthesis' in window)) return;
+        window.speechSynthesis.cancel();
+        const welcomeText = "Welcome to the game children! Let's learn our letters on the treasure map!";
+        const utter = new SpeechSynthesisUtterance(welcomeText);
+        if (this.selectedVoice) utter.voice = this.selectedVoice;
+        utter.rate = 0.9;
+        utter.pitch = 1.15;
+        utter.volume = 1.0;
+        utter.lang = 'en-US';
+        window.speechSynthesis.speak(utter);
+      }
+
+      // STRICT NATURAL HUMAN VOICE PHONICS (NO SYNTHETIC NOISES/OSCILLATORS)
       playPhoneticSound(letter) {
-        if (!GameState.soundEnabled) return;
-        this.init();
-
-        const l = letter.toLowerCase();
+        if (!GameState.soundEnabled || !('speechSynthesis' in window)) return;
+        window.speechSynthesis.cancel();
         
-        // Accurate Web Audio Formant Synthesizer for Natural Human Phonetics
-        const t = this.ctx.currentTime;
-        const gainNode = this.ctx.createGain();
-        gainNode.connect(this.ctx.destination);
-        gainNode.gain.setValueAtTime(0.3, t);
-
-        // Standard Phonics Phoneme Mapping for 1st Grader Clarity
-        const phonemeWords = {
-          'a': 'ah', 'b': 'buh', 'c': 'kuh', 'd': 'duh', 'e': 'eh',
-          'f': 'fff', 'g': 'guh', 'h': 'huh', 'i': 'ih', 'j': 'juh',
-          'k': 'kuh', 'l': 'lll', 'm': 'mmm', 'n': 'nnn', 'o': 'off',
-          'p': 'puh', 'q': 'kwuh', 'r': 'rrr', 's': 'sss', 't': 'tuh',
-          'u': 'uh', 'v': 'vvv', 'w': 'wuh', 'x': 'ks', 'y': 'yuh', 'z': 'zzz'
-        };
-
-        // Formant synthesis frequencies
-        const formants = {
-          'a': [700, 1220, 2600], 'e': [500, 1800, 2500], 'i': [300, 2200, 3000],
-          'o': [500, 850, 2400], 'u': [350, 800, 2400]
-        };
-
-        // If vowel, synthesize vocal resonance
-        if (formants[l]) {
-          const freqs = formants[l];
-          const osc = this.ctx.createOscillator();
-          osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(140, t); // Child-friendly base pitch
-
-          const f1 = this.ctx.createBiquadFilter();
-          f1.type = 'bandpass';
-          f1.frequency.setValueAtTime(freqs[0], t);
-          f1.Q.setValueAtTime(5, t);
-
-          osc.connect(f1);
-          f1.connect(gainNode);
-
-          gainNode.gain.setValueAtTime(0, t);
-          gainNode.gain.linearRampToValueAtTime(0.35, t + 0.08);
-          gainNode.gain.exponentialRampToValueAtTime(0.001, t + 0.65); // Exactly ~0.65s
-
-          osc.start(t);
-          osc.stop(t + 0.7);
-        } else {
-          // Consonant noise & pluck synthesis
-          const osc = this.ctx.createOscillator();
-          osc.type = l === 's' || l === 'f' || l === 'z' ? 'triangle' : 'sine';
-          osc.frequency.setValueAtTime(220, t);
-          osc.connect(gainNode);
-
-          gainNode.gain.setValueAtTime(0, t);
-          gainNode.gain.linearRampToValueAtTime(0.3, t + 0.05);
-          gainNode.gain.exponentialRampToValueAtTime(0.001, t + 0.6);
-
-          osc.start(t);
-          osc.stop(t + 0.65);
-        }
-
-        // Parallel SpeechSynthesis for Natural Teacher Accent
-        if ('speechSynthesis' in window) {
-          window.speechSynthesis.cancel();
-          const spoken = phonemeWords[l] || l;
-          const utter = new SpeechSynthesisUtterance(spoken);
-          utter.rate = 0.85; // Slow and articulated for 1st graders
-          utter.pitch = 1.25; // Cheerful tone
-          utter.lang = 'en-US';
-          window.speechSynthesis.speak(utter);
-        }
+        const soundText = PHONIC_SOUNDS[letter.toLowerCase()] || letter;
+        const utter = new SpeechSynthesisUtterance(soundText);
+        if (this.selectedVoice) utter.voice = this.selectedVoice;
+        utter.rate = 0.85; // Slow and articulated for 1st graders
+        utter.pitch = 1.2;  // Cheerful, friendly teacher tone
+        utter.volume = 1.0;
+        utter.lang = 'en-US';
+        window.speechSynthesis.speak(utter);
       }
 
-      // Word Pronunciation (< 1.0s)
+      // Natural Human Word Pronunciation
       playWord(word) {
-        if (!GameState.soundEnabled) return;
-        this.init();
+        if (!GameState.soundEnabled || !('speechSynthesis' in window)) return;
+        window.speechSynthesis.cancel();
 
-        // Chime cue
-        this.playStarDing();
-
-        if ('speechSynthesis' in window) {
-          window.speechSynthesis.cancel();
-          const utter = new SpeechSynthesisUtterance(word);
-          utter.rate = 0.8;
-          utter.pitch = 1.2;
-          utter.lang = 'en-US';
-          window.speechSynthesis.speak(utter);
-        }
+        const utter = new SpeechSynthesisUtterance(word);
+        if (this.selectedVoice) utter.voice = this.selectedVoice;
+        utter.rate = 0.85;
+        utter.pitch = 1.15;
+        utter.volume = 1.0;
+        utter.lang = 'en-US';
+        window.speechSynthesis.speak(utter);
       }
 
-      // Star Ding Sound (Bright Pentatonic Chime)
+      // Star Ding Sound (Subtle Bell Chime for Feedback)
       playStarDing() {
-        if (!GameState.soundEnabled || !this.ctx) return;
-        const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+        if (!GameState.soundEnabled) return;
+        this.initAudioContext();
+        if (!this.ctx) return;
+
+        const notes = [523.25, 659.25, 783.99, 1046.50];
         notes.forEach((freq, idx) => {
           const t = this.ctx.currentTime + (idx * 0.08);
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
           osc.type = 'sine';
           osc.frequency.setValueAtTime(freq, t);
-          gain.gain.setValueAtTime(0.2, t);
-          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+          gain.gain.setValueAtTime(0.15, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
           osc.connect(gain);
           gain.connect(this.ctx.destination);
           osc.start(t);
-          osc.stop(t + 0.45);
+          osc.stop(t + 0.4);
         });
       }
 
-      // Bubble Pop
+      // Gentle Bubble Pop
       playPop() {
-        if (!GameState.soundEnabled || !this.ctx) return;
+        if (!GameState.soundEnabled) return;
+        this.initAudioContext();
+        if (!this.ctx) return;
+
         const t = this.ctx.currentTime;
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
-        osc.frequency.setValueAtTime(500, t);
-        osc.frequency.exponentialRampToValueAtTime(150, t + 0.1);
-        gain.gain.setValueAtTime(0.3, t);
-        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
+        osc.frequency.setValueAtTime(450, t);
+        osc.frequency.exponentialRampToValueAtTime(160, t + 0.08);
+        gain.gain.setValueAtTime(0.2, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
         osc.connect(gain);
         gain.connect(this.ctx.destination);
         osc.start(t);
-        osc.stop(t + 0.12);
+        osc.stop(t + 0.09);
       }
 
       // Soft friendly wobble for wrong attempts
       playWrongWobble() {
-        if (!GameState.soundEnabled || !this.ctx) return;
+        if (!GameState.soundEnabled) return;
+        this.initAudioContext();
+        if (!this.ctx) return;
+
         const t = this.ctx.currentTime;
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(260, t);
-        osc.frequency.linearRampToValueAtTime(210, t + 0.25);
-        gain.gain.setValueAtTime(0.25, t);
-        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
+        osc.frequency.linearRampToValueAtTime(200, t + 0.2);
+        gain.gain.setValueAtTime(0.18, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.25);
         osc.connect(gain);
         gain.connect(this.ctx.destination);
         osc.start(t);
-        osc.stop(t + 0.35);
+        osc.stop(t + 0.28);
       }
 
       // Victory Fanfare
       playVictoryFanfare() {
-        if (!GameState.soundEnabled || !this.ctx) return;
+        if (!GameState.soundEnabled) return;
+        this.initAudioContext();
+        if (!this.ctx) return;
+
         const chord = [392, 523.25, 659.25, 783.99, 1046.50];
         chord.forEach((freq, i) => {
           const t = this.ctx.currentTime + (i * 0.09);
@@ -1769,19 +1853,22 @@
           const gain = this.ctx.createGain();
           osc.type = 'triangle';
           osc.frequency.setValueAtTime(freq, t);
-          gain.gain.setValueAtTime(0.25, t);
-          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.8);
+          gain.gain.setValueAtTime(0.2, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.7);
           osc.connect(gain);
           gain.connect(this.ctx.destination);
           osc.start(t);
-          osc.stop(t + 0.85);
+          osc.stop(t + 0.75);
         });
       }
 
-      // Gentle looping background music generator
+      // Cheerful, child-friendly background music loop (low volume ~0.15-0.2)
       startGentleBGM() {
-        if (this.isBgmPlaying || !GameState.soundEnabled || !this.ctx) return;
+        if (this.isBgmPlaying || !GameState.soundEnabled) return;
+        this.initAudioContext();
+        if (!this.ctx) return;
         this.isBgmPlaying = true;
+
         const scale = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25];
         let step = 0;
 
@@ -1793,15 +1880,15 @@
           osc.type = 'sine';
           const note = scale[step % scale.length];
           osc.frequency.setValueAtTime(note, t);
-          gain.gain.setValueAtTime(0.03, t);
-          gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.6);
+          gain.gain.setValueAtTime(0.025, t); // Low non-intrusive volume
+          gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.55);
           osc.connect(gain);
           gain.connect(this.ctx.destination);
           osc.start(t);
-          osc.stop(t + 0.65);
+          osc.stop(t + 0.6);
 
           step = (step + 1) % 16;
-          setTimeout(loop, 400);
+          setTimeout(loop, 420);
         };
         loop();
       }
@@ -1862,7 +1949,7 @@
     window.addEventListener('resize', resizeFx);
     resizeFx();
 
-    function spawnConfetti(x, y, count = 40) {
+    function spawnConfetti(x, y, count = 35) {
       const colors = ['#ff477e', '#ffd166', '#06d6a0', '#118ab2', '#7209b7', '#f72585'];
       for (let i = 0; i < count; i++) {
         const angle = Math.random() * Math.PI * 2;
@@ -1872,7 +1959,7 @@
           y: y || window.innerHeight / 2,
           vx: Math.cos(angle) * speed,
           vy: Math.sin(angle) * speed - 3,
-          size: Math.random() * 10 + 6,
+          size: Math.random() * 9 + 5,
           color: colors[Math.floor(Math.random() * colors.length)],
           rotation: Math.random() * 360,
           vRot: (Math.random() - 0.5) * 10,
@@ -1888,7 +1975,7 @@
         const p = particles[i];
         p.x += p.vx;
         p.y += p.vy;
-        p.vy += 0.25; // gravity
+        p.vy += 0.25;
         p.rotation += p.vRot;
         p.alpha -= p.decay;
 
@@ -1926,7 +2013,6 @@
       };
       document.getElementById('activity-name-text').innerText = titles[screenId] || 'Phonics Adventure';
       
-      // Update map marker when opening map
       if (screenId === 'screen-map') {
         renderTreasureMap();
         updateYouAreHereMarker();
@@ -1935,7 +2021,6 @@
     }
 
     function updateHeaderUI() {
-      // Update star progression (0-4 stars)
       for (let i = 1; i <= 4; i++) {
         const starEl = document.getElementById(`star-${i}`);
         if (i <= GameState.activityStars) {
@@ -1980,7 +2065,6 @@
       REWARDS_DB.forEach(reward => {
         if (!reward.unlocked) {
           let shouldUnlock = false;
-          // Check conditions
           if (reward.id <= 26 && GameState.completedNodes.has(reward.id - 1)) {
             shouldUnlock = true;
           } else if (reward.id > 26 && reward.id <= 52 && GameState.completedNodes.has(reward.id - 27)) {
@@ -2007,9 +2091,9 @@
 
     function triggerCelebrationPopup(reward) {
       AudioSys.playVictoryFanfare();
-      spawnConfetti(window.innerWidth / 2, window.innerHeight / 2, 60);
+      spawnConfetti(window.innerWidth / 2, window.innerHeight / 2, 50);
 
-      document.getElementById('celebrate-icon').innerHTML = `<span style="font-size: 3.5rem;">${reward.icon}</span>`;
+      document.getElementById('celebrate-icon').innerHTML = `<span style="font-size: 3.2rem;">${reward.icon}</span>`;
       document.getElementById('celebrate-item-name').innerText = reward.name;
       document.getElementById('celebrate-desc').innerText = `Unlocked: ${reward.desc}!`;
 
@@ -2141,7 +2225,6 @@
       const container = document.getElementById('match-bubbles-container');
       container.innerHTML = '';
 
-      // Create target bubble + 3 distractor bubbles
       const distractors = ALPHABET_DATA.filter((d, i) => i !== GameState.activeNodeIdx)
         .sort(() => 0.5 - Math.random())
         .slice(0, 3)
@@ -2149,10 +2232,10 @@
 
       const letters = [data.letter, ...distractors].sort(() => 0.5 - Math.random());
       const positions = [
-        { top: '30px', left: '40px' },
-        { top: '30px', right: '40px' },
-        { bottom: '30px', left: '40px' },
-        { bottom: '30px', right: '40px' }
+        { top: '24px', left: '30px' },
+        { top: '24px', right: '30px' },
+        { bottom: '24px', left: '30px' },
+        { bottom: '24px', right: '30px' }
       ];
 
       letters.forEach((letChar, idx) => {
@@ -2162,7 +2245,7 @@
         Object.assign(bubble.style, positions[idx]);
 
         // Tap to hear sound
-        bubble.addEventListener('click', (e) => {
+        bubble.addEventListener('click', () => {
           AudioSys.playPhoneticSound(letChar);
           if (letChar === data.letter) {
             handleMatchSuccess(bubble);
@@ -2228,17 +2311,15 @@
       const nextBtn = document.getElementById('btn-next-to-blend');
       nextBtn.style.display = 'none';
 
-      // Setup stroke path checkpoints
       requiredTracePoints = data.strokePath.map(pt => ({ x: pt[0], y: pt[1], hit: false }));
       tracePointsHit = 0;
 
-      // Position glowing guide star at start point
       const guideStar = document.getElementById('trace-star-guide');
       const firstPt = requiredTracePoints[0];
       guideStar.style.left = `${firstPt.x}px`;
       guideStar.style.top = `${firstPt.y}px`;
 
-      // Draw dashed guideline on background
+      // Draw dashed guideline
       ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
       ctx.lineWidth = 26;
       ctx.lineCap = 'round';
@@ -2252,7 +2333,6 @@
       ctx.stroke();
       ctx.setLineDash([]);
 
-      // Attach Touch & Mouse Drawing Handlers
       function getPos(e) {
         const rect = canvas.getBoundingClientRect();
         const clientX = e.touches ? e.touches[0].clientX : e.clientX;
@@ -2279,7 +2359,6 @@
         if (!isTracing) return;
         const pos = getPos(e);
         
-        // Draw solid green stroke
         ctx.strokeStyle = '#06d6a0';
         ctx.lineWidth = 22;
         ctx.lineCap = 'round';
@@ -2287,14 +2366,12 @@
         ctx.lineTo(pos.x, pos.y);
         ctx.stroke();
 
-        // Check if cursor passed near checkpoint
-        requiredTracePoints.forEach((pt, idx) => {
+        requiredTracePoints.forEach((pt) => {
           if (!pt.hit) {
             const dist = Math.hypot(pos.x - pt.x, pos.y - pt.y);
             if (dist < 40) {
               pt.hit = true;
               tracePointsHit++;
-              // Move star to next point
               const nextPt = requiredTracePoints.find(p => !p.hit);
               if (nextPt) {
                 guideStar.style.left = `${nextPt.x}px`;
@@ -2311,7 +2388,7 @@
       if (tracePointsHit >= requiredTracePoints.length * 0.7) {
         AudioSys.playPhoneticSound(data.letter);
         earnStar(3);
-        spawnConfetti(window.innerWidth / 2, window.innerHeight / 2, 40);
+        spawnConfetti(window.innerWidth / 2, window.innerHeight / 2, 35);
         document.getElementById('btn-next-to-blend').style.display = 'inline-flex';
       }
     }
@@ -2327,7 +2404,7 @@
     // STEP 4: SOUND BLENDING (CVC MACHINE)
     function loadStep4Blending() {
       const data = ALPHABET_DATA[GameState.activeNodeIdx];
-      const letters = data.word.split(''); // e.g. ['a', 'n', 't'] or ['s', 'u', 'n']
+      const letters = data.word.split('');
 
       const tray = document.getElementById('blend-blocks-tray');
       tray.innerHTML = '';
@@ -2353,7 +2430,7 @@
         block.dataset.letter = char;
         block.dataset.idx = idx;
 
-        // CRITICAL REQUIREMENT: INDIVIDUAL CLICK TO PLAY PHONETIC SOUND (<1.0s)
+        // Individual click to hear pure human phonetics
         block.addEventListener('click', () => {
           block.classList.add('playing-sound');
           AudioSys.playPhoneticSound(char);
@@ -2367,7 +2444,6 @@
           e.dataTransfer.setData('text/plain', JSON.stringify({ char, idx }));
         });
 
-        // Tap-to-slot helper for tablet touchscreens
         block.addEventListener('dblclick', () => {
           placeLetterInSlot(char, idx, block);
         });
@@ -2375,7 +2451,6 @@
         tray.appendChild(block);
       });
 
-      // Conveyor Slot Drag Handlers
       slots.forEach((slot, sIdx) => {
         slot.ondragover = (e) => e.preventDefault();
         slot.ondrop = (e) => {
@@ -2397,7 +2472,6 @@
         blockEl.style.visibility = 'hidden';
         AudioSys.playPop();
 
-        // Individual click in slot
         emptySlot.querySelector('.blend-letter-block').onclick = () => {
           AudioSys.playPhoneticSound(char);
         };
@@ -2410,25 +2484,23 @@
     }
 
     function triggerFullBlendAnimation(word, letters) {
-      // Sequential phonetics playback: /s/ -> /u/ -> /n/ -> "SUN!"
+      // Sequential phonetics playback with human speech
       letters.forEach((char, i) => {
         setTimeout(() => {
           AudioSys.playPhoneticSound(char);
           const slots = document.querySelectorAll('.blend-slot');
           if (slots[i]) {
-            slots[i].style.transform = 'scale(1.2)';
+            slots[i].style.transform = 'scale(1.15)';
             setTimeout(() => slots[i].style.transform = 'scale(1)', 350);
           }
         }, i * 700);
       });
 
       setTimeout(() => {
-        // Play full blended word
         AudioSys.playWord(word);
         earnStar(4);
         GameState.completedNodes.add(GameState.activeNodeIdx);
 
-        // Show celebration card
         const resultCard = document.getElementById('blended-result-card');
         resultCard.style.display = 'flex';
         document.getElementById('blended-word-illustration').innerHTML = getWordSvg(word);
@@ -2444,7 +2516,6 @@
     }
 
     document.getElementById('btn-next-finish-node').addEventListener('click', () => {
-      // Advance to next letter node if available
       if (GameState.activeNodeIdx < ALPHABET_DATA.length - 1) {
         GameState.activeNodeIdx++;
       }
@@ -2458,7 +2529,6 @@
       const targetWord = SIGHT_WORDS[GameState.alienTargetIdx];
       document.getElementById('alien-target-word').innerText = targetWord.toUpperCase();
 
-      // Audio prompt: "Find the word: [targetWord]"
       setTimeout(() => AudioSys.playWord(targetWord), 300);
 
       document.getElementById('btn-replay-alien-prompt').onclick = () => {
@@ -2480,7 +2550,7 @@
         wrap.innerHTML = `
           <button class="alien-character-btn">
             <div class="alien-sign">${w.toUpperCase()}</div>
-            <svg width="70" height="70" viewBox="0 0 100 100">
+            <svg width="65" height="65" viewBox="0 0 100 100">
               <circle cx="50" cy="50" r="35" fill="#06d6a0"/>
               <circle cx="50" cy="20" r="8" fill="#ffd166"/>
               <line x1="50" y1="20" x2="50" y2="35" stroke="#06d6a0" stroke-width="4"/>
@@ -2495,14 +2565,14 @@
         wrap.querySelector('.alien-character-btn').addEventListener('click', () => {
           if (w === targetWord) {
             AudioSys.playStarDing();
-            spawnConfetti(window.innerWidth / 2, window.innerHeight / 2, 45);
+            spawnConfetti(window.innerWidth / 2, window.innerHeight / 2, 40);
             GameState.alienScore++;
-            wrap.style.transform = 'translateY(-20px) scale(1.15)';
+            wrap.style.transform = 'translateY(-16px) scale(1.1)';
             setTimeout(loadAlienMinigame, 1200);
             checkRewardUnlocks();
           } else {
             AudioSys.playWrongWobble();
-            wrap.style.transform = 'translateY(15px) scale(0.9)';
+            wrap.style.transform = 'translateY(12px) scale(0.92)';
             setTimeout(() => wrap.style.transform = 'none', 400);
           }
         });
@@ -2540,7 +2610,7 @@
 
         card.innerHTML = `
           <div class="reward-icon-box">
-            <span style="font-size: 2.5rem;">${reward.icon}</span>
+            <span style="font-size: 2.2rem;">${reward.icon}</span>
           </div>
           <div class="reward-title">${reward.name}</div>
           <div class="reward-cond">${reward.unlocked ? '✅ Unlocked' : reward.desc}</div>
@@ -2583,9 +2653,13 @@
       renderRewardsGrid('wearables');
     });
 
-    // --- 13. GLOBAL EVENT LISTENERS & START ---
+    // --- 13. GLOBAL EVENT LISTENERS & START GAME TRIGGER ---
     document.getElementById('btn-start-game').addEventListener('click', () => {
-      AudioSys.init();
+      // 1. Trigger background music loop
+      AudioSys.startGentleBGM();
+      // 2. Play warm welcoming human teacher voice
+      AudioSys.playWelcomeVoice();
+      // 3. Move to Treasure Map
       showScreen('screen-map');
     });
 
