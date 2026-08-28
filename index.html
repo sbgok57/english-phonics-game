@@ -1,691 +1,567 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Phonics Adventure - Magical 2D Learning Journey</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Phonics Treasure Quest - 1st Grade Phonics, Tracing & Reading Adventure</title>
+  <!-- Google Fonts for Child-Friendly Round Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  
   <style>
-    :root {
-      --primary: #ff477e;
-      --primary-light: #ff7096;
-      --secondary: #ffb703;
-      --accent: #06d6a0;
-      --blue: #118ab2;
-      --dark: #073b4c;
-      --purple: #7209b7;
-      --sky: #4cc9f0;
-      --bg-cream: #fff9ec;
-      --font-main: "Fredoka", "Comic Neue", "Comic Sans MS", "Chalkboard SE", "Segoe UI Rounded", -apple-system, sans-serif;
-      --star-empty: #ffffff;
-      --star-gold: #ffd166;
-    }
-
+    /* ==================================================== */
+    /* 1. UNIVERSAL BOX-SIZING & BASE STYLES                */
+    /* ==================================================== */
     *, *::before, *::after {
-      box-sizing: border-box;
+      box-sizing: border-box !important;
       margin: 0;
       padding: 0;
       user-select: none;
       -webkit-user-select: none;
-      touch-action: manipulation;
+      -webkit-touch-callout: none;
     }
 
-    html, body {
+    body, html {
       width: 100%;
-      min-height: 100vh;
-      overflow-x: hidden;
-      font-family: var(--font-main);
-      background: #1a0826;
-      color: #333;
-      display: flex;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Fredoka', 'Comic Sans MS', sans-serif;
+      background: #10002b;
+      color: #333333;
+    }
+
+    /* Universal text containment to ensure NO text ever spills out */
+    p, span, h1, h2, h3, h4, h5, h6, button, div, a, label {
+      box-sizing: border-box;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Screen transitions and layout */
+    .game-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: none;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+      padding: 12px;
     }
 
-    /* Universal text containment to prevent any overflow */
-    h1, h2, h3, h4, p, span, div, button, a {
-      word-wrap: break-word;
-      overflow-wrap: break-word;
-      box-sizing: border-box;
-    }
-
-    /* CLICK VISUAL FEEDBACK FLASH ANIMATION */
-    @keyframes audioPulse {
-      0% { transform: scale(1); filter: brightness(1); }
-      50% { transform: scale(1.12); filter: brightness(1.25) drop-shadow(0 0 14px #ffd166); }
-      100% { transform: scale(1); filter: brightness(1); }
-    }
-
-    .audio-pulse-active {
-      animation: audioPulse 0.35s ease-out !important;
+    .game-screen.active-screen {
+      display: flex !important;
     }
 
     /* ==================================================== */
-    /* FULL-SCREEN STRICT START GAME OVERLAY (GESTURE LOCK) */
+    /* 2. FULL-SCREEN START OVERLAY (GESTURE LOCK)          */
     /* ==================================================== */
-    #start-game-overlay, #startOverlay {
+    #start-overlay, #start-game-overlay, #startOverlay {
       position: fixed;
-      top: 0; 
-      left: 0; 
-      width: 100%; 
-      height: 100%;
-      background-color: #87CEEB; /* Child-friendly sky blue */
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #87CEEB; /* Child-friendly sky blue */
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      z-index: 9999;
+      z-index: 99999;
+      padding: 20px;
+      text-align: center;
     }
 
-    #btn-start-game, .start-game-btn {
-      padding: 20px 40px;
-      font-size: 30px;
-      font-weight: bold;
+    .start-card {
+      background: rgba(255, 255, 255, 0.94);
+      border-radius: 36px;
+      padding: clamp(20px, 4vw, 40px);
+      max-width: 540px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.2);
+      border: 5px solid #ffffff;
+      animation: gentlePop 0.8s ease-out;
+    }
+
+    @keyframes gentlePop {
+      0% { transform: scale(0.85); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    #btn-start-game, #startGameBtn, .start-game-btn {
+      padding: 18px 48px;
+      font-size: clamp(22px, 5vw, 32px);
+      font-weight: 900;
       background-color: #FFD700;
       color: #3d0066;
-      border: none;
-      border-radius: 15px;
+      border: 4px solid #ffffff;
+      border-radius: 60px;
       cursor: pointer;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      box-shadow: 0 8px 0 #d4a017, 0 12px 25px rgba(0,0,0,0.25);
       transition: all 0.15s ease;
       font-family: inherit;
+      letter-spacing: 1px;
+      animation: pulseStart 1.8s infinite ease-in-out;
+      white-space: nowrap;
     }
 
-    #btn-start-game:hover, .start-game-btn:hover {
-      transform: scale(1.05);
-      background-color: #ffe033;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    #btn-start-game:hover, #startGameBtn:hover {
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 10px 0 #d4a017, 0 16px 30px rgba(0,0,0,0.3);
     }
 
-    #btn-start-game:active, .start-game-btn:active {
-      transform: scale(0.96);
+    #btn-start-game:active, #startGameBtn:active {
+      transform: translateY(6px) scale(0.97);
+      box-shadow: 0 2px 0 #d4a017, 0 6px 10px rgba(0,0,0,0.2);
     }
 
-    /* APP CONTAINER */
+    @keyframes pulseStart {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    /* ==================================================== */
+    /* 3. APP CONTAINER & GLOBAL HEADER                     */
+    /* ==================================================== */
     #app-container {
       width: 100%;
-      max-width: 1200px;
-      min-height: 100vh;
+      height: 100%;
       display: flex;
       flex-direction: column;
       position: relative;
-      background: var(--bg-cream);
-      box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
-      overflow-x: hidden;
     }
 
-    /* TOP HEADER BAR */
-    header {
-      background: linear-gradient(135deg, #ff4d6d, #7209b7);
-      color: white;
-      padding: 10px 16px;
+    header.global-header {
+      width: 100%;
+      height: 64px;
+      background: rgba(24, 0, 48, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 3px solid #ffb703;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      z-index: 100;
-      position: sticky;
-      top: 0;
-      width: 100%;
-      box-sizing: border-box;
+      padding: 8px 16px;
+      z-index: 1000;
+      gap: 8px;
     }
 
     .header-left, .header-right {
       display: flex;
       align-items: center;
       gap: 10px;
-      flex-shrink: 0;
-    }
-
-    .header-center {
-      text-align: center;
-      flex-grow: 1;
-      min-width: 0;
-      padding: 0 8px;
-    }
-
-    .activity-badge {
-      background: rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(4px);
-      padding: 6px 14px;
-      border-radius: 30px;
-      font-size: clamp(0.85rem, 2.2vw, 1.15rem);
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      border: 2px solid rgba(255, 255, 255, 0.4);
-      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-      max-width: 100%;
-      text-align: center;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     .btn-icon {
-      background: rgba(255, 255, 255, 0.25);
-      border: 2px solid rgba(255, 255, 255, 0.6);
+      background: rgba(255, 255, 255, 0.15);
+      border: 2px solid rgba(255, 255, 255, 0.4);
       color: white;
-      font-size: 1.2rem;
-      font-weight: bold;
-      width: 42px;
-      height: 42px;
+      font-size: 1.4rem;
       border-radius: 50%;
+      width: 44px;
+      height: 44px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      pointer-events: auto;
-      flex-shrink: 0;
-      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: all 0.2s;
     }
 
-    .btn-icon:hover, .btn-icon:active {
-      transform: scale(1.12);
-      background: rgba(255, 255, 255, 0.45);
+    .btn-icon:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.08);
     }
 
-    /* STAR PROGRESSION BAR */
-    .star-meter {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      background: rgba(0, 0, 0, 0.2);
-      padding: 4px 8px;
-      border-radius: 20px;
-      border: 1px solid rgba(255,255,255,0.3);
-      flex-shrink: 0;
+    .btn-icon:active {
+      transform: scale(0.95);
     }
 
-    .star-icon {
-      width: 24px;
-      height: 24px;
-      fill: var(--star-empty);
-      stroke: #d89600;
-      stroke-width: 2px;
-      opacity: 0.4;
-      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .star-icon.earned {
-      fill: var(--star-gold);
-      opacity: 1;
-      stroke: #b37400;
-      transform: scale(1.2);
-      filter: drop-shadow(0 0 6px rgba(255, 209, 102, 0.9));
-      animation: starPop 0.6s ease-out;
-    }
-
-    @keyframes starPop {
-      0% { transform: scale(0.5) rotate(-30deg); }
-      60% { transform: scale(1.4) rotate(15deg); }
-      100% { transform: scale(1.2) rotate(0deg); }
-    }
-
-    .total-stars-pill {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: #ffb703;
-      color: #5c3800;
-      font-weight: 800;
-      font-size: 0.95rem;
-      padding: 4px 10px;
-      border-radius: 20px;
-      border: 2px solid #fff;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.15);
-      flex-shrink: 0;
-      cursor: pointer;
-      pointer-events: auto;
-    }
-
-    /* SCREEN WRAPPER */
-    .screen {
-      display: none;
-      flex: 1;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      width: 100%;
-      padding: 16px;
-      overflow-y: auto;
-      box-sizing: border-box;
-    }
-
-    .screen.active {
-      display: flex;
-      animation: fadeIn 0.4s ease-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* BIG BUTTONS */
-    .btn-primary {
-      background: linear-gradient(180deg, #06d6a0, #048866);
-      color: white;
-      border: 3px solid #ffffff;
-      padding: clamp(10px, 2vw, 14px) clamp(18px, 3vw, 28px);
-      font-size: clamp(1rem, 2.2vw, 1.3rem);
-      font-weight: 800;
-      border-radius: 50px;
-      cursor: pointer;
-      pointer-events: auto;
-      box-shadow: 0 6px 0 #025741, 0 10px 15px rgba(0,0,0,0.25);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      transition: all 0.15s ease;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      font-family: inherit;
-      max-width: 100%;
-      text-align: center;
-      word-break: break-word;
-      white-space: normal;
-      position: relative;
-      z-index: 10;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 0 #025741, 0 14px 20px rgba(0,0,0,0.3);
-    }
-
-    .btn-primary:active {
-      transform: translateY(4px);
-      box-shadow: 0 2px 0 #025741, 0 4px 8px rgba(0,0,0,0.2);
-    }
-
-    .btn-pulse {
-      animation: pulseBtn 1.6s infinite ease-in-out;
-    }
-
-    @keyframes pulseBtn {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-    }
-
-    /* "CLICK TO HEAR" STATIC LABEL */
-    .click-to-hear {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      font-size: clamp(0.85rem, 2vw, 1.05rem);
-      font-weight: 700;
-      color: #7209b7;
-      background: #f3e8ff;
-      border: 2px dashed #9d4edd;
+    .header-stars-box {
+      background: rgba(255, 255, 255, 0.15);
+      border: 2px solid #ffd166;
+      border-radius: 24px;
       padding: 6px 14px;
-      border-radius: 20px;
-      margin-top: 8px;
-      animation: gentleBounce 2.5s infinite ease-in-out;
-      text-align: center;
-      max-width: 100%;
-      cursor: pointer;
-      pointer-events: auto;
-    }
-
-    @keyframes gentleBounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-3px); }
-    }
-
-    /* ---------------------------------------------------- */
-    /* 2. INTERACTIVE TREASURE MAP                          */
-    /* ---------------------------------------------------- */
-    #screen-map {
-      background: #240046;
-      padding: 0;
-      justify-content: flex-start;
-      overflow-x: auto;
-      overflow-y: auto;
-    }
-
-    .map-container {
-      position: relative;
-      width: 100%;
-      min-width: 900px;
-      min-height: 1400px;
-      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1400" viewBox="0 0 900 1400"><defs><linearGradient id="ocean" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="%231a535c"/><stop offset="30%" stop-color="%234ecdc4"/><stop offset="65%" stop-color="%233a0ca3"/><stop offset="100%" stop-color="%2310002b"/></linearGradient><radialGradient id="islandGrad" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="%2380ed99"/><stop offset="85%" stop-color="%2357cc99"/><stop offset="100%" stop-color="%2338a3a5"/></radialGradient></defs><rect width="900" height="1400" fill="url(%23ocean)"/><path d="M 80 120 Q 250 80 400 160 Q 550 250 480 380 Q 300 460 120 380 Z" fill="url(%23islandGrad)" opacity="0.9"/><path d="M 60 100 Q 260 60 420 150 Q 570 240 500 400 Q 300 480 100 400 Z" fill="none" stroke="%23ffe6a7" stroke-width="8" opacity="0.6"/><path d="M 450 480 Q 750 420 820 580 Q 860 760 650 820 Q 400 780 420 620 Z" fill="url(%23islandGrad)" opacity="0.9"/><path d="M 430 460 Q 770 400 840 570 Q 880 780 640 840 Q 380 800 400 600 Z" fill="none" stroke="%23ffe6a7" stroke-width="8" opacity="0.6"/><path d="M 80 840 Q 320 780 400 950 Q 450 1100 240 1180 Q 60 1120 50 960 Z" fill="url(%23islandGrad)" opacity="0.9"/><path d="M 60 820 Q 340 760 420 940 Q 470 1120 230 1200 Q 40 1140 30 940 Z" fill="none" stroke="%23ffe6a7" stroke-width="8" opacity="0.6"/><path d="M 460 1080 Q 780 1000 850 1180 Q 880 1340 680 1380 Q 450 1340 440 1220 Z" fill="%237209b7" opacity="0.9"/><path d="M 440 1060 Q 800 980 870 1170 Q 900 1360 670 1400 Q 430 1360 420 1200 Z" fill="none" stroke="%23ff9e00" stroke-width="8" opacity="0.7"/><circle cx="120" cy="620" r="45" fill="none" stroke="%23ffd166" stroke-width="3" stroke-dasharray="6,6"/><text x="110" y="628" font-size="28" fill="%23ffd166" font-family="sans-serif" font-weight="bold">N</text></svg>');
-      background-size: 100% 100%;
-    }
-
-    .map-header-bar {
-      position: sticky;
-      top: 0;
-      left: 0;
-      right: 0;
-      background: rgba(16, 0, 43, 0.88);
-      backdrop-filter: blur(8px);
-      padding: 10px 16px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      z-index: 50;
-      border-bottom: 2px solid #ffb703;
-      gap: 10px;
+      gap: 6px;
+      color: #ffd166;
+      font-weight: 800;
+      font-size: 1.15rem;
     }
 
-    .map-svg-path {
+    .header-trophy-btn {
+      background: linear-gradient(135deg, #ffd166, #ff70a6);
+      border: 2px solid #ffffff;
+      border-radius: 24px;
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #240046;
+      font-weight: 900;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(255, 112, 166, 0.4);
+      transition: all 0.2s;
+    }
+
+    .header-trophy-btn:hover {
+      transform: scale(1.05);
+    }
+
+    /* ==================================================== */
+    /* 4. TREASURE MAP SCREEN (SAGA STYLE)                  */
+    /* ==================================================== */
+    #screen-map {
+      background: #1a0933;
+      padding: 0;
+      overflow-y: auto;
+      overflow-x: auto;
+    }
+
+    .map-canvas-container {
+      position: relative;
+      width: 100%;
+      min-width: 860px;
+      min-height: 1800px;
+      background: radial-gradient(circle at 50% 20%, #2b0938 0%, #10002b 70%, #050014 100%);
+      background-size: 100% 100%;
+      padding-bottom: 120px;
+    }
+
+    .map-svg-curve {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      pointer-events: none !important;
-      z-index: 5;
+      pointer-events: none;
+      z-index: 1;
     }
 
-    .map-node {
+    .map-node-item {
       position: absolute;
       transform: translate(-50%, -50%);
-      z-index: 10;
-      cursor: pointer;
-      pointer-events: auto;
       display: flex;
       flex-direction: column;
       align-items: center;
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: pointer;
+      z-index: 10;
+      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    .map-node:hover {
+    .map-node-item:hover {
       transform: translate(-50%, -55%) scale(1.08);
-      z-index: 20;
+      z-index: 25;
     }
 
-    .node-circle {
-      width: 64px;
-      height: 64px;
+    .node-circle-badge {
+      width: 68px;
+      height: 68px;
       border-radius: 50%;
       background: linear-gradient(135deg, #ffd166, #ff70a6);
       border: 4px solid #ffffff;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.35);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #240046;
+    }
+
+    .map-node-item.completed .node-circle-badge {
+      background: linear-gradient(135deg, #06d6a0, #118ab2);
+      color: #ffffff;
+    }
+
+    .map-node-item.locked {
+      filter: grayscale(0.85) opacity(0.65);
+      cursor: not-allowed;
+    }
+
+    .node-title-banner {
+      background: #ffffff;
+      color: #240046;
+      font-size: 0.8rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 12px;
+      border: 2px solid #7209b7;
+      margin-top: 4px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      white-space: nowrap;
+    }
+
+    .node-play-btn {
+      background: #06d6a0;
+      color: white;
+      font-size: 0.72rem;
+      font-weight: 900;
+      padding: 3px 8px;
+      border-radius: 10px;
+      border: 1px solid white;
+      margin-top: 3px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      box-shadow: 0 2px 6px rgba(6, 214, 160, 0.4);
+    }
+
+    .node-stars-row {
+      display: flex;
+      gap: 2px;
+      margin-top: 2px;
+    }
+
+    .star-icon {
+      font-size: 14px;
+      color: #ffffff; /* Empty white star */
+      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+    }
+
+    .star-icon.earned {
+      color: #ffd166 !important; /* Yellow earned star */
+    }
+
+    /* "YOU ARE HERE" AVATAR */
+    #you-are-here {
+      position: absolute;
+      transform: translate(-50%, -100%);
+      z-index: 50;
+      pointer-events: none;
+      transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .yah-tag {
+      background: #ff0054;
+      color: white;
+      font-size: 0.85rem;
+      font-weight: 900;
+      padding: 3px 10px;
+      border-radius: 16px;
+      border: 2px solid white;
+      box-shadow: 0 4px 10px rgba(255, 0, 84, 0.5);
+      animation: yahBounce 1.2s infinite ease-in-out;
+      white-space: nowrap;
+    }
+
+    @keyframes yahBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* ==================================================== */
+    /* 5. 4-STEP ACTIVITY CARDS & UI                        */
+    /* ==================================================== */
+    .activity-container {
+      width: 100%;
+      max-width: 680px;
+      margin: 16px auto;
+      background: #ffffff;
+      border-radius: 36px;
+      padding: clamp(16px, 4vw, 32px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+      border: 5px solid #ffd166;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      text-align: center;
+    }
+
+    .step-progress-header {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f4ecff;
+      border-radius: 20px;
+      padding: 8px 16px;
+    }
+
+    .step-indicator-tag {
+      background: #7209b7;
+      color: white;
+      font-weight: 800;
+      font-size: 0.9rem;
+      padding: 4px 12px;
+      border-radius: 14px;
+    }
+
+    .step-stars-display {
+      display: flex;
+      gap: 4px;
+    }
+
+    .step-star {
+      font-size: 22px;
+      color: #d1d5db; /* White/gray outline empty */
+      transition: all 0.3s;
+    }
+
+    .step-star.active {
+      color: #ffd166; /* Bright yellow */
+      transform: scale(1.2);
+    }
+
+    .instruction-banner {
+      font-size: clamp(1.1rem, 3vw, 1.4rem);
+      font-weight: 800;
+      color: #240046;
+      line-height: 1.3;
+    }
+
+    /* Click to hear pulsing badges */
+    .click-to-hear-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fdf2f8;
+      border: 2px dashed #ff477e;
+      color: #ff477e;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-top: 6px;
+      cursor: pointer;
+    }
+
+    .pulse-glow {
+      animation: audioPulseGlow 0.35s ease-out !important;
+    }
+
+    @keyframes audioPulseGlow {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.12); filter: drop-shadow(0 0 12px #ff477e); }
+      100% { transform: scale(1); }
+    }
+
+    /* Step 1 Cards */
+    .learn-items-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      width: 100%;
+      flex-wrap: wrap;
+    }
+
+    .learn-card-box {
+      background: #faf5ff;
+      border: 3px solid #e9d5ff;
+      border-radius: 24px;
+      padding: 16px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .learn-card-box:hover {
+      transform: scale(1.05);
+      border-color: #7209b7;
+      background: #f3e8ff;
+    }
+
+    .learn-letter-large {
+      font-size: clamp(4rem, 10vw, 6rem);
+      font-weight: 900;
+      color: #7209b7;
+      line-height: 1;
+    }
+
+    .learn-word-text {
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 900;
+      color: #240046;
+    }
+
+    .learn-icon-frame {
+      width: 110px;
+      height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Step 2 Bubble Matching */
+    .match-playground {
+      position: relative;
+      width: 100%;
+      min-height: 260px;
+      background: radial-gradient(circle at center, #f0fdf4 0%, #dcfce7 100%);
+      border-radius: 24px;
+      border: 3px dashed #06d6a0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .match-target-drop {
+      background: white;
+      border: 4px dashed #7209b7;
+      border-radius: 24px;
+      padding: 16px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      z-index: 5;
+    }
+
+    .phonics-bubble-float {
+      position: absolute;
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ffffff 0%, #ffd166 60%, #fb8500 100%);
+      border: 3px solid white;
+      box-shadow: 0 8px 16px rgba(251, 133, 0, 0.4);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 2rem;
       font-weight: 900;
       color: #3d0066;
-    }
-
-    .map-node.completed .node-circle {
-      background: linear-gradient(135deg, #06d6a0, #118ab2);
-      color: white;
-    }
-
-    .map-node.locked {
-      filter: grayscale(0.85) opacity(0.7);
-      cursor: not-allowed;
-    }
-
-    .node-banner {
-      background: rgba(255, 255, 255, 0.96);
-      padding: 4px 8px;
-      border-radius: 12px;
-      font-size: clamp(0.72rem, 1.5vw, 0.82rem);
-      font-weight: 800;
-      color: #240046;
-      max-width: 150px;
-      width: max-content;
-      text-align: center;
-      white-space: normal;
-      word-break: break-word;
-      overflow: hidden;
-      margin-top: 6px;
-      border: 2px solid #7209b7;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.25);
-      line-height: 1.2;
-    }
-
-    .node-stars {
-      display: flex;
-      gap: 2px;
-      margin-top: 3px;
-    }
-
-    .node-stars span {
-      font-size: 13px;
-      color: #ffd166;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.6);
-    }
-
-    /* "YOU ARE HERE" AVATAR MARKER */
-    #you-are-here-marker {
-      position: absolute;
-      transform: translate(-50%, -100%);
-      z-index: 30;
-      pointer-events: none !important;
-      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .yah-badge {
-      background: #ff0054;
-      color: white;
-      font-size: 0.85rem;
-      font-weight: 900;
-      padding: 4px 12px;
-      border-radius: 20px;
-      border: 2px solid white;
-      box-shadow: 0 4px 10px rgba(255, 0, 84, 0.5);
-      animation: bounceYah 1.2s infinite ease-in-out;
-      white-space: nowrap;
-    }
-
-    @keyframes bounceYah {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-    }
-
-    .yah-character {
-      width: 60px;
-      height: 60px;
-      filter: drop-shadow(0 6px 8px rgba(0,0,0,0.4));
-    }
-
-    /* ---------------------------------------------------- */
-    /* 3. STEP 1: LEARN THE SOUND (INTRO)                   */
-    /* ---------------------------------------------------- */
-    #screen-intro {
-      background: radial-gradient(circle at center, #ffffff 0%, #ffeedb 100%);
-    }
-
-    .card-large {
-      background: white;
-      border-radius: 36px;
-      padding: clamp(20px, 4vw, 32px);
-      box-shadow: 0 16px 36px rgba(114, 9, 183, 0.15);
-      border: 4px solid #ffb703;
-      max-width: 650px;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 18px;
-      text-align: center;
-      overflow: hidden;
-      box-sizing: border-box;
-      position: relative;
-      z-index: 5;
-    }
-
-    .intro-pair {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: clamp(16px, 3vw, 36px);
-      width: 100%;
-      flex-wrap: wrap;
-    }
-
-    .letter-interactive-box, .word-interactive-box {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       cursor: pointer;
-      pointer-events: auto !important;
-      padding: 16px 20px;
-      border-radius: 24px;
-      background: #f8f9fa;
-      border: 3px solid #e9ecef;
-      max-width: 100%;
-      position: relative;
+      animation: floatBubble 3s infinite ease-in-out alternate;
       z-index: 10;
-      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .letter-interactive-box:hover, .word-interactive-box:hover {
-      transform: scale(1.05);
-      background: #fff0f5;
-      border-color: #ff477e;
-      box-shadow: 0 10px 25px rgba(255, 71, 126, 0.25);
-    }
-
-    .letter-interactive-box:active, .word-interactive-box:active {
-      transform: scale(0.96);
-    }
-
-    .big-letter-display {
-      font-size: clamp(4rem, 12vw, 6.5rem);
-      font-weight: 900;
-      color: #7209b7;
-      line-height: 1;
-      text-shadow: 0 4px 8px rgba(114, 9, 183, 0.2);
-      text-align: center;
-      pointer-events: auto;
-    }
-
-    .anchor-img-box {
-      width: clamp(100px, 18vw, 140px);
-      height: clamp(100px, 18vw, 140px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      pointer-events: auto;
-    }
-
-    .big-word-display {
-      font-size: clamp(2rem, 6vw, 2.8rem);
-      font-weight: 800;
-      color: #073b4c;
-      letter-spacing: 2px;
-      text-align: center;
-      pointer-events: auto;
-    }
-
-    /* ---------------------------------------------------- */
-    /* 4. STEP 2: MATCH SOUND (BUBBLE GAME)                 */
-    /* ---------------------------------------------------- */
-    #screen-match {
-      background: radial-gradient(circle at center, #e0f7fa 0%, #80deea 100%);
-    }
-
-    .match-playfield {
-      position: relative;
-      width: 100%;
-      max-width: 650px;
-      height: 360px;
-      background: white;
-      border-radius: 36px;
-      border: 4px solid #06d6a0;
-      box-shadow: 0 16px 36px rgba(6, 214, 160, 0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      box-sizing: border-box;
-      position: relative;
-      z-index: 5;
-    }
-
-    .target-drop-zone {
-      width: clamp(130px, 25vw, 170px);
-      height: clamp(130px, 25vw, 170px);
-      border-radius: 50%;
-      background: #e8f5e9;
-      border: 4px dashed #06d6a0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 5;
-      transition: all 0.3s ease;
-      text-align: center;
-    }
-
-    .target-drop-zone.drag-over {
-      transform: scale(1.12);
-      background: #c8e6c9;
-      border-color: #2e7d32;
-    }
-
-    .phonics-bubble {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #ffffff, #4cc9f0 60%, #4361ee);
-      color: white;
-      border: 3px solid white;
-      box-shadow: 0 8px 20px rgba(67, 97, 238, 0.4);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.2rem;
-      font-weight: 900;
-      cursor: grab;
-      pointer-events: auto !important;
-      position: absolute;
-      transition: transform 0.15s ease;
-      z-index: 10;
-      animation: floatBubble 3s infinite ease-in-out;
-    }
-
-    .phonics-bubble:active {
-      cursor: grabbing;
-      transform: scale(1.15);
-      z-index: 20;
     }
 
     @keyframes floatBubble {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-12px); }
     }
 
-    /* ---------------------------------------------------- */
-    /* 5. STEP 3: LETTER TRACING                            */
-    /* ---------------------------------------------------- */
-    #screen-trace {
-      background: radial-gradient(circle at center, #240046 0%, #10002b 100%);
-      color: white;
-    }
-
-    .tracing-board {
+    /* Step 3 Tracing */
+    .trace-wrapper {
       position: relative;
-      width: clamp(280px, 80vw, 360px);
-      height: clamp(300px, 80vw, 380px);
-      background: #190028;
-      border-radius: 36px;
-      border: 4px solid #ff70a6;
-      box-shadow: 0 0 40px rgba(255, 112, 166, 0.4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 320px;
+      height: 320px;
+      background: #faf5ff;
+      border: 4px solid #7209b7;
+      border-radius: 28px;
+      margin: 0 auto;
       touch-action: none;
-      overflow: hidden;
-      box-sizing: border-box;
-      position: relative;
-      z-index: 5;
     }
 
     #trace-canvas {
@@ -694,468 +570,189 @@
       left: 0;
       width: 100%;
       height: 100%;
-      border-radius: 32px;
-      z-index: 5;
-      pointer-events: auto;
-    }
-
-    .trace-start-star {
-      position: absolute;
-      width: 32px;
-      height: 32px;
-      pointer-events: none !important;
-      z-index: 15;
-      animation: starGuidePulse 1s infinite alternate;
-    }
-
-    @keyframes starGuidePulse {
-      from { transform: translate(-50%, -50%) scale(0.9); filter: drop-shadow(0 0 4px #ffd166); }
-      to { transform: translate(-50%, -50%) scale(1.3); filter: drop-shadow(0 0 12px #ffb703); }
-    }
-
-    /* ---------------------------------------------------- */
-    /* 6. STEP 4: SOUND BLENDING (CVC FACTORY)              */
-    /* ---------------------------------------------------- */
-    #screen-blend {
-      background: radial-gradient(circle at center, #fff1f2 0%, #fecdd3 100%);
-    }
-
-    .blending-conveyor-card {
-      background: white;
-      border-radius: 36px;
-      padding: clamp(16px, 3vw, 24px);
-      border: 4px solid #f43f5e;
-      box-shadow: 0 16px 36px rgba(244, 63, 94, 0.2);
-      max-width: 680px;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-      box-sizing: border-box;
-      overflow: hidden;
-      position: relative;
-      z-index: 5;
-    }
-
-    .blend-blocks-tray {
-      display: flex;
-      justify-content: center;
-      gap: clamp(10px, 2vw, 18px);
-      width: 100%;
-      flex-wrap: wrap;
-    }
-
-    .blend-letter-block {
-      width: clamp(64px, 15vw, 80px);
-      height: clamp(74px, 18vw, 90px);
-      background: linear-gradient(180deg, #ffb703, #fb8500);
-      color: white;
-      border: 3px solid white;
-      border-radius: 20px;
-      box-shadow: 0 6px 0 #d97706, 0 8px 15px rgba(0,0,0,0.15);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-size: clamp(2.2rem, 6vw, 3rem);
-      font-weight: 900;
-      cursor: pointer;
-      pointer-events: auto !important;
-      position: relative;
-      z-index: 10;
-      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .blend-letter-block:hover {
-      transform: translateY(-3px) scale(1.05);
-    }
-
-    .blend-letter-block:active {
-      transform: translateY(2px) scale(0.96);
-      cursor: grabbing;
-    }
-
-    .blend-letter-block.playing-sound {
-      background: linear-gradient(180deg, #06d6a0, #048866);
-      box-shadow: 0 0 20px #06d6a0;
-      transform: scale(1.12);
-    }
-
-    .blend-slots-conveyor {
-      background: #2b2d42;
       border-radius: 24px;
-      padding: 14px 20px;
+    }
+
+    /* Step 4 Blending */
+    .blend-tray {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: clamp(10px, 2vw, 18px);
-      width: 100%;
-      border: 3px solid #8d99ae;
-      box-sizing: border-box;
-    }
-
-    .blend-slot {
-      width: clamp(68px, 16vw, 84px);
-      height: clamp(78px, 19vw, 94px);
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 3px dashed #edf2f4;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease;
-      position: relative;
-      z-index: 10;
-    }
-
-    .blend-slot.filled {
-      border-style: solid;
-      border-color: #06d6a0;
-      background: rgba(6, 214, 160, 0.2);
-    }
-
-    .blended-result-card {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      width: 100%;
-      text-align: center;
-      position: relative;
-      z-index: 10;
-    }
-
-    @keyframes popIn {
-      0% { transform: scale(0.5); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    /* ---------------------------------------------------- */
-    /* 7. SIGHT WORD ALIEN CHALLENGE                        */
-    /* ---------------------------------------------------- */
-    #screen-alien {
-      background: radial-gradient(circle at center, #1b023a 0%, #080014 100%);
-      color: white;
-    }
-
-    .alien-crater-field {
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      gap: clamp(12px, 2.5vw, 24px);
-      width: 100%;
-      max-width: 750px;
-      min-height: 260px;
-      margin: 16px 0;
+      gap: 12px;
+      margin: 12px 0;
       flex-wrap: wrap;
-      box-sizing: border-box;
-      position: relative;
-      z-index: 5;
     }
 
-    .alien-crater-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      width: clamp(120px, 26vw, 160px);
-      z-index: 10;
-    }
-
-    .alien-character-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      pointer-events: auto !important;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      position: relative;
-      z-index: 10;
-    }
-
-    .alien-character-btn:hover {
-      transform: translateY(-8px) scale(1.06);
-    }
-
-    .alien-sign {
-      background: #ffd166;
-      color: #3d0066;
-      font-size: clamp(1.2rem, 3.5vw, 1.6rem);
-      font-weight: 900;
-      padding: 6px 14px;
-      border-radius: 16px;
+    .blend-letter-tile {
+      width: 64px;
+      height: 64px;
+      background: #7209b7;
+      color: white;
       border: 3px solid white;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
-      margin-bottom: 4px;
-      text-align: center;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      font-weight: 900;
       cursor: pointer;
-      pointer-events: auto;
+      box-shadow: 0 6px 12px rgba(114, 9, 183, 0.35);
+      transition: transform 0.2s;
     }
 
-    .crater-base {
-      width: clamp(100px, 22vw, 140px);
-      height: 34px;
-      background: #39006b;
-      border: 3px solid #7209b7;
-      border-radius: 50%;
-      box-shadow: inset 0 8px 12px rgba(0,0,0,0.7);
+    .blend-letter-tile:hover {
+      transform: scale(1.08);
+      background: #9d4edd;
     }
 
-    /* ---------------------------------------------------- */
-    /* 8. 100-ITEM TREASURE CHEST & STICKER BOOK MODAL      */
-    /* ---------------------------------------------------- */
-    .modal-backdrop {
-      display: none;
+    .blend-slot-zone {
+      width: 72px;
+      height: 72px;
+      border: 3px dashed #7209b7;
+      background: #f3e8ff;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: #3d0066;
+    }
+
+    .blend-slot-zone.filled {
+      background: #06d6a0;
+      color: white;
+      border: 3px solid white;
+    }
+
+    /* Common Next Buttons */
+    .btn-action-next {
+      background: linear-gradient(180deg, #06d6a0, #04a77d);
+      color: white;
+      font-size: clamp(1.1rem, 3vw, 1.3rem);
+      font-weight: 900;
+      padding: 14px 32px;
+      border-radius: 50px;
+      border: 3px solid white;
+      cursor: pointer;
+      box-shadow: 0 6px 0 #025741, 0 10px 20px rgba(6, 214, 160, 0.4);
+      display: none; /* Shown only when step task is finished */
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s;
+    }
+
+    .btn-action-next:hover {
+      transform: translateY(-2px) scale(1.03);
+    }
+
+    .btn-action-next:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 #025741;
+    }
+
+    /* ==================================================== */
+    /* 6. MODALS: 100 REWARDS & UNLOCK CELEBRATIONS         */
+    /* ==================================================== */
+    .game-modal {
       position: fixed;
       top: 0;
       left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.75);
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.82);
       backdrop-filter: blur(8px);
-      z-index: 200;
+      display: none;
       align-items: center;
       justify-content: center;
+      z-index: 10000;
       padding: 16px;
-      box-sizing: border-box;
     }
 
-    .modal-backdrop.open {
-      display: flex;
-      animation: modalFade 0.3s ease;
+    .game-modal.open {
+      display: flex !important;
     }
 
-    @keyframes modalFade {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    .modal-content {
-      background: var(--bg-cream);
+    .modal-content-card {
+      background: #ffffff;
       border-radius: 36px;
-      border: 6px solid #ffb703;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.5);
-      max-width: 900px;
+      border: 5px solid #ffb703;
+      padding: 24px;
+      max-width: 640px;
       width: 100%;
-      max-height: 90vh;
+      max-height: 85vh;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
-      position: relative;
-      box-sizing: border-box;
-    }
-
-    .modal-header {
-      background: linear-gradient(135deg, #7209b7, #3a0ca3);
-      color: white;
-      padding: 14px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-sizing: border-box;
-    }
-
-    .reward-tabs {
-      display: flex;
-      gap: 8px;
-      padding: 10px 16px;
-      background: #ffe3e0;
-      overflow-x: auto;
-      border-bottom: 2px solid #ffccd5;
-      box-sizing: border-box;
-    }
-
-    .reward-tab-btn {
-      background: white;
-      border: 2px solid #ff70a6;
-      color: #7209b7;
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-weight: 800;
-      font-size: clamp(0.8rem, 1.8vw, 0.92rem);
-      cursor: pointer;
-      pointer-events: auto;
-      white-space: nowrap;
-      transition: all 0.15s ease;
-      flex-shrink: 0;
-    }
-
-    .reward-tab-btn.active {
-      background: #7209b7;
-      color: white;
-      border-color: #3a0ca3;
-    }
-
-    .rewards-grid-area {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-      gap: 12px;
-      padding: 16px;
+      gap: 14px;
       overflow-y: auto;
-      flex: 1;
-      box-sizing: border-box;
-    }
-
-    .reward-item-card {
-      background: white;
-      border: 3px solid #e2e8f0;
-      border-radius: 20px;
-      padding: 10px 6px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 4px;
-      transition: all 0.2s ease;
-      cursor: pointer;
-      pointer-events: auto;
       position: relative;
-      box-sizing: border-box;
-      overflow: hidden;
     }
 
-    .reward-item-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-    }
-
-    .reward-item-card.locked {
-      background: #edf2f7;
-      border-color: #cbd5e1;
-      filter: grayscale(1);
-      opacity: 0.7;
-    }
-
-    .reward-item-card.equipped {
-      border-color: #06d6a0;
-      background: #e6fffa;
-      box-shadow: 0 0 15px rgba(6, 214, 160, 0.4);
-    }
-
-    .reward-icon-box {
-      width: 48px;
-      height: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .reward-title {
-      font-size: clamp(0.75rem, 1.8vw, 0.85rem);
-      font-weight: 800;
-      color: #1e293b;
-      line-height: 1.2;
-      word-break: break-word;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-    }
-
-    .reward-cond {
-      font-size: clamp(0.65rem, 1.4vw, 0.72rem);
-      color: #64748b;
-      line-height: 1.15;
-      word-break: break-word;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    /* AVATAR DRESS-UP PREVIEW IN STICKER BOOK */
-    .avatar-closet-bar {
-      background: #f1f5f9;
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-top: 2px solid #e2e8f0;
-      box-sizing: border-box;
-      gap: 10px;
-    }
-
-    .avatar-preview-box {
-      display: flex;
-      align-items: center;
+    .rewards-grid-box {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
       gap: 12px;
-      overflow: hidden;
+      max-height: 400px;
+      overflow-y: auto;
+      padding: 8px 4px;
     }
 
-    /* ---------------------------------------------------- */
-    /* 9. MASSIVE CELEBRATORY REWARD POPUP                  */
-    /* ---------------------------------------------------- */
-    #modal-celebrate {
-      z-index: 300;
-    }
-
-    .celebrate-card {
-      background: linear-gradient(135deg, #7209b7, #f72585);
-      color: white;
-      border: 6px solid #ffd166;
-      border-radius: 40px;
-      padding: clamp(24px, 4vw, 36px) clamp(16px, 3vw, 28px);
-      max-width: 500px;
-      width: 100%;
-      text-align: center;
+    .reward-item-badge {
+      background: #faf5ff;
+      border: 2px solid #e9d5ff;
+      border-radius: 20px;
+      padding: 10px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 16px;
-      box-shadow: 0 30px 80px rgba(0,0,0,0.6);
-      animation: bounceCard 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      box-sizing: border-box;
-      overflow: hidden;
-      position: relative;
-      z-index: 10;
+      gap: 4px;
+      text-align: center;
+      cursor: pointer;
     }
 
-    @keyframes bounceCard {
-      0% { transform: scale(0.3) rotate(-10deg); }
-      70% { transform: scale(1.08) rotate(3deg); }
-      100% { transform: scale(1) rotate(0deg); }
+    .reward-item-badge.locked {
+      filter: grayscale(0.9) opacity(0.5);
     }
 
-    .celebrate-icon-box {
-      width: 100px;
-      height: 100px;
-      background: white;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 5px solid #ffd166;
-      box-shadow: 0 0 30px rgba(255, 209, 102, 0.8);
-      animation: spinReward 4s infinite linear;
+    .reward-item-badge.equipped {
+      border: 3px solid #ff0054;
+      background: #ffe5ec;
     }
 
-    @keyframes spinReward {
-      0%, 100% { transform: rotate(0deg) scale(1); }
-      50% { transform: rotate(12deg) scale(1.08); }
-    }
-
-    /* PARTICLES CANVAS - STRICTLY NON-BLOCKING */
+    /* Particle canvas */
     #fx-canvas {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      pointer-events: none !important;
-      z-index: 250;
+      pointer-events: none;
+      z-index: 9000;
     }
   </style>
 </head>
 <body>
 
   <!-- ==================================================== -->
-  <!-- 1. STRICT FULL-SCREEN START GAME OVERLAY (GESTURE)   -->
+  <!-- 1. STRICT FULL-SCREEN START GAME OVERLAY             -->
   <!-- ==================================================== -->
-  <div id="start-game-overlay">
-    <button id="btn-start-game">START GAME</button>
+  <div id="start-overlay">
+    <div class="start-card">
+      <svg width="100" height="100" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="45" fill="#ffd166"/>
+        <circle cx="38" cy="45" r="5" fill="#3d0066"/>
+        <circle cx="62" cy="45" r="5" fill="#3d0066"/>
+        <path d="M40 60 Q50 72 60 60" stroke="#3d0066" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M50 12 L58 32 L80 34 L62 50 L68 72 L50 60 L32 72 L38 50 L20 34 L42 32 Z" fill="#ff70a6"/>
+      </svg>
+      <h1 style="font-size: clamp(2rem, 5vw, 2.8rem); font-weight: 900; color: #3d0066; line-height: 1.1;">
+        Phonics Treasure Quest
+      </h1>
+      <p style="font-size: clamp(1rem, 2.5vw, 1.2rem); color: #7209b7; font-weight: 700;">
+        Magical Phonics, Tracing & Reading for 1st Graders!
+      </p>
+      <button id="btn-start-game">🚀 START GAME</button>
+    </div>
   </div>
 
   <canvas id="fx-canvas"></canvas>
@@ -1163,1052 +760,522 @@
   <div id="app-container">
 
     <!-- GLOBAL HEADER BAR -->
-    <header>
+    <header class="global-header">
       <div class="header-left">
-        <button id="btn-home-map" class="btn-icon" title="Return to Treasure Map">🗺️</button>
-        <button id="btn-sound-toggle" class="btn-icon" title="Mute / Unmute Audio">🔊</button>
-      </div>
-
-      <div class="header-center">
-        <div class="activity-badge" id="header-activity-title">
-          <span>🌟</span> <span id="activity-name-text">Treasure Map</span>
+        <button id="btn-home-map" class="btn-icon" title="Treasure Map">🗺️</button>
+        <div class="header-stars-box">
+          <span>⭐</span>
+          <span id="header-stars-count">0</span>
         </div>
       </div>
-
       <div class="header-right">
-        <!-- STAR PROGRESSION -->
-        <div class="star-meter" id="header-star-meter" title="Activity Stars">
-          <svg class="star-icon" id="star-1" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg class="star-icon" id="star-2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg class="star-icon" id="star-3" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg class="star-icon" id="star-4" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        </div>
-
-        <div class="total-stars-pill" id="btn-open-rewards" title="Treasure Chest">
-          <span>🎒</span> <span id="total-stars-count">0</span>
-        </div>
+        <button id="btn-open-rewards" class="header-trophy-btn" title="100 Rewards & Stickers">
+          <span>🏆</span>
+          <span id="header-rewards-count">0/100</span>
+        </button>
+        <button id="btn-alien-quest" class="btn-icon" title="Alien Sight Words">👽</button>
+        <button id="btn-sound-toggle" class="btn-icon" title="Sound Toggle">🔊</button>
       </div>
     </header>
 
-    <!-- ==================================================== -->
-    <!-- 2. TREASURE MAP SCREEN (WORLD MAP UI)                -->
-    <!-- ==================================================== -->
-    <section class="screen active" id="screen-map">
-      <div class="map-container" id="map-container">
-        <!-- Floating Navigation & Quick Access -->
-        <div class="map-header-bar">
-          <div style="color: #ffd166; font-weight: 800; font-size: clamp(0.9rem, 2vw, 1.1rem); display: flex; align-items: center; gap: 8px;">
-            <span>🏝️ Treasure Island & Galaxy Map</span>
-          </div>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button class="btn-primary" id="btn-alien-quest" style="font-size: clamp(0.8rem, 1.8vw, 0.95rem); padding: 8px 14px; background: linear-gradient(180deg, #7209b7, #3a0ca3);">
-              👾 Alien Sight Words
-            </button>
-            <button class="btn-primary" id="btn-open-stickerbook" style="font-size: clamp(0.8rem, 1.8vw, 0.95rem); padding: 8px 14px; background: linear-gradient(180deg, #ffb703, #fb8500);">
-              🏆 100 Rewards (<span id="unlocked-reward-count">0</span>/100)
-            </button>
-          </div>
+    <!-- SCREEN 1: SAGA TREASURE MAP -->
+    <div id="screen-map" class="game-screen active-screen">
+      <div class="map-canvas-container" id="map-container">
+        <svg class="map-svg-curve" id="map-svg-path-layer"></svg>
+        <div id="you-are-here">
+          <div class="yah-tag">YOU ARE HERE!</div>
+          <span style="font-size: 2.5rem;">🧙‍♂️</span>
         </div>
-
-        <!-- SVG Path Connecting Nodes -->
-        <svg class="map-svg-path" id="map-svg-path" viewBox="0 0 900 1400"></svg>
-
-        <!-- Winding Map Nodes A-Z Generated Here -->
         <div id="map-nodes-layer"></div>
-
-        <!-- "YOU ARE HERE" AVATAR MARKER -->
-        <div id="you-are-here-marker">
-          <div class="yah-badge">⭐ YOU ARE HERE ⭐</div>
-          <svg class="yah-character" viewBox="0 0 100 100" id="avatar-svg-map">
-            <circle cx="50" cy="50" r="32" fill="#ffccd5"/>
-            <circle cx="40" cy="46" r="4" fill="#333"/>
-            <circle cx="60" cy="46" r="4" fill="#333"/>
-            <path d="M44 58 Q50 66 56 58" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
-            <g id="map-avatar-accessories"></g>
-          </svg>
-        </div>
       </div>
-    </section>
+    </div>
 
-    <!-- ==================================================== -->
-    <!-- 3. STEP 1: LEARN THE SOUND (INTRO SCREEN)            -->
-    <!-- ==================================================== -->
-    <section class="screen" id="screen-intro">
-      <div class="card-large">
-        <h2 style="color: #7209b7; font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 900;">1. Meet the Letter & Sound!</h2>
-        
-        <div class="intro-pair">
-          <!-- Interactive Letter Box -->
-          <div class="letter-interactive-box" id="intro-letter-btn">
-            <div class="big-letter-display" id="intro-letter-text">a</div>
-            <div class="click-to-hear">
-              <span>🔊</span> <span>Click to hear</span>
-            </div>
-          </div>
-
-          <div style="font-size: 2rem; font-weight: 900; color: #ff70a6;">➔</div>
-
-          <!-- Interactive Anchor Word Box -->
-          <div class="word-interactive-box" id="intro-word-btn">
-            <div class="anchor-img-box" id="intro-word-icon"></div>
-            <div class="big-word-display" id="intro-word-text">ant</div>
-            <div class="click-to-hear">
-              <span>🔊</span> <span>Click to hear</span>
-            </div>
+    <!-- SCREEN 2: STEP 1 - LEARN THE SOUND -->
+    <div id="screen-intro" class="game-screen">
+      <div class="activity-container">
+        <div class="step-progress-header">
+          <div class="step-indicator-tag">Step 1 of 4: Learn Sound</div>
+          <div class="step-stars-display">
+            <span class="step-star" id="star-step-1">★</span>
+            <span class="step-star" id="star-step-2">★</span>
+            <span class="step-star" id="star-step-3">★</span>
+            <span class="step-star" id="star-step-4">★</span>
           </div>
         </div>
-
-        <p style="color: #64748b; font-size: clamp(0.95rem, 2vw, 1.1rem); font-weight: 600;">
-          Tap both the letter and word to listen to their sounds!
-        </p>
-
-        <!-- MANUAL ADVANCE NEXT BUTTON -->
-        <button class="btn-primary btn-pulse" id="btn-next-to-match" style="display: none; margin-top: 10px;">
-          Next: Match Sound ➜
-        </button>
+        <div class="instruction-banner">Click the letter and the word to hear how they sound!</div>
+        <div class="learn-items-row">
+          <div class="learn-card-box" id="intro-letter-btn">
+            <div class="learn-letter-large" id="intro-letter-text">A</div>
+            <div class="click-to-hear-badge">🔊 Click to hear</div>
+          </div>
+          <div class="learn-card-box" id="intro-word-btn">
+            <div class="learn-icon-frame" id="intro-word-icon"></div>
+            <div class="learn-word-text" id="intro-word-text">Apple</div>
+            <div class="click-to-hear-badge">🔊 Click to hear</div>
+          </div>
+        </div>
+        <button class="btn-action-next" id="btn-next-to-match">Next: Match Sound ➔</button>
       </div>
-    </section>
+    </div>
 
-    <!-- ==================================================== -->
-    <!-- 4. STEP 2: MATCH SOUND (BUBBLE GAME)                 -->
-    <!-- ==================================================== -->
-    <section class="screen" id="screen-match">
-      <div class="card-large" style="max-width: 720px;">
-        <h2 style="color: #06d6a0; font-size: clamp(1.4rem, 3.5vw, 1.8rem); font-weight: 900;">2. Match the Letter Sound!</h2>
-        <p style="color: #073b4c; font-size: clamp(0.95rem, 2vw, 1.15rem); font-weight: 700;">
-          Click bubbles to hear sounds, then drag or tap the matching letter!
-        </p>
-
-        <div class="match-playfield" id="match-playfield">
-          <!-- Target Drop Zone (Anchor Object) -->
-          <div class="target-drop-zone" id="target-drop-zone">
+    <!-- SCREEN 3: STEP 2 - BUBBLE SOUND MATCH -->
+    <div id="screen-match" class="game-screen">
+      <div class="activity-container">
+        <div class="step-progress-header">
+          <div class="step-indicator-tag">Step 2 of 4: Match Sound</div>
+          <div class="step-stars-display">
+            <span class="step-star active">★</span>
+            <span class="step-star" id="star2-step-2">★</span>
+            <span class="step-star" id="star2-step-3">★</span>
+            <span class="step-star" id="star2-step-4">★</span>
+          </div>
+        </div>
+        <div class="instruction-banner">Tap the bubble with the correct letter for the sound!</div>
+        <div class="match-playground" id="match-area">
+          <div class="match-target-drop" id="target-drop-zone">
             <div id="match-anchor-icon" style="width: 70px; height: 70px;"></div>
-            <span id="match-anchor-word" style="font-size: clamp(1.1rem, 2.5vw, 1.4rem); font-weight: 900; color: #073b4c;">ant</span>
+            <div id="match-anchor-word" style="font-weight: 800; font-size: 1.2rem; color: #240046;">Apple</div>
           </div>
-
-          <!-- Floating Sound Bubbles (Generated by JS) -->
           <div id="match-bubbles-container"></div>
         </div>
-
-        <!-- MANUAL ADVANCE NEXT BUTTON -->
-        <button class="btn-primary btn-pulse" id="btn-next-to-trace" style="display: none; margin-top: 12px;">
-          Next: Letter Tracing ➜
-        </button>
+        <button class="btn-action-next" id="btn-next-to-trace">Next: Trace Letter ➔</button>
       </div>
-    </section>
+    </div>
 
-    <!-- ==================================================== -->
-    <!-- 5. STEP 3: LETTER TRACING (WRITING MECHANIC)         -->
-    <!-- ==================================================== -->
-    <section class="screen" id="screen-trace">
-      <div class="card-large" style="background: #190028; border-color: #ff70a6; color: white;">
-        <h2 style="color: #ff70a6; font-size: clamp(1.4rem, 3.5vw, 1.8rem); font-weight: 900;">3. Trace the Letter!</h2>
-        <p style="color: #e0aaff; font-size: clamp(0.95rem, 2vw, 1.1rem); font-weight: 600;">
-          Follow the glowing star along the dashed line!
-        </p>
-
-        <div class="tracing-board" id="tracing-board">
-          <canvas id="trace-canvas" width="360" height="380"></canvas>
-          <div class="trace-start-star" id="trace-star-guide">
-            <svg viewBox="0 0 24 24" fill="#ffd166" stroke="#ffffff" stroke-width="2">
-              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-            </svg>
+    <!-- SCREEN 4: STEP 3 - LETTER TRACING -->
+    <div id="screen-trace" class="game-screen">
+      <div class="activity-container">
+        <div class="step-progress-header">
+          <div class="step-indicator-tag">Step 3 of 4: Trace Letter</div>
+          <div class="step-stars-display">
+            <span class="step-star active">★</span>
+            <span class="step-star active">★</span>
+            <span class="step-star" id="star3-step-3">★</span>
+            <span class="step-star" id="star3-step-4">★</span>
           </div>
         </div>
-
-        <div style="display: flex; gap: 14px; align-items: center; justify-content: center; flex-wrap: wrap;">
-          <button class="btn-icon" id="btn-clear-trace" title="Reset Trace" style="width: auto; height: auto; border-radius: 20px; padding: 8px 16px; font-size: 0.95rem;">
-            🔄 Retry Stroke
-          </button>
-          
-          <!-- MANUAL ADVANCE NEXT BUTTON -->
-          <button class="btn-primary btn-pulse" id="btn-next-to-blend" style="display: none;">
-            Next: Sound Blending ➜
-          </button>
+        <div class="instruction-banner">Trace along the letter path with your finger or mouse!</div>
+        <div class="trace-wrapper">
+          <canvas id="trace-canvas" width="320" height="320"></canvas>
         </div>
-      </div>
-    </section>
-
-    <!-- ==================================================== -->
-    <!-- 6. STEP 4: SOUND BLENDING (CVC WORD FACTORY)         -->
-    <!-- ==================================================== -->
-    <section class="screen" id="screen-blend">
-      <div class="blending-conveyor-card">
-        <h2 style="color: #f43f5e; font-size: clamp(1.4rem, 3.5vw, 1.8rem); font-weight: 900;">4. CVC Word Blending Machine!</h2>
-        <p style="color: #64748b; font-size: clamp(0.95rem, 2vw, 1.1rem); font-weight: 700; text-align: center;">
-          Click individual letter blocks to hear sounds, then place them in order to blend the word!
-        </p>
-
-        <!-- Separated Clickable Letter Blocks -->
-        <div class="blend-blocks-tray" id="blend-blocks-tray"></div>
-
-        <!-- Conveyor Belt Slots -->
-        <div class="blend-slots-conveyor" id="blend-slots-conveyor">
-          <div class="blend-slot" data-slot="0"></div>
-          <div class="blend-slot" data-slot="1"></div>
-          <div class="blend-slot" data-slot="2"></div>
-        </div>
-
-        <!-- Word Blended Picture & Reward Celebration -->
-        <div class="blended-result-card" id="blended-result-card">
-          <div id="blended-word-illustration" style="width: 120px; height: 120px;"></div>
-          <div id="blended-word-title" style="font-size: clamp(2rem, 6vw, 3rem); font-weight: 900; color: #073b4c; letter-spacing: 2px;">
-            ANT
-          </div>
-          <div class="click-to-hear" id="btn-replay-blended-word">
-            <span>🔊</span> <span>Click to hear</span>
-          </div>
-        </div>
-
-        <!-- MANUAL ADVANCE COMPLETE & RETURN BUTTON -->
-        <button class="btn-primary btn-pulse" id="btn-next-finish-node" style="display: none; margin-top: 10px;">
-          🎉 Finish & Return to Map ➜
-        </button>
-      </div>
-    </section>
-
-    <!-- ==================================================== -->
-    <!-- 7. SIGHT WORD ALIEN POPUP CHALLENGE                  -->
-    <!-- ==================================================== -->
-    <section class="screen" id="screen-alien">
-      <div class="card-large" style="background: #190028; border-color: #ffd166; color: white;">
-        <h2 style="color: #ffd166; font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 900;">👾 Alien Sight Word Challenge!</h2>
-        
-        <div style="display: flex; align-items: center; justify-content: center; gap: 12px; background: rgba(255,255,255,0.15); padding: 8px 18px; border-radius: 30px; max-width: 100%;">
-          <span style="font-size: clamp(1rem, 2.5vw, 1.25rem);">Find the word:</span>
-          <span id="alien-target-word" style="font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 900; color: #ff70a6; letter-spacing: 1px;">THE</span>
-          <button class="btn-icon" id="btn-replay-alien-prompt" style="width: 36px; height: 36px; font-size: 1rem;">🔊</button>
-        </div>
-
-        <div class="alien-crater-field" id="alien-crater-field"></div>
-
-        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-          <button class="btn-primary" id="btn-alien-next-word" style="background: linear-gradient(180deg, #06d6a0, #048866);">
-            Next Word ➜
-          </button>
-          <button class="btn-primary" id="btn-alien-back-map" style="background: linear-gradient(180deg, #ff477e, #b5179e);">
-            🗺️ Back to Map
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================================================== -->
-    <!-- 8. 100-ITEM REWARD SYSTEM & STICKER BOOK MODAL       -->
-    <!-- ==================================================== -->
-    <div class="modal-backdrop" id="modal-rewards">
-      <div class="modal-content">
-        <div class="modal-header">
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <span style="font-size: 1.6rem;">🎒</span>
-            <h2 style="font-size: clamp(1.1rem, 3vw, 1.5rem); font-weight: 900;">100 Rewards & Sticker Book</h2>
-          </div>
-          <button class="btn-icon" id="btn-close-rewards" style="background: rgba(0,0,0,0.3);">✕</button>
-        </div>
-
-        <!-- Filter Category Tabs -->
-        <div class="reward-tabs">
-          <button class="reward-tab-btn active" data-tab="all">🌟 All (100)</button>
-          <button class="reward-tab-btn" data-tab="stickers">🦄 Stickers (40)</button>
-          <button class="reward-tab-btn" data-tab="wearables">👑 Wearables (30)</button>
-          <button class="reward-tab-btn" data-tab="pets">🐾 Pets & FX (30)</button>
-        </div>
-
-        <!-- 100 Rewards Grid -->
-        <div class="rewards-grid-area" id="rewards-grid-container"></div>
-
-        <!-- Live Avatar Dressing Room -->
-        <div class="avatar-closet-bar">
-          <div class="avatar-preview-box">
-            <svg width="50" height="50" viewBox="0 0 100 100" id="avatar-svg-closet">
-              <circle cx="50" cy="50" r="32" fill="#ffccd5"/>
-              <circle cx="40" cy="46" r="4" fill="#333"/>
-              <circle cx="60" cy="46" r="4" fill="#333"/>
-              <path d="M44 58 Q50 66 56 58" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
-              <g id="closet-avatar-accessories"></g>
-            </svg>
-            <div>
-              <div style="font-weight: 800; font-size: 0.95rem; color: #1e293b;">Your Dressed-Up Avatar</div>
-              <div style="font-size: 0.78rem; color: #64748b;">Click any unlocked wearable above to equip!</div>
-            </div>
-          </div>
-          <button class="btn-primary" id="btn-clear-equipped" style="font-size: 0.82rem; padding: 6px 12px; background: #64748b;">
-            Remove Accessories
-          </button>
+        <div style="font-weight: 800; color: #7209b7;" id="trace-progress-label">Progress: 0%</div>
+        <div style="display: flex; gap: 10px;">
+          <button class="btn-action-next" style="display: inline-flex; background: #6c757d;" id="btn-trace-clear">Clear ↺</button>
+          <button class="btn-action-next" id="btn-next-to-blend">Next: Blend Word ➔</button>
         </div>
       </div>
     </div>
 
-    <!-- ==================================================== -->
-    <!-- 9. MASSIVE CELEBRATORY REWARD POPUP                  -->
-    <!-- ==================================================== -->
-    <div class="modal-backdrop" id="modal-celebrate">
-      <div class="celebrate-card">
-        <h2 style="font-size: clamp(1.6rem, 5vw, 2.2rem); font-weight: 900; text-shadow: 0 4px 10px rgba(0,0,0,0.3);">
-          🎉 AMAZING JOB! 🎉
-        </h2>
-        <div class="celebrate-icon-box" id="celebrate-icon"></div>
-        <div>
-          <h3 id="celebrate-item-name" style="font-size: clamp(1.3rem, 4vw, 1.8rem); font-weight: 900; color: #ffd166;">
-            Magic Star Wand!
-          </h3>
-          <p id="celebrate-desc" style="font-size: clamp(0.95rem, 2.5vw, 1.1rem); color: #ffe6a7; margin-top: 6px; font-weight: 700;">
-            You unlocked a new treasure!
-          </p>
+    <!-- SCREEN 5: STEP 4 - WORD BLENDING -->
+    <div id="screen-blend" class="game-screen">
+      <div class="activity-container">
+        <div class="step-progress-header">
+          <div class="step-indicator-tag">Step 4 of 4: Blend Word</div>
+          <div class="step-stars-display">
+            <span class="step-star active">★</span>
+            <span class="step-star active">★</span>
+            <span class="step-star active">★</span>
+            <span class="step-star" id="star4-step-4">★</span>
+          </div>
         </div>
-        <button class="btn-primary btn-pulse" id="btn-claim-celebrate" style="font-size: 1.2rem; background: #ffd166; color: #3d0066; border-color: white;">
-          🌟 Awesome! Collect!
-        </button>
+        <div class="instruction-banner">Tap each letter to hear its sound, then place them in order!</div>
+        <div id="blend-icon-preview" style="width: 85px; height: 85px;"></div>
+        <div class="blend-tray" id="blend-letters-source"></div>
+        <div class="blend-tray" id="blend-slots-target"></div>
+        <button class="btn-action-next" id="btn-finish-letter">🎉 Finish & Return to Map ➔</button>
+      </div>
+    </div>
+
+    <!-- SCREEN 6: ALIEN SIGHT WORDS MINIGAME -->
+    <div id="screen-alien" class="game-screen">
+      <div class="activity-container">
+        <div class="instruction-banner">Find the Alien with the matching word!</div>
+        <div style="font-size: 2.2rem; font-weight: 900; color: #ff0054;" id="alien-target-word">THE</div>
+        <button class="click-to-hear-badge" id="btn-replay-alien">🔊 Replay Word Audio</button>
+        <div style="display: flex; justify-content: center; gap: 16px; margin-top: 16px; flex-wrap: wrap;" id="alien-crater-field"></div>
+        <button class="btn-action-next" style="display: inline-flex;" id="btn-alien-back-map">Back to Treasure Map 🗺️</button>
       </div>
     </div>
 
   </div>
 
+  <!-- MODAL: 100 REWARDS STICKER BOOK -->
+  <div class="game-modal" id="modal-rewards">
+    <div class="modal-content-card">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="font-size: 1.6rem; color: #3d0066; font-weight: 900;">🏆 100 Rewards Book</h2>
+        <button class="btn-icon" style="background: #e9ecef; color: #333;" id="btn-close-rewards">✕</button>
+      </div>
+      <p style="color: #666; font-size: 0.95rem; font-weight: 600;">Complete phonics activities to unlock all 100 magical rewards!</p>
+      <div class="rewards-grid-box" id="rewards-grid-container"></div>
+    </div>
+  </div>
+
+  <!-- MODAL: CELEBRATION REWARD UNLOCKED -->
+  <div class="game-modal" id="modal-reward-unlock">
+    <div class="modal-content-card" style="text-align: center; align-items: center;">
+      <span style="font-size: 4.5rem;" id="unlock-reward-icon">🎁</span>
+      <h2 style="font-size: 1.8rem; color: #ff0054; font-weight: 900;">Reward Unlocked!</h2>
+      <div style="font-size: 1.3rem; font-weight: 800; color: #3d0066;" id="unlock-reward-name">Astronaut Hat</div>
+      <p style="color: #666; font-weight: 600;" id="unlock-reward-desc">Completed letter A quest!</p>
+      <button class="btn-action-next" style="display: inline-flex; margin-top: 10px;" id="btn-close-unlock-modal">Awesome! 🌟</button>
+    </div>
+  </div>
+
   <!-- ==================================================== -->
-  <!-- JAVASCRIPT: MASTER BULLETPROOF AUDIO ARCHITECTURE    -->
+  <!-- JAVASCRIPT LOGIC & COMPLETE AUDIO SYSTEM             -->
   <!-- ==================================================== -->
   <script>
-    /**
-     * PHONICS ADVENTURE - MASTER BULLETPROOF AUDIO ENGINE
-     */
-    
-    // --- 1. FULL 26-LETTER CURRICULUM DATABASE WITH MATCHING ANCHOR WORDS ---
+    // --- 1. GAME DATA & 26 LETTERS ---
     const ALPHABET_DATA = [
-      { letter: 'a', word: 'ant', title: 'Node A: Ant Asteroid Alley', zone: 1, x: 180, y: 150, strokePath: [[180, 190], [140, 230], [180, 270], [220, 230], [180, 190], [220, 190], [220, 270]] },
-      { letter: 'b', word: 'bat', title: 'Node B: Bat Bay Beach', zone: 1, x: 320, y: 180, strokePath: [[150, 120], [150, 270], [150, 200], [220, 200], [220, 270], [150, 270]] },
-      { letter: 'c', word: 'cat', title: 'Node C: Cat Castle Quest', zone: 1, x: 440, y: 250, strokePath: [[230, 180], [160, 180], [140, 230], [160, 280], [230, 280]] },
-      { letter: 'd', word: 'dog', title: 'Node D: Dog Dinosaur Dunes', zone: 1, x: 360, y: 350, strokePath: [[220, 120], [220, 270], [220, 200], [150, 200], [150, 270], [220, 270]] },
-      { letter: 'e', word: 'egg', title: 'Node E: Egg Explorer Eclipse', zone: 1, x: 210, y: 390, strokePath: [[150, 230], [230, 230], [230, 180], [150, 180], [150, 280], [230, 280]] },
-      { letter: 'f', word: 'fox', title: 'Node F: Fox Forest Frontier', zone: 1, x: 280, y: 490, strokePath: [[220, 140], [170, 140], [170, 280], [140, 200], [210, 200]] },
-      { letter: 'g', word: 'gum', title: 'Node G: Gum Galaxy Garden', zone: 1, x: 420, y: 530, strokePath: [[220, 190], [150, 190], [150, 240], [220, 240], [220, 190], [220, 310], [150, 310]] },
-      { letter: 'h', word: 'hat', title: 'Node H: Hat Highlands Haven', zone: 2, x: 570, y: 500, strokePath: [[150, 120], [150, 280], [150, 200], [220, 200], [220, 280]] },
-      { letter: 'i', word: 'ink', title: 'Node I: Ink Island Igloo', zone: 2, x: 720, y: 550, strokePath: [[180, 180], [180, 280], [180, 140]] },
-      { letter: 'j', word: 'jet', title: 'Node J: Jet Jungle Journey', zone: 2, x: 790, y: 660, strokePath: [[200, 180], [200, 290], [150, 290], [200, 140]] },
-      { letter: 'k', word: 'kit', title: 'Node K: Kid Kingdom Krater', zone: 2, x: 670, y: 730, strokePath: [[150, 120], [150, 280], [220, 190], [150, 230], [220, 280]] },
-      { letter: 'l', word: 'log', title: 'Node L: Log Lagoon Landing', zone: 2, x: 520, y: 760, strokePath: [[180, 120], [180, 280]] },
-      { letter: 'm', word: 'map', title: 'Node M: Map Mountain Meadow', zone: 2, x: 380, y: 700, strokePath: [[140, 190], [140, 280], [140, 200], [180, 200], [180, 280], [180, 200], [220, 200], [220, 280]] },
-      { letter: 'n', word: 'nut', title: 'Node N: Net Nebula Oasis', zone: 2, x: 260, y: 740, strokePath: [[150, 190], [150, 280], [150, 200], [220, 200], [220, 280]] },
-      { letter: 'o', word: 'orb', title: 'Node O: Orb Ocean Orbit', zone: 3, x: 140, y: 880, strokePath: [[180, 180], [140, 230], [180, 280], [220, 230], [180, 180]] },
-      { letter: 'p', word: 'pig', title: 'Node P: Pig Pirate Port', zone: 3, x: 260, y: 920, strokePath: [[150, 190], [150, 310], [150, 190], [220, 190], [220, 250], [150, 250]] },
-      { letter: 'q', word: 'quiz', title: 'Node Q: Queen Quartz Quarry', zone: 3, x: 380, y: 990, strokePath: [[220, 190], [150, 190], [150, 250], [220, 250], [220, 190], [220, 310]] },
-      { letter: 'r', word: 'red', title: 'Node R: Rocket River Rainforest', zone: 3, x: 290, y: 1100, strokePath: [[160, 190], [160, 280], [160, 220], [220, 190]] },
-      { letter: 's', word: 'sun', title: 'Node S: Sun Safari Sanctuary', zone: 3, x: 150, y: 1140, strokePath: [[220, 190], [160, 190], [160, 230], [220, 240], [220, 280], [150, 280]] },
-      { letter: 't', word: 'top', title: 'Node T: Top Treehouse Tropic', zone: 3, x: 240, y: 1240, strokePath: [[180, 140], [180, 270], [210, 270], [140, 190], [220, 190]] },
-      { letter: 'u', word: 'cup', title: 'Node U: Ultra Universe Uplands', zone: 3, x: 380, y: 1250, strokePath: [[150, 190], [150, 260], [210, 260], [210, 190], [210, 280]] },
-      { letter: 'v', word: 'van', title: 'Node V: Van Volcano Valley', zone: 4, x: 500, y: 1140, strokePath: [[150, 190], [185, 280], [220, 190]] },
-      { letter: 'w', word: 'web', title: 'Node W: Web Waterfall Wilderness', zone: 4, x: 620, y: 1190, strokePath: [[140, 190], [160, 280], [180, 220], [200, 280], [220, 190]] },
-      { letter: 'x', word: 'box', title: 'Node X: X-Ray Xylophone Xing', zone: 4, x: 740, y: 1130, strokePath: [[150, 190], [220, 280], [220, 190], [150, 280]] },
-      { letter: 'y', word: 'yak', title: 'Node Y: Yak Yonder Yard', zone: 4, x: 800, y: 1260, strokePath: [[150, 190], [185, 240], [220, 190], [185, 240], [185, 310], [150, 310]] },
-      { letter: 'z', word: 'zip', title: 'Node Z: Zip Zigzag Zenith', zone: 4, x: 660, y: 1330, strokePath: [[150, 190], [220, 190], [150, 280], [220, 280]] }
+      { letter: 'A', word: 'Apple', sound: 'a', x: 200, y: 150 },
+      { letter: 'B', word: 'Ball', sound: 'buh', x: 420, y: 200 },
+      { letter: 'C', word: 'Cat', sound: 'kuh', x: 640, y: 170 },
+      { letter: 'D', word: 'Dog', sound: 'duh', x: 740, y: 320 },
+      { letter: 'E', word: 'Egg', sound: 'eh', x: 530, y: 380 },
+      { letter: 'F', word: 'Fish', sound: 'fff', x: 310, y: 410 },
+      { letter: 'G', word: 'Gum', sound: 'guh', x: 150, y: 500 },
+      { letter: 'H', word: 'Hat', sound: 'huh', x: 250, y: 640 },
+      { letter: 'I', word: 'Igloo', sound: 'ih', x: 470, y: 600 },
+      { letter: 'J', word: 'Jam', sound: 'juh', x: 690, y: 650 },
+      { letter: 'K', word: 'Kite', sound: 'kuh', x: 750, y: 800 },
+      { letter: 'L', word: 'Leg', sound: 'lll', x: 540, y: 850 },
+      { letter: 'M', word: 'Moon', sound: 'mmm', x: 330, y: 860 },
+      { letter: 'N', word: 'Nut', sound: 'nnn', x: 160, y: 950 },
+      { letter: 'O', word: 'Owl', sound: 'ah', x: 260, y: 1080 },
+      { letter: 'P', word: 'Pig', sound: 'puh', x: 480, y: 1050 },
+      { letter: 'Q', word: 'Queen', sound: 'kwuh', x: 700, y: 1100 },
+      { letter: 'R', word: 'Red', sound: 'rrr', x: 740, y: 1250 },
+      { letter: 'S', word: 'Sun', sound: 'sss', x: 530, y: 1300 },
+      { letter: 'T', word: 'Top', sound: 'tuh', x: 320, y: 1310 },
+      { letter: 'U', word: 'Umbrella', sound: 'uh', x: 150, y: 1400 },
+      { letter: 'V', word: 'Van', sound: 'vvv', x: 280, y: 1520 },
+      { letter: 'W', word: 'Web', sound: 'wuh', x: 500, y: 1490 },
+      { letter: 'X', word: 'Fox', sound: 'ks', x: 710, y: 1540 },
+      { letter: 'Y', word: 'Yak', sound: 'yuh', x: 580, y: 1680 },
+      { letter: 'Z', word: 'Zip', sound: 'zzz', x: 360, y: 1720 }
     ];
 
-    // Accurate Short Phonics Mapping for Natural Teacher Pronunciation
-    const PHONIC_SOUNDS = {
-      'a': 'ah',
-      'b': 'buh',
-      'c': 'kuh',
-      'd': 'duh',
-      'e': 'eh',
-      'f': 'fff',
-      'g': 'guh',
-      'h': 'huh',
-      'i': 'ih',
-      'j': 'juh',
-      'k': 'kuh',
-      'l': 'lll',
-      'm': 'mmm',
-      'n': 'nnn',
-      'o': 'off',
-      'p': 'puh',
-      'q': 'kwuh',
-      'r': 'rrr',
-      's': 'sss',
-      't': 'tuh',
-      'u': 'uh',
-      'v': 'vvv',
-      'w': 'wuh',
-      'x': 'ks',
-      'y': 'yuh',
-      'z': 'zzz'
-    };
+    const SIGHT_WORDS = ['the', 'and', 'you', 'see', 'can', 'big', 'red', 'run', 'play', 'jump'];
 
-    // Sight Words for Alien Minigame
-    const SIGHT_WORDS = ['the', 'is', 'my', 'and', 'you', 'see', 'we', 'can', 'go', 'to', 'in', 'it', 'me', 'up', 'he'];
-
-    // --- 2. EXACT 100-ITEM REWARD SYSTEM DATABASE ---
+    // --- 2. 100 REWARDS DATABASE ---
     const REWARDS_DB = [];
-    const ITEM_NAMES = [
-      // 40 Stickers
-      { name: "Super Star", cat: "stickers", icon: "⭐" },
-      { name: "Magic Crystal", cat: "stickers", icon: "💎" },
-      { name: "Rocket Ship", cat: "stickers", icon: "🚀" },
-      { name: "Cute Dino", cat: "stickers", icon: "🦖" },
-      { name: "Baby Dragon", cat: "stickers", icon: "🐲" },
-      { name: "Jungle Monkey", cat: "stickers", icon: "🐵" },
-      { name: "Golden Apple", cat: "stickers", icon: "🍎" },
-      { name: "Cosmic Planet", cat: "stickers", icon: "🪐" },
-      { name: "Treasure Chest", cat: "stickers", icon: "🎁" },
-      { name: "Sun Badge", cat: "stickers", icon: "☀️" },
-      { name: "Rainbow Cloud", cat: "stickers", icon: "🌈" },
-      { name: "Happy Fox", cat: "stickers", icon: "🦊" },
-      { name: "Sea Turtle", cat: "stickers", icon: "🐢" },
-      { name: "Space Alien", cat: "stickers", icon: "👾" },
-      { name: "Pirate Parrot", cat: "stickers", icon: "🦜" },
-      { name: "Magic Diamond", cat: "stickers", icon: "💠" },
-      { name: "Gold Trophy", cat: "stickers", icon: "🏆" },
-      { name: "Flying Kite", cat: "stickers", icon: "🪁" },
-      { name: "Candy Swirl", cat: "stickers", icon: "🍭" },
-      { name: "Glowing Moon", cat: "stickers", icon: "🌙" },
-      { name: "Jungle Lion", cat: "stickers", icon: "🦁" },
-      { name: "Panda Bear", cat: "stickers", icon: "🐼" },
-      { name: "Dolphin Splash", cat: "stickers", icon: "🐬" },
-      { name: "Magic Mushroom", cat: "stickers", icon: "🍄" },
-      { name: "Golden Bell", cat: "stickers", icon: "🔔" },
-      { name: "Shooting Comet", cat: "stickers", icon: "☄️" },
-      { name: "Space Satellite", cat: "stickers", icon: "🛰️" },
-      { name: "Compass Rose", cat: "stickers", icon: "🧭" },
-      { name: "Ocean Anchor", cat: "stickers", icon: "⚓" },
-      { name: "Shiny Ring", cat: "stickers", icon: "💍" },
-      { name: "Sparkle Heart", cat: "stickers", icon: "💖" },
-      { name: "Sunny Flower", cat: "stickers", icon: "🌻" },
-      { name: "Lucky Clover", cat: "stickers", icon: "🍀" },
-      { name: "Tasty Cupcake", cat: "stickers", icon: "🧁" },
-      { name: "Treasure Key", cat: "stickers", icon: "🗝️" },
-      { name: "Magic Lamp", cat: "stickers", icon: "🪔" },
-      { name: "Firework Burst", cat: "stickers", icon: "🎆" },
-      { name: "Guitar Chord", cat: "stickers", icon: "🎸" },
-      { name: "Golden Medal", cat: "stickers", icon: "🥇" },
-      { name: "Crown Jewel", cat: "stickers", icon: "👑" },
-
-      // 30 Wearables
-      { name: "Pirate Hat", cat: "wearables", slot: "hat", icon: "🏴‍☠️" },
-      { name: "Wizard Hat", cat: "wearables", slot: "hat", icon: "🧙" },
-      { name: "Astronaut Helmet", cat: "wearables", slot: "hat", icon: "👨‍🚀" },
-      { name: "Party Crown", cat: "wearables", slot: "hat", icon: "👑" },
-      { name: "Jungle Cap", cat: "wearables", slot: "hat", icon: "🧢" },
-      { name: "Viking Helmet", cat: "wearables", slot: "hat", icon: "🪖" },
-      { name: "Flower Wreath", cat: "wearables", slot: "hat", icon: "🌸" },
-      { name: "Dino Headband", cat: "wearables", slot: "hat", icon: "🦕" },
-      { name: "Bunny Ears", cat: "wearables", slot: "hat", icon: "🐰" },
-      { name: "Royal Tiara", cat: "wearables", slot: "hat", icon: "👸" },
-      { name: "Cool Sunglasses", cat: "wearables", slot: "glasses", icon: "🕶️" },
-      { name: "Star Goggles", cat: "wearables", slot: "glasses", icon: "🥽" },
-      { name: "Monocle Glass", cat: "wearables", slot: "glasses", icon: "🧐" },
-      { name: "Pixel Shades", cat: "wearables", slot: "glasses", icon: "😎" },
-      { name: "Heart Glasses", cat: "wearables", slot: "glasses", icon: "😍" },
-      { name: "Superhero Cape", cat: "wearables", slot: "cape", icon: "🦸" },
-      { name: "Golden Wings", cat: "wearables", slot: "cape", icon: "🪽" },
-      { name: "Royal Cloak", cat: "wearables", slot: "cape", icon: "🧣" },
-      { name: "Star Cape", cat: "wearables", slot: "cape", icon: "✨" },
-      { name: "Dragon Wings", cat: "wearables", slot: "cape", icon: "🦇" },
-      { name: "Magic Star Wand", cat: "wearables", slot: "wand", icon: "🪄" },
-      { name: "Golden Scepter", cat: "wearables", slot: "wand", icon: "🔱" },
-      { name: "Laser Saber", cat: "wearables", slot: "wand", icon: "🗡️" },
-      { name: "Bubble Blower", cat: "wearables", slot: "wand", icon: "🫧" },
-      { name: "Crystal Staff", cat: "wearables", slot: "wand", icon: "🔮" },
-      { name: "Explorer Compass", cat: "wearables", slot: "wand", icon: "🧭" },
-      { name: "Torch of Light", cat: "wearables", slot: "wand", icon: "🔦" },
-      { name: "Music Flute", cat: "wearables", slot: "wand", icon: "🪈" },
-      { name: "Golden Key Wand", cat: "wearables", slot: "wand", icon: "🔑" },
-      { name: "Rainbow Wand", cat: "wearables", slot: "wand", icon: "🎨" },
-
-      // 30 Pets & Effects
-      { name: "Dancing Pup", cat: "pets", icon: "🐶" },
-      { name: "Kitty Pal", cat: "pets", icon: "🐱" },
-      { name: "Cosmic Drone", cat: "pets", icon: "🛸" },
-      { name: "Mini Dragon", cat: "pets", icon: "🐲" },
-      { name: "Happy Penguin", cat: "pets", icon: "🐧" },
-      { name: "Chirpy Bird", cat: "pets", icon: "🐦" },
-      { name: "Space Robot", cat: "pets", icon: "🤖" },
-      { name: "Sparkle Unicorn", cat: "pets", icon: "🦄" },
-      { name: "Tiny Owl", cat: "pets", icon: "🦉" },
-      { name: "Baby Tiger", cat: "pets", icon: "🐯" },
-      { name: "Playful Seal", cat: "pets", icon: "🦭" },
-      { name: "Friendly Ghost", cat: "pets", icon: "👻" },
-      { name: "Golden Koi", cat: "pets", icon: "🐟" },
-      { name: "Ladybug Buddy", cat: "pets", icon: "🐞" },
-      { name: "Star Fairy", cat: "pets", icon: "🧚" },
-      { name: "Rainbow Trail", cat: "pets", icon: "🌈" },
-      { name: "Glitter Sparkles", cat: "pets", icon: "✨" },
-      { name: "Firework Burst FX", cat: "pets", icon: "🎆" },
-      { name: "Bubble Stream", cat: "pets", icon: "🫧" },
-      { name: "Electric Aura", cat: "pets", icon: "⚡" },
-      { name: "Flower Petals FX", cat: "pets", icon: "🌸" },
-      { name: "Cosmic Starfield", cat: "pets", icon: "🌌" },
-      { name: "Heart Glow FX", cat: "pets", icon: "💖" },
-      { name: "Golden Light Beam", cat: "pets", icon: "🌟" },
-      { name: "Music Notes Stream", cat: "pets", icon: "🎵" },
-      { name: "Flame Glow", cat: "pets", icon: "🔥" },
-      { name: "Snowflake Frost", cat: "pets", icon: "❄️" },
-      { name: "Emerald Sparks", cat: "pets", icon: "🟢" },
-      { name: "Diamond Shimmer", cat: "pets", icon: "🔷" },
-      { name: "Galaxy Swirl", cat: "pets", icon: "🌀" }
-    ];
-
-    // Generate 100 Reward Objects
-    for (let i = 0; i < 100; i++) {
-      const item = ITEM_NAMES[i];
-      let desc = "";
-
-      if (i < 26) {
-        const letter = ALPHABET_DATA[i].letter.toUpperCase();
-        desc = `Complete Node ${letter} on the Map`;
-      } else if (i < 52) {
-        const letter = ALPHABET_DATA[i - 26].letter.toUpperCase();
-        desc = `Trace Letter ${letter} with 100% accuracy`;
-      } else if (i < 70) {
-        desc = `Earn ${(i - 50) * 4} Total Stars`;
-      } else if (i < 85) {
-        desc = `Blend words in Zone ${((i - 70) % 4) + 1}`;
-      } else {
-        desc = `Solve ${i - 80} Sight Words in Alien Quest`;
-      }
-
-      REWARDS_DB.push({
-        id: i + 1,
-        name: item.name,
-        cat: item.cat,
-        slot: item.slot || null,
-        icon: item.icon,
-        desc: desc,
-        unlocked: i === 0
-      });
-    }
+    // 26 Letter Badges
+    ALPHABET_DATA.forEach((d, i) => {
+      REWARDS_DB.push({ id: 'badge_' + d.letter, name: 'Letter ' + d.letter + ' Badge', icon: '🏅', cat: 'badge', desc: 'Master letter ' + d.letter, unlocked: i === 0 });
+    });
+    // 26 Word Stickers
+    ALPHABET_DATA.forEach(d => {
+      REWARDS_DB.push({ id: 'sticker_' + d.word, name: d.word + ' Sticker', icon: '🌟', cat: 'sticker', desc: 'Blend ' + d.word, unlocked: false });
+    });
+    // 16 Explorer Hats
+    const HATS = ['👑 Royal Crown', '🎩 Wizard Hat', '🧢 Explorer Cap', '🤠 Cowboy Hat', '🪖 Helmet', '👒 Sun Hat', '🎓 Scholar Cap', '🥷 Ninja Band', '🧑‍🚀 Space Helmet', '🎉 Party Hat', '🎅 Winter Hat', '🍄 Mushroom Cap', '🌻 Flower Crown', '🦜 Pirate Hat', '💎 Diamond Tiara', '🚀 Rocket Beanie'];
+    HATS.forEach((h, i) => {
+      REWARDS_DB.push({ id: 'hat_' + i, name: h, icon: h.split(' ')[0], cat: 'wearable', desc: 'Earn ' + ((i+1)*3) + ' stars', unlocked: false });
+    });
+    // 16 Magic Glasses
+    const GLASSES = ['👓 Smart Specs', '🕶️ Cool Shades', '🥽 Star Goggles', '🥸 Fun Disguise', '✨ Magic Monocle', '💖 Heart Shades', '🌟 Glow Glasses', '🔍 Detective Lens', '🟣 Purple Visor', '🟢 Retro Goggles', '🌈 Prism Lenses', '👽 Alien Specs', '🤿 Ocean Mask', '👁️ Mystic Eye', '⚡ Lightning Visor', '🛸 Cosmic Shades'];
+    GLASSES.forEach((g, i) => {
+      REWARDS_DB.push({ id: 'glasses_' + i, name: g, icon: g.split(' ')[0], cat: 'wearable', desc: 'Complete ' + (i+1) + ' nodes', unlocked: false });
+    });
+    // 16 Capes & Wands
+    const WANDS = ['🪄 Star Wand', '⚡ Thunder Wand', '🔮 Crystal Wand', '🌈 Rainbow Staff', '🌸 Blossom Wand', '❄️ Frost Scepter', '🔥 Flame Staff', '🌙 Moon Scepter', '🎈 Balloon Wand', '🍭 Candy Staff', '🍀 Lucky Wand', '🎺 Music Baton', '🪐 Planet Staff', '🛡️ Valor Cape', '🦸 Super Cape', '💫 Comet Wand'];
+    WANDS.forEach((w, i) => {
+      REWARDS_DB.push({ id: 'wand_' + i, name: w, icon: w.split(' ')[0], cat: 'wearable', desc: 'Reach ' + ((i+1)*5) + ' stars', unlocked: false });
+    });
 
     // --- 3. STATE MANAGEMENT ---
     const GameState = {
       activeNodeIdx: 0,
       currentStep: 1,
-      activityStars: 0,
       totalStars: 0,
-      completedNodes: new Set([0]),
-      unlockedRewards: new Set([1]),
-      equipped: {
-        hat: null,
-        glasses: null,
-        cape: null,
-        wand: null
-      },
       soundEnabled: true,
-      alienTargetIdx: 0,
-      alienScore: 0,
-      hasInteractedIntroLetter: false,
-      hasInteractedIntroWord: false
+      completedNodes: new Set([0]),
+      unlockedRewards: new Set(['badge_A']),
+      equipped: { hat: null, glasses: null, wand: null },
+      alienTargetWord: 'the',
+      hasInteractedStep1: false
     };
 
-    // Load LocalStorage
+    // Load progress
     try {
-      const saved = localStorage.getItem('phonics_adventure_save');
+      const saved = localStorage.getItem('phonics_quest_save');
       if (saved) {
         const parsed = JSON.parse(saved);
-        GameState.activeNodeIdx = parsed.activeNodeIdx || 0;
         GameState.totalStars = parsed.totalStars || 0;
-        GameState.completedNodes = new Set(parsed.completedNodes || [0]);
-        GameState.unlockedRewards = new Set(parsed.unlockedRewards || [1]);
-        GameState.equipped = parsed.equipped || GameState.equipped;
-        REWARDS_DB.forEach(r => {
-          if (GameState.unlockedRewards.has(r.id)) r.unlocked = true;
-        });
+        GameState.activeNodeIdx = parsed.activeNodeIdx || 0;
+        if (parsed.completedNodes) GameState.completedNodes = new Set(parsed.completedNodes);
+        if (parsed.unlockedRewards) GameState.unlockedRewards = new Set(parsed.unlockedRewards);
+        if (parsed.equipped) GameState.equipped = parsed.equipped;
       }
-    } catch (e) {
-      console.warn("Storage load error", e);
-    }
+    } catch (e) {}
 
-    function saveProgress() {
+    function saveGame() {
       try {
-        const data = {
-          activeNodeIdx: GameState.activeNodeIdx,
+        localStorage.setItem('phonics_quest_save', JSON.stringify({
           totalStars: GameState.totalStars,
+          activeNodeIdx: GameState.activeNodeIdx,
           completedNodes: Array.from(GameState.completedNodes),
           unlockedRewards: Array.from(GameState.unlockedRewards),
           equipped: GameState.equipped
-        };
-        localStorage.setItem('phonics_adventure_save', JSON.stringify(data));
+        }));
       } catch (e) {}
-      updateHeaderUI();
+      updateHeader();
     }
 
-    // --- 4. BULLETPROOF playVoice(text) IMPLEMENTATION ---
+    // --- 4. BULLETPROOF TTS & AUDIO ENGINE ---
+    let gameVoice = null;
+    function loadVoices() {
+      if (!('speechSynthesis' in window)) return;
+      const voices = window.speechSynthesis.getVoices();
+      gameVoice = voices.find(v => v.name === 'Google US English' || v.name === 'Samantha') ||
+                  voices.find(v => v.lang === 'en-US' || v.lang === 'en-GB') || null;
+    }
+    if ('speechSynthesis' in window) {
+      loadVoices();
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+    }
+
     function playVoice(textToSpeak) {
-        console.log("Playing audio for: ", textToSpeak);
-        window.speechSynthesis.cancel(); // Clear any stuck audio
-        let utterance = new SpeechSynthesisUtterance(textToSpeak);
-        utterance.lang = 'en-US'; // FORCES ENGLISH HUMAN VOICE
-        utterance.rate = 0.8; // Slightly slower for 1st graders
+      if (!GameState.soundEnabled || !textToSpeak) return;
+      try {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(textToSpeak);
+        if (gameVoice) utterance.voice = gameVoice;
+        utterance.lang = 'en-US';
+        utterance.rate = 0.85;
         utterance.volume = 1.0;
         window.speechSynthesis.speak(utterance);
-    } // <-- FIXED MISSING BRACKET HERE
+      } catch (e) {
+        console.warn("Speech error:", e);
+      }
+    }
 
     const playGameVoice = playVoice;
 
-    // Helper: Trigger quick visual pulse feedback on any clicked element
-    function triggerVisualFeedback(el) {
-      if (!el) return;
-      el.classList.remove('audio-pulse-active');
-      void el.offsetWidth; // force DOM reflow
-      el.classList.add('audio-pulse-active');
-      setTimeout(() => el.classList.remove('audio-pulse-active'), 380);
-    }
-
-    // Audio SFX & Background Music System
-    class AudioEngine {
+    // Web Audio Synthesizer SFX & BGM
+    class SoundEngine {
       constructor() {
         this.ctx = null;
-        this.isBgmPlaying = false;
       }
-
-      initAudioContext() {
+      init() {
         if (!this.ctx) {
           const AudioContext = window.AudioContext || window.webkitAudioContext;
-          this.ctx = new AudioContext();
+          if (AudioContext) this.ctx = new AudioContext();
         }
-        if (this.ctx.state === 'suspended') {
+        if (this.ctx && this.ctx.state === 'suspended') {
           this.ctx.resume();
         }
       }
-
-      playStarDing() {
-        if (!GameState.soundEnabled) return;
-        this.initAudioContext();
-        if (!this.ctx) return;
-
-        const notes = [523.25, 659.25, 783.99, 1046.50];
-        notes.forEach((freq, idx) => {
-          const t = this.ctx.currentTime + (idx * 0.08);
-          const osc = this.ctx.createOscillator();
-          const gain = this.ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(freq, t);
-          gain.gain.setValueAtTime(0.12, t);
-          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
-          osc.connect(gain);
-          gain.connect(this.ctx.destination);
-          osc.start(t);
-          osc.stop(t + 0.4);
-        });
-      }
-
       playPop() {
         if (!GameState.soundEnabled) return;
-        this.initAudioContext();
+        this.init();
         if (!this.ctx) return;
-
-        const t = this.ctx.currentTime;
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
-        osc.frequency.setValueAtTime(450, t);
-        osc.frequency.exponentialRampToValueAtTime(160, t + 0.08);
-        gain.gain.setValueAtTime(0.18, t);
-        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
         osc.connect(gain);
         gain.connect(this.ctx.destination);
-        osc.start(t);
-        osc.stop(t + 0.09);
-      }
-
-      playWrongWobble() {
-        if (!GameState.soundEnabled) return;
-        this.initAudioContext();
-        if (!this.ctx) return;
-
         const t = this.ctx.currentTime;
+        osc.frequency.setValueAtTime(450, t);
+        osc.frequency.exponentialRampToValueAtTime(800, t + 0.08);
+        gain.gain.setValueAtTime(0.3, t);
+        gain.gain.linearRampToValueAtTime(0.01, t + 0.08);
+        osc.start(t);
+        osc.stop(t + 0.08);
+      }
+      playStarDing() {
+        if (!GameState.soundEnabled) return;
+        this.init();
+        if (!this.ctx) return;
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(260, t);
-        osc.frequency.linearRampToValueAtTime(200, t + 0.2);
-        gain.gain.setValueAtTime(0.15, t);
-        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.25);
         osc.connect(gain);
         gain.connect(this.ctx.destination);
+        const t = this.ctx.currentTime;
+        osc.frequency.setValueAtTime(880, t);
+        osc.frequency.setValueAtTime(1320, t + 0.08);
+        gain.gain.setValueAtTime(0.3, t);
+        gain.gain.exponentialRampToValueAtTime(0.01, t + 0.35);
         osc.start(t);
-        osc.stop(t + 0.28);
+        osc.stop(t + 0.35);
       }
-
-      playVictoryFanfare() {
+      playWrongWobble() {
         if (!GameState.soundEnabled) return;
-        this.initAudioContext();
+        this.init();
         if (!this.ctx) return;
-
-        const chord = [392, 523.25, 659.25, 783.99, 1046.50];
-        chord.forEach((freq, i) => {
-          const t = this.ctx.currentTime + (i * 0.09);
-          const osc = this.ctx.createOscillator();
-          const gain = this.ctx.createGain();
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(freq, t);
-          gain.gain.setValueAtTime(0.18, t);
-          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.7);
-          osc.connect(gain);
-          gain.connect(this.ctx.destination);
-          osc.start(t);
-          osc.stop(t + 0.75);
-        });
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        const t = this.ctx.currentTime;
+        osc.frequency.setValueAtTime(180, t);
+        osc.frequency.linearRampToValueAtTime(120, t + 0.25);
+        gain.gain.setValueAtTime(0.2, t);
+        gain.gain.linearRampToValueAtTime(0.01, t + 0.25);
+        osc.start(t);
+        osc.stop(t + 0.25);
       }
-
       startGentleBGM() {
-        if (this.isBgmPlaying || !GameState.soundEnabled) return;
-        this.initAudioContext();
+        if (!GameState.soundEnabled) return;
+        this.init();
         if (!this.ctx) return;
-        this.isBgmPlaying = true;
-
-        const scale = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25];
+        const notes = [261.63, 329.63, 392.00, 523.25, 440.00, 392.00];
         let step = 0;
-
-        const loop = () => {
-          if (!this.isBgmPlaying || !GameState.soundEnabled) return;
-          const t = this.ctx.currentTime;
+        setInterval(() => {
+          if (!GameState.soundEnabled || !this.ctx) return;
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
           osc.type = 'sine';
-          const note = scale[step % scale.length];
-          osc.frequency.setValueAtTime(note, t);
-          gain.gain.setValueAtTime(0.02, t);
-          gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.55);
           osc.connect(gain);
           gain.connect(this.ctx.destination);
+          const t = this.ctx.currentTime;
+          osc.frequency.setValueAtTime(notes[step % notes.length], t);
+          gain.gain.setValueAtTime(0.02, t);
+          gain.gain.linearRampToValueAtTime(0.001, t + 0.8);
           osc.start(t);
-          osc.stop(t + 0.6);
-
-          step = (step + 1) % 16;
-          setTimeout(loop, 420);
-        };
-        loop();
-      }
-
-      toggleSound() {
-        GameState.soundEnabled = !GameState.soundEnabled;
-        if (!GameState.soundEnabled && 'speechSynthesis' in window) {
-          window.speechSynthesis.cancel();
-        }
-        return GameState.soundEnabled;
+          osc.stop(t + 0.8);
+          step++;
+        }, 900);
       }
     }
+    const AudioSys = new SoundEngine();
 
-    const AudioSys = new AudioEngine();
+    function triggerVisualFeedback(el) {
+      if (!el) return;
+      el.classList.remove('pulse-glow');
+      void el.offsetWidth;
+      el.classList.add('pulse-glow');
+      setTimeout(() => el.classList.remove('pulse-glow'), 350);
+    }
 
-    // --- 5. SVG ASSETS GENERATOR FOR ALL 26 WORDS & AVATARS ---
+    // --- 5. SCREEN NAVIGATION ---
+    function showScreen(screenId) {
+      document.querySelectorAll('.game-screen').forEach(s => s.classList.remove('active-screen'));
+      const target = document.getElementById(screenId);
+      if (target) target.classList.add('active-screen');
+      window.scrollTo(0, 0);
+    }
+
+    // --- 6. SVG ICONS FOR WORDS ---
     function getWordSvg(word) {
       const svgs = {
-        'ant': `<svg viewBox="0 0 100 100"><ellipse cx="50" cy="55" rx="16" ry="12" fill="#8d0801"/><ellipse cx="32" cy="50" rx="10" ry="8" fill="#8d0801"/><circle cx="20" cy="46" r="8" fill="#8d0801"/><circle cx="18" cy="43" r="2" fill="white"/><path d="M16 40 Q10 32 6 36 M18 38 Q16 28 14 26" stroke="#8d0801" stroke-width="2" fill="none"/><path d="M32 58 L24 75 M38 58 L42 75 M52 64 L60 78 M48 64 L36 78" stroke="#8d0801" stroke-width="2.5" stroke-linecap="round"/></svg>`,
-        'bat': `<svg viewBox="0 0 100 100"><path d="M50 35 Q30 15 10 35 Q25 65 50 60 Q75 65 90 35 Q70 15 50 35 Z" fill="#2b2d42"/><ellipse cx="50" cy="50" rx="12" ry="18" fill="#3d0066"/><circle cx="45" cy="45" r="2" fill="#ffd166"/><circle cx="55" cy="45" r="2" fill="#ffd166"/><polygon points="44,34 40,24 47,32" fill="#3d0066"/><polygon points="56,34 60,24 53,32" fill="#3d0066"/></svg>`,
-        'cat': `<svg viewBox="0 0 100 100"><circle cx="50" cy="55" r="26" fill="#f77f00"/><polygon points="28,38 32,18 46,32" fill="#d62828"/><polygon points="72,38 68,18 54,32" fill="#d62828"/><circle cx="40" cy="50" r="4" fill="#003049"/><circle cx="60" cy="50" r="4" fill="#003049"/><ellipse cx="50" cy="60" rx="4" ry="3" fill="#d62828"/><path d="M46 64 Q50 70 54 64" stroke="#003049" stroke-width="2" fill="none"/><path d="M28 54 L12 50 M28 60 L12 62 M72 54 L88 50 M72 60 L88 62" stroke="#003049" stroke-width="2"/></svg>`,
-        'dog': `<svg viewBox="0 0 100 100"><circle cx="50" cy="55" r="26" fill="#cca43b"/><ellipse cx="25" cy="45" rx="8" ry="18" fill="#8a5a36"/><ellipse cx="75" cy="45" rx="8" ry="18" fill="#8a5a36"/><circle cx="42" cy="50" r="4" fill="#1e1e24"/><circle cx="58" cy="50" r="4" fill="#1e1e24"/><ellipse cx="50" cy="62" rx="7" ry="5" fill="#1e1e24"/><path d="M45 68 Q50 76 55 68" stroke="#1e1e24" stroke-width="2" fill="none"/></svg>`,
-        'egg': `<svg viewBox="0 0 100 100"><ellipse cx="50" cy="52" rx="28" ry="36" fill="#ffe8d6" stroke="#ddbea9" stroke-width="4"/><ellipse cx="44" cy="40" rx="8" ry="14" fill="#ffffff" opacity="0.6"/></svg>`,
-        'fox': `<svg viewBox="0 0 100 100"><polygon points="50,75 20,40 80,40" fill="#f77f00"/><polygon points="20,40 15,15 35,32" fill="#d62828"/><polygon points="80,40 85,15 65,32" fill="#d62828"/><polygon points="50,75 35,50 65,50" fill="white"/><circle cx="36" cy="44" r="4" fill="#003049"/><circle cx="64" cy="44" r="4" fill="#003049"/><circle cx="50" cy="72" r="5" fill="#003049"/></svg>`,
-        'gum': `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="#ff70a6"/><circle cx="40" cy="40" r="8" fill="#ffffff" opacity="0.6"/><path d="M35 70 Q50 85 65 70" stroke="#f72585" stroke-width="4" fill="none"/></svg>`,
-        'hat': `<svg viewBox="0 0 100 100"><ellipse cx="50" cy="70" rx="42" ry="12" fill="#3a0ca3"/><path d="M30 70 L34 30 Q50 25 66 30 L70 70 Z" fill="#7209b7"/><rect x="32" y="60" width="36" height="8" fill="#ffd166"/></svg>`,
-        'ink': `<svg viewBox="0 0 100 100"><rect x="30" y="45" width="40" height="42" rx="10" fill="#4361ee"/><rect x="40" y="30" width="20" height="15" fill="#3a0ca3"/><circle cx="50" cy="65" r="12" fill="#10002b"/><path d="M60 25 L75 10" stroke="#f72585" stroke-width="4" stroke-linecap="round"/></svg>`,
-        'jet': `<svg viewBox="0 0 100 100"><path d="M10 50 L75 30 L90 50 L75 70 Z" fill="#e0fbfc"/><path d="M40 50 L25 20 L45 20 L60 50 Z" fill="#ee6c4d"/><path d="M40 50 L25 80 L45 80 L60 50 Z" fill="#ee6c4d"/><circle cx="70" cy="50" r="5" fill="#293241"/></svg>`,
-        'kit': `<svg viewBox="0 0 100 100"><rect x="20" y="35" width="60" height="48" rx="8" fill="#e63946"/><path d="M35 35 V24 H65 V35" fill="none" stroke="#1d3557" stroke-width="6"/><rect x="44" y="45" width="12" height="28" fill="white"/><rect x="36" y="53" width="28" height="12" fill="white"/></svg>`,
-        'log': `<svg viewBox="0 0 100 100"><ellipse cx="25" cy="50" rx="12" ry="24" fill="#a3704c"/><rect x="25" y="26" width="50" height="48" fill="#7f4f24"/><ellipse cx="75" cy="50" rx="12" ry="24" fill="#936639"/><circle cx="75" cy="50" r="6" fill="#582f0e"/></svg>`,
-        'map': `<svg viewBox="0 0 100 100"><polygon points="15,25 40,15 65,25 85,15 85,75 65,85 40,75 15,85" fill="#ffe6a7" stroke="#d4a373" stroke-width="3"/><path d="M30 45 Q50 35 60 60" stroke="#e63946" stroke-width="3" stroke-dasharray="4,4" fill="none"/><text x="65" y="65" font-size="16" fill="#d62828" font-weight="bold">X</text></svg>`,
-        'nut': `<svg viewBox="0 0 100 100"><ellipse cx="50" cy="60" rx="26" ry="28" fill="#bc6c25"/><path d="M24 45 Q50 32 76 45 Z" fill="#603808"/><rect x="47" y="22" width="6" height="15" fill="#603808" rx="3"/></svg>`,
-        'orb': `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="34" fill="url(#orbGrad)"/><defs><radialGradient id="orbGrad" cx="35%" cy="35%"><stop offset="0%" stop-color="#4cc9f0"/><stop offset="50%" stop-color="#4361ee"/><stop offset="100%" stop-color="#3a0ca3"/></radialGradient></defs><circle cx="38" cy="38" r="8" fill="white" opacity="0.7"/></svg>`,
-        'pig': `<svg viewBox="0 0 100 100"><circle cx="50" cy="52" r="28" fill="#ffb4a2"/><polygon points="26,34 30,16 44,28" fill="#e5989b"/><polygon points="74,34 70,16 56,28" fill="#e5989b"/><circle cx="40" cy="46" r="3.5" fill="#6d597a"/><circle cx="60" cy="46" r="3.5" fill="#6d597a"/><ellipse cx="50" cy="58" rx="10" ry="7" fill="#ff758f"/><circle cx="46" cy="58" r="2.5" fill="#6d597a"/><circle cx="54" cy="58" r="2.5" fill="#6d597a"/></svg>`,
-        'quiz': `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="34" fill="#ffd166"/><text x="50" y="65" font-size="44" font-weight="900" fill="#7209b7" text-anchor="middle">?</text></svg>`,
-        'red': `<svg viewBox="0 0 100 100"><rect x="18" y="18" width="64" height="64" rx="16" fill="#e63946"/><circle cx="36" cy="36" r="8" fill="white" opacity="0.4"/></svg>`,
-        'sun': `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="22" fill="#ffb703"/><path d="M50 14 L50 22 M50 78 L50 86 M14 50 L22 50 M78 50 L86 50 M24 24 L30 30 M70 70 L76 76 M24 76 L30 70 M70 30 L76 24" stroke="#fb8500" stroke-width="5" stroke-linecap="round"/><circle cx="43" cy="46" r="3" fill="#3d0066"/><circle cx="57" cy="46" r="3" fill="#3d0066"/><path d="M44 54 Q50 60 56 54" stroke="#3d0066" stroke-width="2.5" fill="none"/></svg>`,
-        'top': `<svg viewBox="0 0 100 100"><polygon points="50,85 20,40 80,40" fill="#f72585"/><ellipse cx="50" cy="40" rx="30" ry="8" fill="#7209b7"/><rect x="47" y="18" width="6" height="22" rx="3" fill="#ffd166"/></svg>`,
-        'cup': `<svg viewBox="0 0 100 100"><path d="M25 35 L32 75 Q50 85 68 75 L75 35 Z" fill="#4cc9f0"/><path d="M72 42 Q86 42 86 54 Q86 66 70 66" stroke="#4cc9f0" stroke-width="6" fill="none" stroke-linecap="round"/><circle cx="50" cy="55" r="8" fill="#ffd166"/></svg>`,
-        'van': `<svg viewBox="0 0 100 100"><rect x="15" y="35" width="70" height="34" rx="8" fill="#06d6a0"/><polygon points="70,35 85,50 85,69 70,69" fill="#06d6a0"/><rect x="64" y="40" width="16" height="12" fill="#e0fbfc" rx="2"/><rect x="25" y="40" width="16" height="12" fill="#e0fbfc" rx="2"/><circle cx="32" cy="72" r="9" fill="#293241"/><circle cx="32" cy="72" r="4" fill="white"/><circle cx="72" cy="72" r="9" fill="#293241"/><circle cx="72" cy="72" r="4" fill="white"/></svg>`,
-        'web': `<svg viewBox="0 0 100 100"><path d="M50 15 L50 85 M15 50 L85 50 M25 25 L75 75 M25 75 L75 25" stroke="#90e0ef" stroke-width="2"/><circle cx="50" cy="50" r="16" fill="none" stroke="#90e0ef" stroke-width="2"/><circle cx="50" cy="50" r="28" fill="none" stroke="#90e0ef" stroke-width="2"/><circle cx="65" cy="40" r="5" fill="#7209b7"/></svg>`,
-        'box': `<svg viewBox="0 0 100 100"><polygon points="50,18 85,34 50,50 15,34" fill="#ddbea9"/><polygon points="15,34 50,50 50,84 15,68" fill="#cb997e"/><polygon points="85,34 50,50 50,84 85,68" fill="#b7b7a4"/></svg>`,
-        'yak': `<svg viewBox="0 0 100 100"><circle cx="50" cy="55" r="26" fill="#6f4e37"/><path d="M28 35 Q10 20 20 10 Q32 20 34 32" fill="#d4a373"/><path d="M72 35 Q90 20 80 10 Q68 20 66 32" fill="#d4a373"/><circle cx="42" cy="50" r="4" fill="#1e1e24"/><circle cx="58" cy="50" r="4" fill="#1e1e24"/><ellipse cx="50" cy="64" rx="8" ry="6" fill="#d4a373"/></svg>`,
-        'zip': `<svg viewBox="0 0 100 100"><rect x="42" y="15" width="16" height="70" fill="#ced4da" rx="4"/><path d="M38 30 H62 M38 42 H62 M38 54 H62 M38 66 H62" stroke="#495057" stroke-width="4"/><polygon points="40,35 60,35 55,60 45,60" fill="#ffd166"/><circle cx="50" cy="72" r="5" fill="#f72585"/></svg>`
+        'Apple': '<svg viewBox="0 0 100 100" width="80" height="80"><circle cx="42" cy="55" r="30" fill="#e63946"/><circle cx="58" cy="55" r="30" fill="#e63946"/><path d="M50 25 Q55 12 65 18" stroke="#582f0e" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="60" cy="22" rx="10" ry="5" fill="#57cc99" transform="rotate(-20 60 22)"/></svg>',
+        'Ball': '<svg viewBox="0 0 100 100" width="80" height="80"><circle cx="50" cy="50" r="40" fill="#ffd166"/><path d="M20 30 Q50 50 80 30" stroke="#ff0054" stroke-width="8" fill="none"/><path d="M20 70 Q50 50 80 70" stroke="#118ab2" stroke-width="8" fill="none"/></svg>',
+        'Cat': '<svg viewBox="0 0 100 100" width="80" height="80"><circle cx="50" cy="55" r="32" fill="#fb8500"/><polygon points="25,35 35,15 45,30" fill="#fb8500"/><polygon points="75,35 65,15 55,30" fill="#fb8500"/><circle cx="40" cy="50" r="4" fill="#333"/><circle cx="60" cy="50" r="4" fill="#333"/><circle cx="50" cy="60" r="3" fill="#ff0054"/></svg>',
+        'Dog': '<svg viewBox="0 0 100 100" width="80" height="80"><circle cx="50" cy="50" r="35" fill="#a3704c"/><ellipse cx="25" cy="45" rx="8" ry="18" fill="#6f4e37"/><ellipse cx="75" cy="45" rx="8" ry="18" fill="#6f4e37"/><circle cx="40" cy="45" r="4" fill="#333"/><circle cx="60" cy="45" r="4" fill="#333"/><ellipse cx="50" cy="58" rx="8" ry="5" fill="#333"/></svg>',
+        'Egg': '<svg viewBox="0 0 100 100" width="80" height="80"><ellipse cx="50" cy="55" rx="32" ry="40" fill="#f8edeb" stroke="#ffd166" stroke-width="4"/></svg>',
+        'Fish': '<svg viewBox="0 0 100 100" width="80" height="80"><ellipse cx="45" cy="50" rx="35" ry="22" fill="#06d6a0"/><polygon points="75,50 95,30 95,70" fill="#06d6a0"/><circle cx="30" cy="45" r="4" fill="#333"/></svg>',
+        'Sun': '<svg viewBox="0 0 100 100" width="80" height="80"><circle cx="50" cy="50" r="28" fill="#ffd166"/><circle cx="42" cy="46" r="4" fill="#333"/><circle cx="58" cy="46" r="4" fill="#333"/><path d="M42 58 Q50 66 58 58" stroke="#333" stroke-width="3" fill="none" stroke-linecap="round"/><g stroke="#ffd166" stroke-width="5" stroke-linecap="round"><line x1="50" y1="10" x2="50" y2="18"/><line x1="50" y1="82" x2="50" y2="90"/><line x1="10" y1="50" x2="18" y2="50"/><line x1="82" y1="50" x2="90" y2="50"/></g></svg>'
       };
-      return svgs[word] || `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="35" fill="#ff70a6"/><text x="50" y="60" font-size="28" font-weight="bold" fill="white" text-anchor="middle">${word}</text></svg>`;
+      return svgs[word] || '<svg viewBox="0 0 100 100" width="80" height="80"><circle cx="50" cy="50" r="35" fill="#7209b7"/><text x="50" y="60" font-size="32" fill="white" font-weight="bold" text-anchor="middle">★</text></svg>';
     }
 
-    // --- 6. PARTICLES & CONFETTI ENGINE ---
-    const fxCanvas = document.getElementById('fx-canvas');
-    const fxCtx = fxCanvas.getContext('2d');
-    let particles = [];
+    // --- 7. RENDER SAGA TREASURE MAP ---
+    function renderMap() {
+      const container = document.getElementById('map-nodes-layer');
+      container.innerHTML = '';
 
-    function resizeFx() {
-      fxCanvas.width = window.innerWidth;
-      fxCanvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resizeFx);
-    resizeFx();
-
-    function spawnConfetti(x, y, count = 35) {
-      const colors = ['#ff477e', '#ffd166', '#06d6a0', '#118ab2', '#7209b7', '#f72585'];
-      for (let i = 0; i < count; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 8 + 3;
-        particles.push({
-          x: x || window.innerWidth / 2,
-          y: y || window.innerHeight / 2,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed - 3,
-          size: Math.random() * 9 + 5,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          rotation: Math.random() * 360,
-          vRot: (Math.random() - 0.5) * 10,
-          alpha: 1,
-          decay: Math.random() * 0.02 + 0.015
-        });
+      // Draw dashed connecting path
+      const svgLayer = document.getElementById('map-svg-path-layer');
+      let pathD = 'M ' + ALPHABET_DATA[0].x + ' ' + ALPHABET_DATA[0].y;
+      for (let i = 1; i < ALPHABET_DATA.length; i++) {
+        const prev = ALPHABET_DATA[i - 1];
+        const curr = ALPHABET_DATA[i];
+        const midY = (prev.y + curr.y) / 2;
+        pathD += ' C ' + prev.x + ' ' + midY + ', ' + curr.x + ' ' + midY + ', ' + curr.x + ' ' + curr.y;
       }
-    }
-
-    function renderFx() {
-      fxCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
-      for (let i = particles.length - 1; i >= 0; i--) {
-        const p = particles[i];
-        p.x += p.vx;
-        p.y += p.vy;
-        p.vy += 0.25;
-        p.rotation += p.vRot;
-        p.alpha -= p.decay;
-
-        if (p.alpha <= 0) {
-          particles.splice(i, 1);
-          continue;
-        }
-
-        fxCtx.save();
-        fxCtx.globalAlpha = p.alpha;
-        fxCtx.translate(p.x, p.y);
-        fxCtx.rotate((p.rotation * Math.PI) / 180);
-        fxCtx.fillStyle = p.color;
-        fxCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
-        fxCtx.restore();
-      }
-      requestAnimationFrame(renderFx);
-    }
-    renderFx();
-
-    // --- 7. CORE UI FLOW AND CONTROLLER ---
-    function showScreen(screenId) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      const target = document.getElementById(screenId);
-      if (target) target.classList.add('active');
-
-      const titles = {
-        'screen-map': 'Treasure Map',
-        'screen-intro': 'Step 1: Learn the Sound',
-        'screen-match': 'Step 2: Match Sound',
-        'screen-trace': 'Step 3: Letter Tracing',
-        'screen-blend': 'Step 4: Sound Blending',
-        'screen-alien': 'Sight Word Alien Challenge'
-      };
-      document.getElementById('activity-name-text').innerText = titles[screenId] || 'Phonics Adventure';
-      
-      if (screenId === 'screen-map') {
-        renderTreasureMap();
-        updateYouAreHereMarker();
-      }
-      updateHeaderUI();
-    }
-
-    function updateHeaderUI() {
-      for (let i = 1; i <= 4; i++) {
-        const starEl = document.getElementById(`star-${i}`);
-        if (i <= GameState.activityStars) {
-          starEl.classList.add('earned');
-        } else {
-          starEl.classList.remove('earned');
-        }
-      }
-      document.getElementById('total-stars-count').innerText = GameState.totalStars;
-      document.getElementById('unlocked-reward-count').innerText = GameState.unlockedRewards.size;
-      updateAvatarGraphics();
-    }
-
-    function earnStar(stepIndex) {
-      if (GameState.activityStars < stepIndex) {
-        GameState.activityStars = stepIndex;
-        GameState.totalStars += 1;
-        AudioSys.playStarDing();
-        spawnConfetti(window.innerWidth / 2, 80, 25);
-        updateHeaderUI();
-        saveProgress();
-        checkRewardUnlocks();
-      }
-    }
-
-    function updateAvatarGraphics() {
-      const accessoriesGroup = document.getElementById('map-avatar-accessories');
-      const closetGroup = document.getElementById('closet-avatar-accessories');
-      
-      let html = '';
-      if (GameState.equipped.hat) html += `<text x="50" y="24" font-size="28" text-anchor="middle">${GameState.equipped.hat}</text>`;
-      if (GameState.equipped.glasses) html += `<text x="50" y="48" font-size="22" text-anchor="middle">${GameState.equipped.glasses}</text>`;
-      if (GameState.equipped.cape) html += `<text x="20" y="70" font-size="24">${GameState.equipped.cape}</text>`;
-      if (GameState.equipped.wand) html += `<text x="75" y="70" font-size="24">${GameState.equipped.wand}</text>`;
-
-      if (accessoriesGroup) accessoriesGroup.innerHTML = html;
-      if (closetGroup) closetGroup.innerHTML = html;
-    }
-
-    // --- 8. REWARD ENGINE AND POPUPS ---
-    function checkRewardUnlocks() {
-      REWARDS_DB.forEach(reward => {
-        if (!reward.unlocked) {
-          let shouldUnlock = false;
-          if (reward.id <= 26 && GameState.completedNodes.has(reward.id - 1)) {
-            shouldUnlock = true;
-          } else if (reward.id > 26 && reward.id <= 52 && GameState.completedNodes.has(reward.id - 27)) {
-            shouldUnlock = true;
-          } else if (reward.id > 52 && reward.id <= 70) {
-            const reqStars = (reward.id - 50) * 4;
-            if (GameState.totalStars >= reqStars) shouldUnlock = true;
-          } else if (reward.id > 70 && reward.id <= 85) {
-            const reqZone = ((reward.id - 70) % 4) + 1;
-            if (GameState.completedNodes.size >= reqZone * 5) shouldUnlock = true;
-          } else if (reward.id > 85) {
-            if (GameState.alienScore >= (reward.id - 85)) shouldUnlock = true;
-          }
-
-          if (shouldUnlock) {
-            reward.unlocked = true;
-            GameState.unlockedRewards.add(reward.id);
-            triggerCelebrationPopup(reward);
-          }
-        }
-      });
-      saveProgress();
-    }
-
-    function triggerCelebrationPopup(reward) {
-      AudioSys.playVictoryFanfare();
-      spawnConfetti(window.innerWidth / 2, window.innerHeight / 2, 50);
-
-      document.getElementById('celebrate-icon').innerHTML = `<span style="font-size: 3.2rem;">${reward.icon}</span>`;
-      document.getElementById('celebrate-item-name').innerText = reward.name;
-      document.getElementById('celebrate-desc').innerText = `Unlocked: ${reward.desc}!`;
-
-      const modal = document.getElementById('modal-celebrate');
-      modal.classList.add('open');
-    }
-
-    document.getElementById('btn-claim-celebrate').addEventListener('click', (e) => {
-      e.stopPropagation();
-      document.getElementById('modal-celebrate').classList.remove('open');
-    });
-
-    // --- 9. TREASURE MAP VIEW & NODE RENDERING ---
-    function renderTreasureMap() {
-      const nodesLayer = document.getElementById('map-nodes-layer');
-      const svgPath = document.getElementById('map-svg-path');
-      nodesLayer.innerHTML = '';
-
-      let pathD = `M ${ALPHABET_DATA[0].x} ${ALPHABET_DATA[0].y} `;
+      svgLayer.innerHTML = '<path d="' + pathD + '" fill="none" stroke="#ffb703" stroke-width="12" stroke-dasharray="14,14" opacity="0.8"/><path d="' + pathD + '" fill="none" stroke="#ffffff" stroke-width="4" stroke-dasharray="14,14" opacity="0.9"/>';
 
       ALPHABET_DATA.forEach((data, idx) => {
-        if (idx > 0) {
-          const prev = ALPHABET_DATA[idx - 1];
-          const midX = (prev.x + data.x) / 2 + (idx % 2 === 0 ? 40 : -40);
-          const midY = (prev.y + data.y) / 2;
-          pathD += `Q ${midX} ${midY} ${data.x} ${data.y} `;
-        }
-
         const isCompleted = GameState.completedNodes.has(idx);
         const isUnlocked = idx === 0 || GameState.completedNodes.has(idx - 1) || isCompleted;
 
-        const nodeEl = document.createElement('div');
-        nodeEl.className = `map-node ${isCompleted ? 'completed' : ''} ${!isUnlocked ? 'locked' : ''}`;
-        nodeEl.style.left = `${data.x}px`;
-        nodeEl.style.top = `${data.y}px`;
-        nodeEl.id = `map-node-${idx}`;
+        const node = document.createElement('div');
+        node.className = 'map-node-item ' + (isCompleted ? 'completed' : '') + ' ' + (!isUnlocked ? 'locked' : '');
+        node.style.left = data.x + 'px';
+        node.style.top = data.y + 'px';
 
-        const starsCount = isCompleted ? '⭐⭐⭐⭐' : (idx === GameState.activeNodeIdx ? '⭐⭐' : '');
+        node.innerHTML = '<div class="node-circle-badge">' + data.letter + '</div><div class="node-title-banner">' + data.letter + ' - ' + data.word + '</div><div class="node-play-btn">▶ Play</div><div class="node-stars-row"><span class="star-icon ' + (isCompleted ? 'earned' : '') + '">★</span><span class="star-icon ' + (isCompleted ? 'earned' : '') + '">★</span><span class="star-icon ' + (isCompleted ? 'earned' : '') + '">★</span></div>';
 
-        nodeEl.innerHTML = `
-          <div class="node-circle">${data.letter.toUpperCase()}</div>
-          <div class="node-banner">${data.title}</div>
-          <div class="node-stars">${starsCount ? `<span>${starsCount}</span>` : ''}</div>
-        `;
-
-        nodeEl.addEventListener('click', (e) => {
+        node.addEventListener('click', (e) => {
           e.stopPropagation();
-          triggerVisualFeedback(nodeEl);
-          if (isUnlocked) {
-            startLetterNode(idx);
-          } else {
+          if (!isUnlocked) {
             AudioSys.playWrongWobble();
+            playVoice("Complete previous letters to unlock!");
+            return;
           }
+          startLetterActivity(idx);
         });
 
-        nodesLayer.appendChild(nodeEl);
+        container.appendChild(node);
       });
 
-      svgPath.innerHTML = `
-        <path d="${pathD}" fill="none" stroke="#ffd166" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
-        <path d="${pathD}" fill="none" stroke="#ffffff" stroke-width="6" stroke-dasharray="14,14" stroke-linecap="round" stroke-linejoin="round"/>
-      `;
+      // Update avatar marker
+      const activeData = ALPHABET_DATA[GameState.activeNodeIdx] || ALPHABET_DATA[0];
+      const marker = document.getElementById('you-are-here');
+      marker.style.left = activeData.x + 'px';
+      marker.style.top = activeData.y + 'px';
     }
 
-    function updateYouAreHereMarker() {
-      const marker = document.getElementById('you-are-here-marker');
-      const activeData = ALPHABET_DATA[GameState.activeNodeIdx];
-      if (activeData && marker) {
-        marker.style.left = `${activeData.x}px`;
-        marker.style.top = `${activeData.y}px`;
-      }
+    function updateHeader() {
+      document.getElementById('header-stars-count').innerText = GameState.totalStars;
+      document.getElementById('header-rewards-count').innerText = GameState.unlockedRewards.size + '/100';
     }
 
-    // --- 10. STEP-BY-STEP LETTER LEARNING SEQUENCE ---
-    function startLetterNode(idx) {
+    // --- 8. STEP 1: LEARN THE SOUND ---
+    function startLetterActivity(idx) {
       GameState.activeNodeIdx = idx;
       GameState.currentStep = 1;
-      GameState.activityStars = 0;
-      GameState.hasInteractedIntroLetter = false;
-      GameState.hasInteractedIntroWord = false;
+      GameState.hasInteractedStep1 = false;
+      const data = ALPHABET_DATA[idx];
 
-      updateHeaderUI();
-      loadStep1Intro();
-      showScreen('screen-intro');
-    }
-
-    // STEP 1: LEARN THE SOUND (INTRO)
-    function loadStep1Intro() {
-      const data = ALPHABET_DATA[GameState.activeNodeIdx];
       document.getElementById('intro-letter-text').innerText = data.letter;
       document.getElementById('intro-word-text').innerText = data.word;
       document.getElementById('intro-word-icon').innerHTML = getWordSvg(data.word);
 
+      // Reset stars to white
+      document.getElementById('star-step-1').className = 'step-star';
+      document.getElementById('star-step-2').className = 'step-star';
+      document.getElementById('star-step-3').className = 'step-star';
+      document.getElementById('star-step-4').className = 'step-star';
+
       const nextBtn = document.getElementById('btn-next-to-match');
       nextBtn.style.display = 'none';
 
-      // Explicit phonetic pronunciation string
-      const letterSound = PHONIC_SOUNDS[data.letter.toLowerCase()] || data.letter;
-
-      const letterBox = document.getElementById('intro-letter-btn');
-      letterBox.onclick = (e) => {
-        e.stopPropagation();
-        triggerVisualFeedback(letterBox);
-        playVoice(letterSound);
-        GameState.hasInteractedIntroLetter = true;
-        checkStep1Progress();
+      const letterBtn = document.getElementById('intro-letter-btn');
+      letterBtn.onclick = () => {
+        triggerVisualFeedback(letterBtn);
+        playVoice(data.sound);
+        unlockStep1();
       };
 
-      const wordBox = document.getElementById('intro-word-btn');
-      wordBox.onclick = (e) => {
-        e.stopPropagation();
-        triggerVisualFeedback(wordBox);
+      const wordBtn = document.getElementById('intro-word-btn');
+      wordBtn.onclick = () => {
+        triggerVisualFeedback(wordBtn);
         playVoice(data.word);
-        GameState.hasInteractedIntroWord = true;
-        checkStep1Progress();
+        unlockStep1();
       };
+
+      showScreen('screen-intro');
     }
 
-    function checkStep1Progress() {
-      if (GameState.hasInteractedIntroLetter || GameState.hasInteractedIntroWord) {
-        earnStar(1);
+    function unlockStep1() {
+      if (!GameState.hasInteractedStep1) {
+        GameState.hasInteractedStep1 = true;
+        document.getElementById('star-step-1').className = 'step-star active';
         document.getElementById('btn-next-to-match').style.display = 'inline-flex';
+        AudioSys.playStarDing();
       }
     }
 
-    document.getElementById('btn-next-to-match').addEventListener('click', (e) => {
-      e.stopPropagation();
-      GameState.currentStep = 2;
+    document.getElementById('btn-next-to-match').onclick = () => {
       loadStep2Match();
       showScreen('screen-match');
-    });
+    };
 
-    // STEP 2: MATCH SOUND (BUBBLES)
+    // --- 9. STEP 2: BUBBLE MATCH ---
     function loadStep2Match() {
       const data = ALPHABET_DATA[GameState.activeNodeIdx];
       document.getElementById('match-anchor-word').innerText = data.word;
@@ -2225,512 +1292,399 @@
         .slice(0, 3)
         .map(d => d.letter);
 
-      const letters = [data.letter, ...distractors].sort(() => 0.5 - Math.random());
-      const positions = [
-        { top: '24px', left: '30px' },
-        { top: '24px', right: '30px' },
-        { bottom: '24px', left: '30px' },
-        { bottom: '24px', right: '30px' }
+      const choices = [data.letter, ...distractors].sort(() => 0.5 - Math.random());
+      const pos = [
+        { top: '15px', left: '20px' },
+        { top: '15px', right: '20px' },
+        { bottom: '15px', left: '20px' },
+        { bottom: '15px', right: '20px' }
       ];
 
-      letters.forEach((letChar, idx) => {
+      choices.forEach((char, idx) => {
         const bubble = document.createElement('div');
-        bubble.className = 'phonics-bubble';
-        bubble.innerText = letChar;
-        Object.assign(bubble.style, positions[idx]);
+        bubble.className = 'phonics-bubble-float';
+        bubble.innerText = char;
+        Object.assign(bubble.style, pos[idx]);
 
-        const bubbleSound = PHONIC_SOUNDS[letChar.toLowerCase()] || letChar;
+        const charSound = ALPHABET_DATA.find(d => d.letter === char)?.sound || char;
 
-        // Explicit click handler with playVoice and visual feedback
-        bubble.addEventListener('click', (e) => {
-          e.stopPropagation();
+        bubble.onclick = () => {
           triggerVisualFeedback(bubble);
-          playVoice(bubbleSound);
-          if (letChar === data.letter) {
-            handleMatchSuccess(bubble);
+          playVoice(charSound);
+
+          if (char === data.letter) {
+            AudioSys.playPop();
+            AudioSys.playStarDing();
+            spawnConfetti(window.innerWidth / 2, window.innerHeight / 2);
+            document.getElementById('star2-step-2').className = 'step-star active';
+            bubble.style.display = 'none';
+            nextBtn.style.display = 'inline-flex';
           } else {
             AudioSys.playWrongWobble();
           }
-        });
-
-        // HTML5 Drag and Drop Support
-        bubble.draggable = true;
-        bubble.addEventListener('dragstart', (e) => {
-          playVoice(bubbleSound);
-          e.dataTransfer.setData('text/plain', letChar);
-        });
+        };
 
         container.appendChild(bubble);
       });
-
-      const dropZone = document.getElementById('target-drop-zone');
-      dropZone.ondragover = (e) => {
-        e.preventDefault();
-        dropZone.classList.add('drag-over');
-      };
-      dropZone.ondragleave = () => dropZone.classList.remove('drag-over');
-      dropZone.ondrop = (e) => {
-        e.preventDefault();
-        dropZone.classList.remove('drag-over');
-        const droppedLetter = e.dataTransfer.getData('text/plain');
-        if (droppedLetter === data.letter) {
-          handleMatchSuccess(null);
-        } else {
-          AudioSys.playWrongWobble();
-        }
-      };
     }
 
-    function handleMatchSuccess(bubbleEl) {
-      AudioSys.playPop();
-      AudioSys.playStarDing();
-      spawnConfetti(window.innerWidth / 2, window.innerHeight / 2, 35);
-      earnStar(2);
-      if (bubbleEl) bubbleEl.style.display = 'none';
-      document.getElementById('btn-next-to-trace').style.display = 'inline-flex';
-    }
-
-    document.getElementById('btn-next-to-trace').addEventListener('click', (e) => {
-      e.stopPropagation();
-      GameState.currentStep = 3;
-      loadStep3Tracing();
+    document.getElementById('btn-next-to-trace').onclick = () => {
+      loadStep3Trace();
       showScreen('screen-trace');
-    });
+    };
 
-    // STEP 3: LETTER TRACING (CANVAS & CHECKPOINTS)
-    let isTracing = false;
-    let tracePointsHit = 0;
-    let requiredTracePoints = [];
+    // --- 10. STEP 3: FORGIVING LETTER TRACING ---
+    let traceCanvas, traceCtx;
+    let tracePoints = [];
+    let coveredPoints = 0;
+    let isDrawing = false;
 
-    function loadStep3Tracing() {
+    function loadStep3Trace() {
       const data = ALPHABET_DATA[GameState.activeNodeIdx];
-      const canvas = document.getElementById('trace-canvas');
-      const ctx = canvas.getContext('2d');
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      traceCanvas = document.getElementById('trace-canvas');
+      traceCtx = traceCanvas.getContext('2d');
+      traceCtx.clearRect(0, 0, 320, 320);
 
-      const nextBtn = document.getElementById('btn-next-to-blend');
-      nextBtn.style.display = 'none';
+      document.getElementById('btn-next-to-blend').style.display = 'none';
+      document.getElementById('trace-progress-label').innerText = 'Progress: 0%';
 
-      requiredTracePoints = data.strokePath.map(pt => ({ x: pt[0], y: pt[1], hit: false }));
-      tracePointsHit = 0;
+      // Draw dashed background guide
+      traceCtx.font = '900 220px Fredoka, sans-serif';
+      traceCtx.textAlign = 'center';
+      traceCtx.textBaseline = 'middle';
+      traceCtx.strokeStyle = '#e9d5ff';
+      traceCtx.lineWidth = 16;
+      traceCtx.setLineDash([12, 12]);
+      traceCtx.strokeText(data.letter, 160, 160);
+      traceCtx.setLineDash([]);
 
-      const guideStar = document.getElementById('trace-star-guide');
-      const firstPt = requiredTracePoints[0];
-      guideStar.style.left = `${firstPt.x}px`;
-      guideStar.style.top = `${firstPt.y}px`;
+      // Generate lenient target waypoints
+      tracePoints = [];
+      const imgData = traceCtx.getImageData(0, 0, 320, 320);
+      for (let y = 30; y < 290; y += 22) {
+        for (let x = 30; x < 290; x += 22) {
+          const alpha = imgData.data[(y * 320 + x) * 4 + 3];
+          if (alpha > 50) {
+            tracePoints.push({ x, y, hit: false });
+          }
+        }
+      }
+      coveredPoints = 0;
 
-      // Draw dashed guideline
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
-      ctx.lineWidth = 26;
-      ctx.lineCap = 'round';
-      ctx.lineJoin = 'round';
-      ctx.setLineDash([14, 14]);
-      ctx.beginPath();
-      requiredTracePoints.forEach((pt, i) => {
-        if (i === 0) ctx.moveTo(pt.x, pt.y);
-        else ctx.lineTo(pt.x, pt.y);
-      });
-      ctx.stroke();
-      ctx.setLineDash([]);
-
-      function getPos(e) {
-        const rect = canvas.getBoundingClientRect();
+      // Event handlers with forgiving tolerance radius (55px)
+      function handleTraceMove(e) {
+        if (!isDrawing) return;
+        const rect = traceCanvas.getBoundingClientRect();
         const clientX = e.touches ? e.touches[0].clientX : e.clientX;
         const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-        return {
-          x: (clientX - rect.left) * (canvas.width / rect.width),
-          y: (clientY - rect.top) * (canvas.height / rect.height)
-        };
-      }
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
 
-      canvas.onmousedown = canvas.ontouchstart = (e) => {
-        isTracing = true;
-        const pos = getPos(e);
-        ctx.beginPath();
-        ctx.moveTo(pos.x, pos.y);
-      };
+        // Draw user trail
+        traceCtx.fillStyle = '#ff0054';
+        traceCtx.beginPath();
+        traceCtx.arc(x, y, 14, 0, Math.PI * 2);
+        traceCtx.fill();
 
-      window.onmouseup = window.ontouchend = () => {
-        isTracing = false;
-        checkTraceCompletion();
-      };
-
-      canvas.onmousemove = canvas.ontouchmove = (e) => {
-        if (!isTracing) return;
-        const pos = getPos(e);
-        
-        ctx.strokeStyle = '#06d6a0';
-        ctx.lineWidth = 22;
-        ctx.lineCap = 'round';
-        ctx.lineJoin = 'round';
-        ctx.lineTo(pos.x, pos.y);
-        ctx.stroke();
-
-        requiredTracePoints.forEach((pt) => {
+        // Lenient tolerance check
+        tracePoints.forEach(pt => {
           if (!pt.hit) {
-            const dist = Math.hypot(pos.x - pt.x, pos.y - pt.y);
-            if (dist < 40) {
+            const dist = Math.hypot(pt.x - x, pt.y - y);
+            if (dist < 55) { // 55px radius tolerance for 6-year-olds
               pt.hit = true;
-              tracePointsHit++;
-              const nextPt = requiredTracePoints.find(p => !p.hit);
-              if (nextPt) {
-                guideStar.style.left = `${nextPt.x}px`;
-                guideStar.style.top = `${nextPt.y}px`;
-              }
+              coveredPoints++;
             }
           }
         });
-      };
-    }
 
-    function checkTraceCompletion() {
-      const data = ALPHABET_DATA[GameState.activeNodeIdx];
-      if (tracePointsHit >= requiredTracePoints.length * 0.7) {
-        const letterSound = PHONIC_SOUNDS[data.letter.toLowerCase()] || data.letter;
-        playVoice(letterSound);
-        earnStar(3);
-        spawnConfetti(window.innerWidth / 2, window.innerHeight / 2, 35);
-        document.getElementById('btn-next-to-blend').style.display = 'inline-flex';
-      }
-    }
+        const percent = Math.min(100, Math.round((coveredPoints / Math.max(1, tracePoints.length)) * 100));
+        document.getElementById('trace-progress-label').innerText = 'Progress: ' + percent + '%';
 
-    document.getElementById('btn-clear-trace').addEventListener('click', (e) => {
-      e.stopPropagation();
-      loadStep3Tracing();
-    });
-
-    document.getElementById('btn-next-to-blend').addEventListener('click', (e) => {
-      e.stopPropagation();
-      GameState.currentStep = 4;
-      loadStep4Blending();
-      showScreen('screen-blend');
-    });
-
-    // STEP 4: SOUND BLENDING (CVC MACHINE)
-    function loadStep4Blending() {
-      const data = ALPHABET_DATA[GameState.activeNodeIdx];
-      const letters = data.word.split('');
-
-      const tray = document.getElementById('blend-blocks-tray');
-      tray.innerHTML = '';
-
-      const finishBtn = document.getElementById('btn-next-finish-node');
-      finishBtn.style.display = 'none';
-
-      const resultCard = document.getElementById('blended-result-card');
-      resultCard.style.display = 'none';
-
-      const slots = document.querySelectorAll('.blend-slot');
-      slots.forEach(slot => {
-        slot.innerHTML = '';
-        slot.classList.remove('filled');
-      });
-
-      let placedCount = 0;
-
-      letters.forEach((char, idx) => {
-        const block = document.createElement('div');
-        block.className = 'blend-letter-block';
-        block.innerText = char;
-        block.dataset.letter = char;
-        block.dataset.idx = idx;
-
-        const charSound = PHONIC_SOUNDS[char.toLowerCase()] || char;
-
-        // Individual click to hear pure human phonetics with visual pulse
-        block.addEventListener('click', (e) => {
-          e.stopPropagation();
-          triggerVisualFeedback(block);
-          playVoice(charSound);
-        });
-
-        // Tap or Drag to place into next empty slot
-        block.draggable = true;
-        block.addEventListener('dragstart', (e) => {
-          playVoice(charSound);
-          e.dataTransfer.setData('text/plain', JSON.stringify({ char, idx }));
-        });
-
-        block.addEventListener('dblclick', (e) => {
-          e.stopPropagation();
-          placeLetterInSlot(char, idx, block);
-        });
-
-        tray.appendChild(block);
-      });
-
-      slots.forEach((slot, sIdx) => {
-        slot.ondragover = (e) => e.preventDefault();
-        slot.ondrop = (e) => {
-          e.preventDefault();
-          const info = JSON.parse(e.dataTransfer.getData('text/plain'));
-          const block = document.querySelector(`.blend-letter-block[data-idx="${info.idx}"]`);
-          if (block && !slot.classList.contains('filled')) {
-            placeLetterInSlot(info.char, sIdx, block, slot);
-          }
-        };
-      });
-
-      function placeLetterInSlot(char, sIdx, blockEl, targetSlot) {
-        const emptySlot = targetSlot || Array.from(slots).find(s => !s.classList.contains('filled'));
-        if (!emptySlot) return;
-
-        const charSound = PHONIC_SOUNDS[char.toLowerCase()] || char;
-        const slotLetter = document.createElement('div');
-        slotLetter.className = 'blend-letter-block';
-        slotLetter.innerText = char;
-        slotLetter.style.cursor = 'pointer';
-
-        slotLetter.onclick = (e) => {
-          e.stopPropagation();
-          triggerVisualFeedback(slotLetter);
-          playVoice(charSound);
-        };
-
-        emptySlot.innerHTML = '';
-        emptySlot.appendChild(slotLetter);
-        emptySlot.classList.add('filled');
-        blockEl.style.visibility = 'hidden';
-        AudioSys.playPop();
-
-        placedCount++;
-        if (placedCount === letters.length) {
-          triggerFullBlendAnimation(data.word, letters);
+        if (percent >= 75) {
+          isDrawing = false;
+          AudioSys.playStarDing();
+          spawnConfetti(window.innerWidth / 2, window.innerHeight / 2);
+          playVoice(data.sound);
+          document.getElementById('star3-step-3').className = 'step-star active';
+          document.getElementById('btn-next-to-blend').style.display = 'inline-flex';
         }
       }
+
+      traceCanvas.onmousedown = traceCanvas.ontouchstart = (e) => {
+        isDrawing = true;
+        handleTraceMove(e);
+      };
+      traceCanvas.onmousemove = traceCanvas.ontouchmove = handleTraceMove;
+      window.onmouseup = window.ontouchend = () => { isDrawing = false; };
     }
 
-    function triggerFullBlendAnimation(word, letters) {
-      // Sequential phonetics playback with playVoice
-      letters.forEach((char, i) => {
-        setTimeout(() => {
-          const charSound = PHONIC_SOUNDS[char.toLowerCase()] || char;
+    document.getElementById('btn-trace-clear').onclick = () => loadStep3Trace();
+    document.getElementById('btn-next-to-blend').onclick = () => {
+      loadStep4Blend();
+      showScreen('screen-blend');
+    };
+
+    // --- 11. STEP 4: WORD BLENDING ---
+    function loadStep4Blend() {
+      const data = ALPHABET_DATA[GameState.activeNodeIdx];
+      const wordChars = data.word.toUpperCase().split('');
+
+      document.getElementById('blend-icon-preview').innerHTML = getWordSvg(data.word);
+      document.getElementById('btn-finish-letter').style.display = 'none';
+
+      const sourceTray = document.getElementById('blend-letters-source');
+      const targetTray = document.getElementById('blend-slots-target');
+      sourceTray.innerHTML = '';
+      targetTray.innerHTML = '';
+
+      const placed = new Array(wordChars.length).fill(null);
+
+      // Scrambled letters
+      const scrambled = [...wordChars].sort(() => 0.5 - Math.random());
+      scrambled.forEach((char) => {
+        const tile = document.createElement('div');
+        tile.className = 'blend-letter-tile';
+        tile.innerText = char;
+
+        const charSound = ALPHABET_DATA.find(d => d.letter === char)?.sound || char;
+
+        tile.onclick = () => {
+          triggerVisualFeedback(tile);
           playVoice(charSound);
-          const slots = document.querySelectorAll('.blend-slot');
-          if (slots[i]) triggerVisualFeedback(slots[i]);
-        }, i * 700);
-      });
 
-      setTimeout(() => {
-        playVoice(word);
-        earnStar(4);
-        GameState.completedNodes.add(GameState.activeNodeIdx);
-
-        const resultCard = document.getElementById('blended-result-card');
-        resultCard.style.display = 'flex';
-        document.getElementById('blended-word-illustration').innerHTML = getWordSvg(word);
-        document.getElementById('blended-word-title').innerText = word.toUpperCase();
-
-        const replayBtn = document.getElementById('btn-replay-blended-word');
-        replayBtn.onclick = (e) => {
-          e.stopPropagation();
-          triggerVisualFeedback(replayBtn);
-          playVoice(word);
+          // Find first empty slot
+          const emptyIdx = placed.findIndex(p => p === null);
+          if (emptyIdx !== -1) {
+            placed[emptyIdx] = char;
+            tile.style.visibility = 'hidden';
+            renderBlendSlots();
+          }
         };
 
-        document.getElementById('btn-next-finish-node').style.display = 'inline-flex';
-        saveProgress();
-      }, letters.length * 750);
+        sourceTray.appendChild(tile);
+      });
+
+      function renderBlendSlots() {
+        targetTray.innerHTML = '';
+        placed.forEach((char, i) => {
+          const slot = document.createElement('div');
+          slot.className = 'blend-slot-zone ' + (char ? 'filled' : '');
+          slot.innerText = char || '_';
+
+          slot.onclick = () => {
+            if (char) {
+              // Return letter to source tray
+              const returnTile = Array.from(sourceTray.children).find(t => t.innerText === char && t.style.visibility === 'hidden');
+              if (returnTile) returnTile.style.visibility = 'visible';
+              placed[i] = null;
+              renderBlendSlots();
+            }
+          };
+
+          targetTray.appendChild(slot);
+        });
+
+        // Check completion
+        if (placed.join('') === wordChars.join('')) {
+          AudioSys.playStarDing();
+          spawnConfetti(window.innerWidth / 2, window.innerHeight / 2);
+          document.getElementById('star4-step-4').className = 'step-star active';
+          
+          // Pronounce letters sequentially, then the full word
+          setTimeout(() => playVoice(data.word), 400);
+
+          GameState.totalStars += 3;
+          GameState.completedNodes.add(GameState.activeNodeIdx);
+          if (GameState.activeNodeIdx + 1 < ALPHABET_DATA.length) {
+            GameState.completedNodes.add(GameState.activeNodeIdx + 1);
+            GameState.activeNodeIdx++;
+          }
+          checkUnlockRewards();
+          saveGame();
+
+          document.getElementById('btn-finish-letter').style.display = 'inline-flex';
+        }
+      }
+
+      renderBlendSlots();
     }
 
-    document.getElementById('btn-next-finish-node').addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (GameState.activeNodeIdx < ALPHABET_DATA.length - 1) {
-        GameState.activeNodeIdx++;
-      }
+    document.getElementById('btn-finish-letter').onclick = () => {
+      renderMap();
       showScreen('screen-map');
-      checkRewardUnlocks();
-    });
+    };
 
-    // --- 11. SIGHT WORD ALIEN MINIGAME ---
-    function loadAlienMinigame() {
-      GameState.alienTargetIdx = Math.floor(Math.random() * SIGHT_WORDS.length);
-      const targetWord = SIGHT_WORDS[GameState.alienTargetIdx];
-      document.getElementById('alien-target-word').innerText = targetWord.toUpperCase();
+    // --- 12. 100 REWARDS & CELEBRATION UNLOCKS ---
+    function checkUnlockRewards() {
+      REWARDS_DB.forEach(reward => {
+        if (!reward.unlocked && !GameState.unlockedRewards.has(reward.id)) {
+          let shouldUnlock = false;
+          if (reward.cat === 'badge') {
+            const letter = reward.id.split('_')[1];
+            const nodeIdx = ALPHABET_DATA.findIndex(d => d.letter === letter);
+            if (nodeIdx !== -1 && GameState.completedNodes.has(nodeIdx)) shouldUnlock = true;
+          } else if (reward.cat === 'sticker') {
+            const word = reward.id.split('_')[1];
+            const node = ALPHABET_DATA.find(d => d.word === word);
+            const nodeIdx = ALPHABET_DATA.indexOf(node);
+            if (nodeIdx !== -1 && GameState.completedNodes.has(nodeIdx)) shouldUnlock = true;
+          } else if (reward.cat === 'wearable') {
+            shouldUnlock = GameState.totalStars >= 6;
+          }
 
-      setTimeout(() => playVoice(targetWord), 300);
+          if (shouldUnlock) {
+            reward.unlocked = true;
+            GameState.unlockedRewards.add(reward.id);
+            showUnlockModal(reward);
+          }
+        }
+      });
+      saveGame();
+    }
 
-      const replayAlienBtn = document.getElementById('btn-replay-alien-prompt');
-      replayAlienBtn.onclick = (e) => {
-        e.stopPropagation();
-        triggerVisualFeedback(replayAlienBtn);
-        playVoice(targetWord);
-      };
+    function showUnlockModal(reward) {
+      document.getElementById('unlock-reward-icon').innerText = reward.icon;
+      document.getElementById('unlock-reward-name').innerText = reward.name;
+      document.getElementById('unlock-reward-desc').innerText = reward.desc;
+      document.getElementById('modal-reward-unlock').classList.add('open');
+      playVoice("Amazing! You won a new reward!");
+      spawnConfetti(window.innerWidth / 2, window.innerHeight / 2);
+    }
 
-      const distractors = SIGHT_WORDS.filter(w => w !== targetWord)
-        .sort(() => 0.5 - Math.random())
-        .slice(0, 2);
+    document.getElementById('btn-close-unlock-modal').onclick = () => {
+      document.getElementById('modal-reward-unlock').classList.remove('open');
+    };
 
-      const words = [targetWord, ...distractors].sort(() => 0.5 - Math.random());
+    // Rewards modal
+    document.getElementById('btn-open-rewards').onclick = () => {
+      renderRewardsModal();
+      document.getElementById('modal-rewards').classList.add('open');
+    };
+    document.getElementById('btn-close-rewards').onclick = () => {
+      document.getElementById('modal-rewards').classList.remove('open');
+    };
+
+    function renderRewardsModal() {
+      const grid = document.getElementById('rewards-grid-container');
+      grid.innerHTML = '';
+      REWARDS_DB.forEach(reward => {
+        const isUnlocked = GameState.unlockedRewards.has(reward.id) || reward.unlocked;
+        const badge = document.createElement('div');
+        badge.className = 'reward-item-badge ' + (!isUnlocked ? 'locked' : '');
+        badge.innerHTML = '<span style="font-size: 2.2rem;">' + reward.icon + '</span><div style="font-size: 0.8rem; font-weight: 800; color: #240046;">' + reward.name + '</div><div style="font-size: 0.7rem; color: #666;">' + (isUnlocked ? '✅ Unlocked' : reward.desc) + '</div>';
+        grid.appendChild(badge);
+      });
+    }
+
+    // --- 13. ALIEN SIGHT WORDS MINIGAME ---
+    function loadAlienGame() {
+      GameState.alienTargetWord = SIGHT_WORDS[Math.floor(Math.random() * SIGHT_WORDS.length)];
+      document.getElementById('alien-target-word').innerText = GameState.alienTargetWord.toUpperCase();
+      setTimeout(() => playVoice(GameState.alienTargetWord), 300);
+
       const field = document.getElementById('alien-crater-field');
       field.innerHTML = '';
 
-      words.forEach(w => {
-        const wrap = document.createElement('div');
-        wrap.className = 'alien-crater-wrap';
+      const distractors = SIGHT_WORDS.filter(w => w !== GameState.alienTargetWord)
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 2);
+      const choices = [GameState.alienTargetWord, ...distractors].sort(() => 0.5 - Math.random());
 
-        wrap.innerHTML = `
-          <button class="alien-character-btn">
-            <div class="alien-sign">${w.toUpperCase()}</div>
-            <svg width="65" height="65" viewBox="0 0 100 100">
-              <circle cx="50" cy="50" r="35" fill="#06d6a0"/>
-              <circle cx="50" cy="20" r="8" fill="#ffd166"/>
-              <line x1="50" y1="20" x2="50" y2="35" stroke="#06d6a0" stroke-width="4"/>
-              <circle cx="40" cy="45" r="5" fill="#3d0066"/>
-              <circle cx="60" cy="45" r="5" fill="#3d0066"/>
-              <path d="M42 62 Q50 72 58 62" stroke="#3d0066" stroke-width="3" fill="none"/>
-            </svg>
-          </button>
-          <div class="crater-base"></div>
-        `;
+      choices.forEach(w => {
+        const btn = document.createElement('button');
+        btn.className = 'btn-action-next';
+        btn.style.display = 'inline-flex';
+        btn.style.background = '#7209b7';
+        btn.innerText = '👽 ' + w.toUpperCase();
 
-        const alienBtn = wrap.querySelector('.alien-character-btn');
-        alienBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          triggerVisualFeedback(alienBtn);
+        btn.onclick = () => {
           playVoice(w);
-          if (w === targetWord) {
+          if (w === GameState.alienTargetWord) {
             AudioSys.playStarDing();
-            spawnConfetti(window.innerWidth / 2, window.innerHeight / 2, 40);
-            GameState.alienScore++;
-            wrap.style.transform = 'translateY(-16px) scale(1.1)';
-            setTimeout(loadAlienMinigame, 1200);
-            checkRewardUnlocks();
+            spawnConfetti(window.innerWidth / 2, window.innerHeight / 2);
+            GameState.totalStars += 2;
+            saveGame();
+            setTimeout(loadAlienGame, 1200);
           } else {
             AudioSys.playWrongWobble();
-            wrap.style.transform = 'translateY(12px) scale(0.92)';
-            setTimeout(() => wrap.style.transform = 'none', 400);
           }
-        });
+        };
 
-        field.appendChild(wrap);
+        field.appendChild(btn);
       });
     }
 
-    document.getElementById('btn-alien-quest').addEventListener('click', (e) => {
-      e.stopPropagation();
-      loadAlienMinigame();
+    document.getElementById('btn-alien-quest').onclick = () => {
+      loadAlienGame();
       showScreen('screen-alien');
-    });
+    };
+    document.getElementById('btn-replay-alien').onclick = () => playVoice(GameState.alienTargetWord);
+    document.getElementById('btn-alien-back-map').onclick = () => showScreen('screen-map');
 
-    document.getElementById('btn-alien-next-word').addEventListener('click', (e) => {
-      e.stopPropagation();
-      loadAlienMinigame();
-    });
-    document.getElementById('btn-alien-back-map').addEventListener('click', (e) => {
-      e.stopPropagation();
-      showScreen('screen-map');
-    });
+    // --- 14. CONFETTI FX ENGINE ---
+    const fxCanvas = document.getElementById('fx-canvas');
+    const fxCtx = fxCanvas.getContext('2d');
+    let particles = [];
 
-    // --- 12. STICKER BOOK & 100 REWARDS MODAL ---
-    function openStickerBook(activeTab = 'all') {
-      const modal = document.getElementById('modal-rewards');
-      modal.classList.add('open');
-      renderRewardsGrid(activeTab);
+    function resizeFxCanvas() {
+      fxCanvas.width = window.innerWidth;
+      fxCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeFxCanvas);
+    resizeFxCanvas();
+
+    function spawnConfetti(x, y) {
+      const colors = ['#ffd166', '#ff70a6', '#06d6a0', '#118ab2', '#ff0054'];
+      for (let i = 0; i < 45; i++) {
+        particles.push({
+          x, y,
+          vx: (Math.random() - 0.5) * 12,
+          vy: (Math.random() - 0.8) * 14,
+          size: Math.random() * 8 + 5,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          alpha: 1
+        });
+      }
     }
 
-    function renderRewardsGrid(filterTab) {
-      const container = document.getElementById('rewards-grid-container');
-      container.innerHTML = '';
+    function renderFx() {
+      fxCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
+      particles.forEach((p, idx) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.4;
+        p.alpha -= 0.02;
 
-      REWARDS_DB.forEach(reward => {
-        if (filterTab !== 'all' && reward.cat !== filterTab) return;
+        fxCtx.fillStyle = p.color;
+        fxCtx.globalAlpha = Math.max(0, p.alpha);
+        fxCtx.fillRect(p.x, p.y, p.size, p.size);
 
-        const isEquipped = reward.slot && GameState.equipped[reward.slot] === reward.icon;
-
-        const card = document.createElement('div');
-        card.className = `reward-item-card ${!reward.unlocked ? 'locked' : ''} ${isEquipped ? 'equipped' : ''}`;
-
-        card.innerHTML = `
-          <div class="reward-icon-box">
-            <span style="font-size: 2.2rem;">${reward.icon}</span>
-          </div>
-          <div class="reward-title">${reward.name}</div>
-          <div class="reward-cond">${reward.unlocked ? '✅ Unlocked' : reward.desc}</div>
-        `;
-
-        if (reward.unlocked && reward.slot) {
-          card.addEventListener('click', (e) => {
-            e.stopPropagation();
-            triggerVisualFeedback(card);
-            if (GameState.equipped[reward.slot] === reward.icon) {
-              GameState.equipped[reward.slot] = null;
-            } else {
-              GameState.equipped[reward.slot] = reward.icon;
-              AudioSys.playPop();
-            }
-            saveProgress();
-            renderRewardsGrid(filterTab);
-          });
-        }
-
-        container.appendChild(card);
+        if (p.alpha <= 0) particles.splice(idx, 1);
       });
+      fxCtx.globalAlpha = 1;
+      requestAnimationFrame(renderFx);
     }
+    requestAnimationFrame(renderFx);
 
-    document.querySelectorAll('.reward-tab-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        document.querySelectorAll('.reward-tab-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        renderRewardsGrid(btn.dataset.tab);
-      });
-    });
-
-    document.getElementById('btn-open-rewards').addEventListener('click', (e) => {
-      e.stopPropagation();
-      openStickerBook();
-    });
-    document.getElementById('btn-open-stickerbook').addEventListener('click', (e) => {
-      e.stopPropagation();
-      openStickerBook();
-    });
-    document.getElementById('btn-close-rewards').addEventListener('click', (e) => {
-      e.stopPropagation();
-      document.getElementById('modal-rewards').classList.remove('open');
-    });
-
-    document.getElementById('btn-clear-equipped').addEventListener('click', (e) => {
-      e.stopPropagation();
-      GameState.equipped = { hat: null, glasses: null, cape: null, wand: null };
-      saveProgress();
-      renderRewardsGrid('wearables');
-    });
-
-    // --- 13. GLOBAL EVENT LISTENERS & START GAME TRIGGER ---
+    // --- 15. GLOBAL EVENT LISTENERS & START TRIGGER ---
     document.getElementById('btn-start-game').addEventListener('click', (e) => {
-        e.stopPropagation();
-        // triggerVisualFeedback(document.getElementById('btn-start-game'));
-        
-        // Unlock AudioContext and Speech on direct user gesture
-        window.speechSynthesis.cancel();
-        let welcomeMsg = new SpeechSynthesisUtterance("Welcome to the game children! Let's learn our letters on the treasure map!");
-        welcomeMsg.lang = 'en-US'; // FORCES ENGLISH
-        welcomeMsg.rate = 0.9;
-        welcomeMsg.volume = 1.0;
-        window.speechSynthesis.speak(welcomeMsg);
-
-        // Hide start overlay completely and reveal Treasure Map
-        document.getElementById('start-game-overlay').style.display = 'none';
-        if (typeof showScreen === "function") {
-            showScreen('screen-map');
-        }
-    }); // <-- FIXED MISSING BRACKET HERE
-
-    document.getElementById('btn-home-map').addEventListener('click', (e) => {
       e.stopPropagation();
+      document.getElementById('start-overlay').style.display = 'none';
+      AudioSys.startGentleBGM();
+      playVoice("Welcome to the game children! Let's learn our letters on the treasure map!");
       showScreen('screen-map');
     });
 
-    document.getElementById('btn-sound-toggle').addEventListener('click', (e) => {
-      e.stopPropagation();
-      const enabled = AudioSys.toggleSound();
-      document.getElementById('btn-sound-toggle').innerText = enabled ? '🔊' : '🔇';
-    });
+    document.getElementById('btn-home-map').onclick = () => showScreen('screen-map');
+
+    document.getElementById('btn-sound-toggle').onclick = () => {
+      GameState.soundEnabled = !GameState.soundEnabled;
+      document.getElementById('btn-sound-toggle').innerText = GameState.soundEnabled ? '🔊' : '🔇';
+    };
 
     // Initial render
-    renderTreasureMap();
-    updateHeaderUI();
+    renderMap();
+    updateHeader();
   </script>
 </body>
 </html>
