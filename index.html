@@ -60,6 +60,76 @@
       animation: audioPulse 0.35s ease-out !important;
     }
 
+    /* ==================================================== */
+    /* FULL-SCREEN STRICT START GAME OVERLAY (GESTURE LOCK) */
+    /* ==================================================== */
+    #start-game-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at center, #3a0ca3 0%, #10002b 100%);
+      color: white;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    .start-game-card {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 5px solid rgba(255, 255, 255, 0.4);
+      padding: clamp(24px, 5vw, 44px);
+      border-radius: 40px;
+      max-width: 580px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+      animation: bounceCard 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .start-game-btn {
+      background: linear-gradient(180deg, #ffb703, #fb8500);
+      color: #3d0066;
+      border: 4px solid #ffffff;
+      padding: clamp(16px, 3vw, 22px) clamp(32px, 6vw, 56px);
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      font-weight: 900;
+      border-radius: 60px;
+      cursor: pointer;
+      pointer-events: auto !important;
+      box-shadow: 0 10px 0 #b45309, 0 18px 25px rgba(0,0,0,0.4);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      transition: all 0.15s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      animation: pulseBtn 1.6s infinite ease-in-out;
+      font-family: inherit;
+    }
+
+    .start-game-btn:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 13px 0 #b45309, 0 22px 30px rgba(0,0,0,0.5);
+    }
+
+    .start-game-btn:active {
+      transform: translateY(6px) scale(0.97);
+      box-shadow: 0 3px 0 #b45309, 0 8px 12px rgba(0,0,0,0.3);
+    }
+
     /* APP CONTAINER */
     #app-container {
       width: 100%;
@@ -272,7 +342,7 @@
       50% { transform: scale(1.05); }
     }
 
-    /* "CLICK TO HEAR" STATIC LABEL (NO SECONDS / TIMERS) */
+    /* "CLICK TO HEAR" STATIC LABEL */
     .click-to-hear {
       display: inline-flex;
       align-items: center;
@@ -296,54 +366,6 @@
     @keyframes gentleBounce {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-3px); }
-    }
-
-    /* ---------------------------------------------------- */
-    /* 1. START / SPLASH SCREEN (AUTOPLAY-COMPLIANT INTRO)   */
-    /* ---------------------------------------------------- */
-    #screen-splash {
-      background: radial-gradient(circle at center, #3a0ca3 0%, #10002b 100%);
-      color: white;
-      text-align: center;
-      gap: 20px;
-      padding: 24px 16px;
-    }
-
-    .splash-card {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-      border: 4px solid rgba(255, 255, 255, 0.4);
-      padding: clamp(20px, 4vw, 36px);
-      border-radius: 36px;
-      max-width: 550px;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-      text-align: center;
-    }
-
-    .splash-title {
-      font-size: clamp(2rem, 6vw, 3rem);
-      font-weight: 900;
-      line-height: 1.15;
-      text-shadow: 0 4px 10px rgba(0,0,0,0.5);
-      background: linear-gradient(180deg, #ffd166, #ff70a6);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-align: center;
-      width: 100%;
-    }
-
-    .splash-subtitle {
-      font-size: clamp(1rem, 2.5vw, 1.25rem);
-      color: #e0aaff;
-      font-weight: 600;
-      line-height: 1.4;
-      text-align: center;
-      width: 100%;
     }
 
     /* ---------------------------------------------------- */
@@ -1159,6 +1181,30 @@
 </head>
 <body>
 
+  <!-- ==================================================== -->
+  <!-- 1. STRICT FULL-SCREEN START GAME OVERLAY (GESTURE)   -->
+  <!-- ==================================================== -->
+  <div id="start-game-overlay">
+    <div class="start-game-card">
+      <svg width="110" height="110" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="45" fill="#ffd166"/>
+        <path d="M50 15 L60 38 L85 40 L65 58 L72 82 L50 68 L28 82 L35 58 L15 40 L40 38 Z" fill="#ff70a6"/>
+        <circle cx="38" cy="46" r="4" fill="#3d0066"/>
+        <circle cx="62" cy="46" r="4" fill="#3d0066"/>
+        <path d="M42 58 Q50 68 58 58" fill="none" stroke="#3d0066" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+      <h1 style="font-size: clamp(2rem, 6vw, 3rem); font-weight: 900; line-height: 1.15; text-shadow: 0 4px 10px rgba(0,0,0,0.5); background: linear-gradient(180deg, #ffd166, #ff70a6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        Phonics Adventure
+      </h1>
+      <p style="font-size: clamp(1rem, 2.5vw, 1.25rem); color: #e0aaff; font-weight: 600; line-height: 1.4;">
+        Magical Phonics, Tracing & Reading Journey for 1st Graders!
+      </p>
+      <button class="start-game-btn" id="btn-start-game">
+        🚀 START GAME
+      </button>
+    </div>
+  </div>
+
   <canvas id="fx-canvas"></canvas>
 
   <div id="app-container">
@@ -1177,7 +1223,7 @@
       </div>
 
       <div class="header-right">
-        <!-- STAR PROGRESSION (Starts 0/4 stars empty white, turns bright yellow upon success) -->
+        <!-- STAR PROGRESSION -->
         <div class="star-meter" id="header-star-meter" title="Activity Stars">
           <svg class="star-icon" id="star-1" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
           <svg class="star-icon" id="star-2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
@@ -1192,29 +1238,9 @@
     </header>
 
     <!-- ==================================================== -->
-    <!-- 1. START / SPLASH SCREEN (AUTOPLAY-COMPLIANT INTRO)   -->
-    <!-- ==================================================== -->
-    <main class="screen active" id="screen-splash">
-      <div class="splash-card">
-        <svg width="120" height="120" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="45" fill="#ffd166"/>
-          <path d="M50 15 L60 38 L85 40 L65 58 L72 82 L50 68 L28 82 L35 58 L15 40 L40 38 Z" fill="#ff70a6"/>
-          <circle cx="38" cy="46" r="4" fill="#3d0066"/>
-          <circle cx="62" cy="46" r="4" fill="#3d0066"/>
-          <path d="M42 58 Q50 68 58 58" fill="none" stroke="#3d0066" stroke-width="3" stroke-linecap="round"/>
-        </svg>
-        <h1 class="splash-title">Phonics Adventure</h1>
-        <p class="splash-subtitle">Magical Phonics, Tracing & Reading Journey for 1st Graders!</p>
-        <button class="btn-primary btn-pulse" id="btn-start-game" style="font-size: clamp(1.2rem, 3vw, 1.5rem); margin-top: 10px;">
-          🚀 Start Game!
-        </button>
-      </div>
-    </main>
-
-    <!-- ==================================================== -->
     <!-- 2. TREASURE MAP SCREEN (WORLD MAP UI)                -->
     <!-- ==================================================== -->
-    <section class="screen" id="screen-map">
+    <section class="screen active" id="screen-map">
       <div class="map-container" id="map-container">
         <!-- Floating Navigation & Quick Access -->
         <div class="map-header-bar">
@@ -1486,11 +1512,11 @@
   </div>
 
   <!-- ==================================================== -->
-  <!-- JAVASCRIPT: ROBUST SPEECH SYNTHESIS & GAME LOGIC     -->
+  <!-- JAVASCRIPT: MASTER BULLETPROOF AUDIO ARCHITECTURE    -->
   <!-- ==================================================== -->
   <script>
     /**
-     * PHONICS ADVENTURE - FOOLPROOF SPEECH SYNTHESIS ENGINE
+     * PHONICS ADVENTURE - MASTER BULLETPROOF AUDIO ENGINE
      */
     
     // --- 1. FULL 26-LETTER CURRICULUM DATABASE WITH MATCHING ANCHOR WORDS ---
@@ -1749,65 +1775,26 @@
       updateHeaderUI();
     }
 
-    // --- 4. DEDICATED, FOOLPROOF SPEECH SYNTHESIS ENGINE ---
-    window._activeUtterances = []; // Global anchor to prevent Chrome premature GC
+    // --- 4. BULLETPROOF playVoice(text) IMPLEMENTATION ---
+    // Force load voices in the background
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.getVoices();
+    }
 
-    function playVoice(textToSpeak, isPhonetic = false) {
-      if (!textToSpeak) return;
+    function playVoice(textToSpeak) {
       console.log("Playing audio for: ", textToSpeak);
-
       if (!GameState.soundEnabled) return;
       if (!('speechSynthesis' in window)) {
-        console.warn("speechSynthesis is not supported in this browser environment");
+        console.warn("speechSynthesis not supported");
         return;
       }
-
       try {
-        // ALWAYS cancel previous queue to prevent freezing
-        window.speechSynthesis.cancel();
-
-        // Resume if browser engine was suspended/paused
-        if (window.speechSynthesis.paused) {
-          window.speechSynthesis.resume();
-        }
-
-        let spokenText = textToSpeak.toString().trim();
-        if (isPhonetic && PHONIC_SOUNDS[spokenText.toLowerCase()]) {
-          spokenText = PHONIC_SOUNDS[spokenText.toLowerCase()];
-        }
-
-        const utterance = new SpeechSynthesisUtterance(spokenText);
-        utterance.lang = 'en-US';
-        utterance.rate = 0.8;
-        utterance.pitch = 1.15;
+        window.speechSynthesis.cancel(); // Clear any stuck audio
+        let utterance = new SpeechSynthesisUtterance(textToSpeak);
+        utterance.lang = 'en-US'; // Force English human voice
+        utterance.rate = 0.8; // Slightly slower for 1st graders
         utterance.volume = 1.0;
-
-        // Auto-select the highest quality natural English voice
-        const voices = window.speechSynthesis.getVoices();
-        if (voices && voices.length > 0) {
-          const naturalVoice = voices.find(v => (v.lang === 'en-US' || v.lang === 'en_US') && (
-            v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Samantha') || 
-            v.name.includes('Victoria') || v.name.includes('Jenny') || v.name.includes('Aria') ||
-            v.name.includes('Guy') || v.name.includes('Zira')
-          )) || voices.find(v => v.lang.startsWith('en-US')) || voices.find(v => v.lang.startsWith('en'));
-
-          if (naturalVoice) {
-            utterance.voice = naturalVoice;
-          }
-        }
-
-        // Retain in window array to prevent Chrome GC bug
-        window._activeUtterances.push(utterance);
-        utterance.onend = utterance.onerror = () => {
-          const idx = window._activeUtterances.indexOf(utterance);
-          if (idx > -1) window._activeUtterances.splice(idx, 1);
-        };
-
         window.speechSynthesis.speak(utterance);
-
-        if (window.speechSynthesis.paused) {
-          window.speechSynthesis.resume();
-        }
       } catch (err) {
         console.error("Error in playVoice:", err);
       }
@@ -2058,7 +2045,6 @@
       if (target) target.classList.add('active');
 
       const titles = {
-        'screen-splash': 'Welcome Explorer',
         'screen-map': 'Treasure Map',
         'screen-intro': 'Step 1: Learn the Sound',
         'screen-match': 'Step 2: Match Sound',
@@ -2245,12 +2231,14 @@
       const nextBtn = document.getElementById('btn-next-to-match');
       nextBtn.style.display = 'none';
 
-      // Robust click & touch handlers with visual feedback and explicit playVoice calls
+      // Explicit phonetic pronunciation string
+      const letterSound = PHONIC_SOUNDS[data.letter.toLowerCase()] || data.letter;
+
       const letterBox = document.getElementById('intro-letter-btn');
       letterBox.onclick = (e) => {
         e.stopPropagation();
         triggerVisualFeedback(letterBox);
-        playVoice(data.letter, true);
+        playVoice(letterSound);
         GameState.hasInteractedIntroLetter = true;
         checkStep1Progress();
       };
@@ -2259,7 +2247,7 @@
       wordBox.onclick = (e) => {
         e.stopPropagation();
         triggerVisualFeedback(wordBox);
-        playVoice(data.word, false);
+        playVoice(data.word);
         GameState.hasInteractedIntroWord = true;
         checkStep1Progress();
       };
@@ -2310,11 +2298,13 @@
         bubble.innerText = letChar;
         Object.assign(bubble.style, positions[idx]);
 
+        const bubbleSound = PHONIC_SOUNDS[letChar.toLowerCase()] || letChar;
+
         // Explicit click handler with playVoice and visual feedback
         bubble.addEventListener('click', (e) => {
           e.stopPropagation();
           triggerVisualFeedback(bubble);
-          playVoice(letChar, true);
+          playVoice(bubbleSound);
           if (letChar === data.letter) {
             handleMatchSuccess(bubble);
           } else {
@@ -2325,7 +2315,7 @@
         // HTML5 Drag and Drop Support
         bubble.draggable = true;
         bubble.addEventListener('dragstart', (e) => {
-          playVoice(letChar, true);
+          playVoice(bubbleSound);
           e.dataTransfer.setData('text/plain', letChar);
         });
 
@@ -2455,7 +2445,8 @@
     function checkTraceCompletion() {
       const data = ALPHABET_DATA[GameState.activeNodeIdx];
       if (tracePointsHit >= requiredTracePoints.length * 0.7) {
-        playVoice(data.letter, true);
+        const letterSound = PHONIC_SOUNDS[data.letter.toLowerCase()] || data.letter;
+        playVoice(letterSound);
         earnStar(3);
         spawnConfetti(window.innerWidth / 2, window.innerHeight / 2, 35);
         document.getElementById('btn-next-to-blend').style.display = 'inline-flex';
@@ -2503,17 +2494,19 @@
         block.dataset.letter = char;
         block.dataset.idx = idx;
 
+        const charSound = PHONIC_SOUNDS[char.toLowerCase()] || char;
+
         // Individual click to hear pure human phonetics with visual pulse
         block.addEventListener('click', (e) => {
           e.stopPropagation();
           triggerVisualFeedback(block);
-          playVoice(char, true);
+          playVoice(charSound);
         });
 
         // Tap or Drag to place into next empty slot
         block.draggable = true;
         block.addEventListener('dragstart', (e) => {
-          playVoice(char, true);
+          playVoice(charSound);
           e.dataTransfer.setData('text/plain', JSON.stringify({ char, idx }));
         });
 
@@ -2541,6 +2534,7 @@
         const emptySlot = targetSlot || Array.from(slots).find(s => !s.classList.contains('filled'));
         if (!emptySlot) return;
 
+        const charSound = PHONIC_SOUNDS[char.toLowerCase()] || char;
         const slotLetter = document.createElement('div');
         slotLetter.className = 'blend-letter-block';
         slotLetter.innerText = char;
@@ -2549,7 +2543,7 @@
         slotLetter.onclick = (e) => {
           e.stopPropagation();
           triggerVisualFeedback(slotLetter);
-          playVoice(char, true);
+          playVoice(charSound);
         };
 
         emptySlot.innerHTML = '';
@@ -2569,14 +2563,15 @@
       // Sequential phonetics playback with playVoice
       letters.forEach((char, i) => {
         setTimeout(() => {
-          playVoice(char, true);
+          const charSound = PHONIC_SOUNDS[char.toLowerCase()] || char;
+          playVoice(charSound);
           const slots = document.querySelectorAll('.blend-slot');
           if (slots[i]) triggerVisualFeedback(slots[i]);
         }, i * 700);
       });
 
       setTimeout(() => {
-        playVoice(word, false);
+        playVoice(word);
         earnStar(4);
         GameState.completedNodes.add(GameState.activeNodeIdx);
 
@@ -2589,7 +2584,7 @@
         replayBtn.onclick = (e) => {
           e.stopPropagation();
           triggerVisualFeedback(replayBtn);
-          playVoice(word, false);
+          playVoice(word);
         };
 
         document.getElementById('btn-next-finish-node').style.display = 'inline-flex';
@@ -2612,13 +2607,13 @@
       const targetWord = SIGHT_WORDS[GameState.alienTargetIdx];
       document.getElementById('alien-target-word').innerText = targetWord.toUpperCase();
 
-      setTimeout(() => playVoice(targetWord, false), 300);
+      setTimeout(() => playVoice(targetWord), 300);
 
       const replayAlienBtn = document.getElementById('btn-replay-alien-prompt');
       replayAlienBtn.onclick = (e) => {
         e.stopPropagation();
         triggerVisualFeedback(replayAlienBtn);
-        playVoice(targetWord, false);
+        playVoice(targetWord);
       };
 
       const distractors = SIGHT_WORDS.filter(w => w !== targetWord)
@@ -2652,7 +2647,7 @@
         alienBtn.addEventListener('click', (e) => {
           e.stopPropagation();
           triggerVisualFeedback(alienBtn);
-          playVoice(w, false);
+          playVoice(w);
           if (w === targetWord) {
             AudioSys.playStarDing();
             spawnConfetti(window.innerWidth / 2, window.innerHeight / 2, 40);
@@ -2765,11 +2760,20 @@
     document.getElementById('btn-start-game').addEventListener('click', (e) => {
       e.stopPropagation();
       triggerVisualFeedback(document.getElementById('btn-start-game'));
-      // 1. Start gentle BGM
+      
+      // Unlock AudioContext and Speech on direct user gesture
+      window.speechSynthesis.cancel();
+      let welcomeMsg = new SpeechSynthesisUtterance("Welcome to the game children! Let's learn our letters on the treasure map!");
+      welcomeMsg.lang = 'en-US';
+      welcomeMsg.rate = 0.9;
+      welcomeMsg.volume = 1.0;
+      window.speechSynthesis.speak(welcomeMsg);
+
+      // Start gentle background music loop
       AudioSys.startGentleBGM();
-      // 2. Play welcoming human teacher voice
-      playVoice("Welcome to the game children! Let's learn our letters on the treasure map!", false);
-      // 3. Navigate to Treasure Map
+
+      // Hide start overlay completely and reveal Treasure Map
+      document.getElementById('start-game-overlay').style.display = 'none';
       showScreen('screen-map');
     });
 
