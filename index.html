@@ -63,7 +63,7 @@
     /* ==================================================== */
     /* FULL-SCREEN STRICT START GAME OVERLAY (GESTURE LOCK) */
     /* ==================================================== */
-    #start-game-overlay {
+    #startOverlay {
       position: fixed;
       top: 0;
       left: 0;
@@ -1184,7 +1184,7 @@
   <!-- ==================================================== -->
   <!-- 1. STRICT FULL-SCREEN START GAME OVERLAY (GESTURE)   -->
   <!-- ==================================================== -->
-  <div id="start-game-overlay">
+  <div id="startOverlay">
     <div class="start-game-card">
       <svg width="110" height="110" viewBox="0 0 100 100">
         <circle cx="50" cy="50" r="45" fill="#ffd166"/>
@@ -1199,7 +1199,7 @@
       <p style="font-size: clamp(1rem, 2.5vw, 1.25rem); color: #e0aaff; font-weight: 600; line-height: 1.4;">
         Magical Phonics, Tracing & Reading Journey for 1st Graders!
       </p>
-      <button class="start-game-btn" id="btn-start-game">
+      <button class="start-game-btn" id="startGameBtn">
         🚀 START GAME
       </button>
     </div>
@@ -1775,24 +1775,39 @@
       updateHeaderUI();
     }
 
-    // --- 4. BULLETPROOF playVoice(text) IMPLEMENTATION ---
-    // Force load voices in the background
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.getVoices();
-      window.speechSynthesis.onvoiceschanged = () => {
-        window.speechSynthesis.getVoices();
-      };
+    // --- 4. EXACT HARDCODED AUDIO ENGINE ---
+    const synth = window.speechSynthesis;
+    let gameVoice = null;
+
+    // Function to find the best, most human-sounding English voice
+    function loadVoices() {
+        const voices = synth.getVoices();
+        // Prioritize Google US English or default English voices
+        gameVoice = voices.find(v => v.name === 'Google US English' || v.name === 'Samantha') || 
+                    voices.find(v => v.lang === 'en-US' || v.lang === 'en-GB');
     }
 
-    function playVoice(textToSpeak) {
-      console.log("Playing audio for: ", textToSpeak);
-      window.speechSynthesis.cancel(); // Clear any stuck audio
-      let utterance = new SpeechSynthesisUtterance(textToSpeak);
-      utterance.lang = 'en-US'; // Force English human voice
-      utterance.rate = 0.8; // Slightly slower for 1st graders
-      utterance.volume = 1.0;
-      window.speechSynthesis.speak(utterance);
+    // Load voices immediately and also wait for them to be ready
+    loadVoices();
+    if (synth.onvoiceschanged !== undefined) {
+        synth.onvoiceschanged = loadVoices;
     }
+
+    // Bulletproof play function
+    function playGameVoice(textToSpeak) {
+        synth.cancel(); // Stop any currently playing audio
+        const utterance = new SpeechSynthesisUtterance(textToSpeak);
+        if (gameVoice) {
+            utterance.voice = gameVoice;
+        }
+        utterance.lang = 'en-US';
+        utterance.rate = 0.85; // Perfect speed for 1st graders
+        utterance.pitch = 1.1; // Slightly enthusiastic
+        synth.speak(utterance);
+    }
+
+    // Direct alias so all letter/word interactions use playGameVoice
+    const playVoice = playGameVoice;
 
     // Helper: Trigger quick visual pulse feedback on any clicked element
     function triggerVisualFeedback(el) {
@@ -2750,26 +2765,32 @@
       renderRewardsGrid('wearables');
     });
 
-    // --- 13. GLOBAL EVENT LISTENERS & START GAME TRIGGER ---
-    document.getElementById('btn-start-game').addEventListener('click', (e) => {
-      e.stopPropagation();
-      triggerVisualFeedback(document.getElementById('btn-start-game'));
-      
-      // Unlock AudioContext and Speech on direct user gesture
-      window.speechSynthesis.cancel();
-      let welcomeMsg = new SpeechSynthesisUtterance("Welcome to the game children! Let's learn our letters on the treasure map!");
-      welcomeMsg.lang = 'en-US';
-      welcomeMsg.rate = 0.9;
-      welcomeMsg.volume = 1.0;
-      window.speechSynthesis.speak(welcomeMsg);
-
-      // Start gentle background music loop
-      AudioSys.startGentleBGM();
-
-      // Hide start overlay completely and reveal Treasure Map
-      document.getElementById('start-game-overlay').style.display = 'none';
-      showScreen('screen-map');
+    // --- 13. GLOBAL EVENT LISTENERS & START SCREEN LOGIC ---
+    document.addEventListener("DOMContentLoaded", () => {
+        const startBtn = document.getElementById("startGameBtn");
+        const overlay = document.getElementById("startOverlay");
+        
+        if(startBtn && overlay) {
+            startBtn.addEventListener("click", () => {
+                overlay.style.display = "none";
+                AudioSys.startGentleBGM();
+                playGameVoice("Welcome to the game children! Let's learn our English letters. Click on a letter to play!");
+                showScreen('screen-map');
+            });
+        }
     });
+
+    // Direct fallback attachment if DOM is already parsed
+    const startBtn = document.getElementById("startGameBtn");
+    const overlay = document.getElementById("startOverlay");
+    if(startBtn && overlay) {
+        startBtn.addEventListener("click", () => {
+            overlay.style.display = "none";
+            AudioSys.startGentleBGM();
+            playGameVoice("Welcome to the game children! Let's learn our English letters. Click on a letter to play!");
+            showScreen('screen-map');
+        });
+    }
 
     document.getElementById('btn-home-map').addEventListener('click', (e) => {
       e.stopPropagation();
